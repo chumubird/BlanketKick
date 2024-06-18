@@ -1,9 +1,3 @@
-//
-//  View_SignUP.swift
-//  Blankick
-//
-//  Created by chul on 6/1/24.
-//
 
 import SwiftUI
 

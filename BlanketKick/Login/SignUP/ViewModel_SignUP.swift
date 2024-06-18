@@ -1,9 +1,3 @@
-//
-//  ViewModel_SignUP.swift
-//  Blankick
-//
-//  Created by chul on 6/7/24.
-//
 
 import SwiftUI
 import Foundation

@@ -1,9 +1,3 @@
-//
-//  WavyRectangle.swift
-//  Blankick
-//
-//  Created by chul on 6/4/24.
-//
 
 import SwiftUI
 
