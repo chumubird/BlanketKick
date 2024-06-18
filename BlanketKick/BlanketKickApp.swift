@@ -13,7 +13,7 @@ struct BlanketKickApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            View_SignIN()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
