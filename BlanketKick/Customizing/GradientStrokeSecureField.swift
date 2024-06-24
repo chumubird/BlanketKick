@@ -24,6 +24,8 @@ struct GradientStrokeSecureField: View {
                     }
                     .keyboardType(.emailAddress)
                     
+                    
+                    
 
                 
             } else {

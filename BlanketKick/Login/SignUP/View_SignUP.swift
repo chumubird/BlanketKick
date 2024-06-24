@@ -18,6 +18,11 @@ struct View_SignUP: View {
     @State var idUsable: Bool = false
     
     
+    @State var rangeMinMax : Bool = false
+    @State var hasEngLowcase : Bool = false
+    @State var hasSpecialCharacter : Bool = false
+    
+    
     
     @State var showingImagePicker: Bool = false
     @State var profileImage: UIImage?
@@ -201,9 +206,92 @@ struct View_SignUP: View {
                 
             }
             
+            VStack {
+                HStack{
+                    if viewModel.pwForNewUser.count >= 6 && viewModel.pwForNewUser.count <= 14 {
+                        Text("비밀번호 길이는 6자리에서 14자리")
+                            .foregroundStyle(.green)
+                        
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.green)
+                        
+                    } else if viewModel.pwForNewUser.isEmpty{
+                        Text("비밀번호 길이는 6자리에서 14자리")
+                            .foregroundStyle(.gray)
+                        
+                        Image(systemName: "questionmark.circle")
+                            .foregroundStyle(.gray)
+                    } else {
+                        Text("비밀번호 길이는 6자리에서 14자리")
+                            .foregroundStyle(.red)
+                        
+                        Image(systemName: "x.circle")
+                            .foregroundStyle(.red)
+                    }
+                   
+                }
+                
+                HStack{
+                    if viewModel.pwForNewUser.rangeOfCharacter(from: .lowercaseLetters) != nil {
+                        
+                        Text("비밀번호는 영소문자를 반드시 포함")
+                            .foregroundStyle(.green)
+                        
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.green)
+                    } else if viewModel.pwForNewUser.isEmpty {
+                        
+                        Text("비밀번호는 영소문자를 반드시 포함")
+                            .foregroundStyle(.gray)
+                        
+                        Image(systemName: "questionmark.circle")
+                            .foregroundStyle(.gray)
+                    } else {
+                        
+                        Text("비밀번호는 영소문자를 반드시 포함")
+                            .foregroundStyle(.red)
+                        
+                        Image(systemName: "x.circle")
+                            .foregroundStyle(.red)
+                        
+                    }
+
+                }
+                HStack{
+                    if viewModel.pwForNewUser.rangeOfCharacter(from: CharacterSet(charactersIn: "!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/`~")) != nil {
+                        Text("비밀번호는 특수문자를 반드시 포함")
+                            .foregroundStyle(.green)
+                        
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.green)
+                    
+                    } else if  viewModel.pwForNewUser.isEmpty {
+                        Text("비밀번호는 특수문자를 반드시 포함")
+                            .foregroundStyle(.gray)
+                        
+                        Image(systemName: "questionmark.circle")
+                            .foregroundStyle(.gray)
+                    } else {
+                        
+                        Text("비밀번호는 특수문자를 반드시 포함")
+                            .foregroundStyle(.red)
+                        
+                        Image(systemName: "x.circle")
+                            .foregroundStyle(.red)
+                    }
+
+                }
+                
+            
+                
+            }
+            .padding(.bottom)
+           
+            
+            
             
             Spacer()
-                .frame(height: 30)
+                .frame(height: 10)
             
             
                 GradientStrokeButton(action: {
@@ -226,7 +314,7 @@ struct View_SignUP: View {
             }, label: "Back", gradient: LinearGradient(colors: [.red,.purple], startPoint: .leading, endPoint: .trailing))
             
             Spacer()
-                .frame(height: 70)
+                .frame(height: 10)
         }
     }
 }
