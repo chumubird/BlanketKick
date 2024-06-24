@@ -19,8 +19,11 @@ struct View_SignUP: View {
     
     
     @State var rangeMinMax : Bool = false
+    @State var hasNumber : Bool = false
     @State var hasEngLowcase : Bool = false
     @State var hasSpecialCharacter : Bool = false
+    
+    @State var passwordCheckingDone : Bool = false
     
     
     
@@ -196,13 +199,22 @@ struct View_SignUP: View {
                 
                 Button(action: {
                     //                    isCheckingMark.toggle()
+
                     viewModel.validPassword(viewModel.pwForNewUser)
-                    print("\(viewModel.checkingPasswordCondition(viewModel.pwForNewUser.description))")
+//                    print("\(viewModel.checkingPasswordCondition(viewModel.pwForNewUser.description))")
+                    print("\(viewModel.pwForNewUser)")
                 }, label: {
-                    Image(systemName: "checkmark.circle")
-                        .foregroundStyle(.gray)
+                    if rangeMinMax == true && hasNumber == true && hasEngLowcase == true && hasSpecialCharacter == true {
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.green)
+                        
+                    } else {
+                        Image(systemName: "circle")
+                            .foregroundStyle(.gray)
+                    }
                 })
                 .offset(x: 70)
+                .disabled(true)
                 
             }
            
@@ -210,7 +222,7 @@ struct View_SignUP: View {
                     HStack{
                         if viewModel.pwForNewUser.count >= 6 && viewModel.pwForNewUser.count <= 14 {
                            
-                            Text("비밀번호 길이는 6자리에서 14자리")
+                            Text("비밀번호: 길이 6자리에서 14자리")
                                 .foregroundStyle(.green)
                             
                             Image(systemName: "checkmark.circle")
@@ -226,7 +238,7 @@ struct View_SignUP: View {
                         }
                         else if viewModel.pwForNewUser.isEmpty{
                          
-                            Text("비밀번호 길이는 6자리에서 14자리")
+                            Text("비밀번호: 길이는 6자리에서 14자리")
                                 .foregroundStyle(.gray)
                             
                             Image(systemName: "questionmark.circle")
@@ -235,12 +247,12 @@ struct View_SignUP: View {
                                     rangeMinMax = false
                                 })
                             
-                            Text(rangeMinMax.description)
-                                .foregroundStyle(.red)
+                            Text(/*rangeMinMax.description*/"empty")
+                                .foregroundStyle(.gray)
                             
                         } else {
                           
-                            Text("비밀번호 길이는 6자리에서 14자리")
+                            Text("비밀번호: 길이는 6자리에서 14자리")
                                 .foregroundStyle(.red)
                             
                             Image(systemName: "x.circle")
@@ -255,14 +267,62 @@ struct View_SignUP: View {
                         }
                         
                     }
+                    
+                    HStack{
+                        if viewModel.pwForNewUser.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789")) != nil {
+                           
+                            Text("비밀번호는 0~9숫자를 반드시 포함")
+                                .foregroundStyle(.green)
+                            
+                            Image(systemName: "checkmark.circle")
+                                .foregroundStyle(.green)
+                                .onAppear(perform: {
+                                    hasNumber = true
+                                })
+                            
+                            Text(rangeMinMax.description)
+                                .foregroundStyle(.green
+                                )
+                            
+                        }
+                        else if viewModel.pwForNewUser.isEmpty{
+                         
+                            Text("비밀번호는 0~9숫자를 반드시 포함")
+                                .foregroundStyle(.gray)
+                            
+                            Image(systemName: "questionmark.circle")
+                                .foregroundStyle(.gray)
+                                .onAppear(perform: {
+                                    hasNumber = false
+                                })
+                            
+                            Text(/*rangeMinMax.description*/"empty")
+                                .foregroundStyle(.gray)
+                            
+                        } else {
+                          
+                            Text("비밀번호는 0~9숫자를 반드시 포함")
+                                .foregroundStyle(.red)
+                            
+                            Image(systemName: "x.circle")
+                                .foregroundStyle(.red)
+                                .onAppear(perform: {
+                                    hasNumber = false
+                                })
+                            
+                            Text(hasNumber.description)
+                                .foregroundStyle(.red)
+                            
+                        }
+                        
+                    }
                 
                 
                 HStack{
                     if viewModel.pwForNewUser.rangeOfCharacter(from: .lowercaseLetters) != nil {
-                        Text(hasEngLowcase.description)
+                     
+                        Text("비밀번호는 영소문자를 반드시 포함")
                             .foregroundStyle(.green)
-                        
-                       
                         
                         Image(systemName: "checkmark.circle")
                             .foregroundStyle(.green)
@@ -270,8 +330,10 @@ struct View_SignUP: View {
                                 hasEngLowcase = true
                             })
                         
-                        Text("비밀번호는 영소문자를 반드시 포함")
+                        
+                        Text(hasEngLowcase.description)
                             .foregroundStyle(.green)
+                        
                         
                     } else if viewModel.pwForNewUser.isEmpty {
                        
@@ -284,8 +346,8 @@ struct View_SignUP: View {
                                 hasEngLowcase = false
                             })
                         
-                        Text(hasEngLowcase.description)
-                            .foregroundStyle(.red)
+                        Text(/*hasEngLowcase.description*/"empty")
+                            .foregroundStyle(.gray)
                         
                     } else {
                        
@@ -332,8 +394,8 @@ struct View_SignUP: View {
                                 hasSpecialCharacter = false
                             })
                         
-                        Text(hasEngLowcase.description)
-                            .foregroundStyle(.red)
+                        Text(/*hasEngLowcase.description*/"empty")
+                            .foregroundStyle(.gray)
                         
                     } else {
                       
