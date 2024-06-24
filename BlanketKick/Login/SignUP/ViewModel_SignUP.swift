@@ -10,15 +10,24 @@ class ViewModel_SignUP: ObservableObject {
     
     @Published var checkingPW: Bool = false
     
-    @Published var isAlreadyExist: Bool = false
+//    @Published var isAlreadyExist: Bool = false
         
-    @Published var passwordValidationResult: [PasswordCondition] = []
+//    @Published var passwordValidationResult: [PasswordCondition] = []
     
-    @Published var isFormWrong: Bool = false
+//    @Published var isFormWrong: Bool = false
 
+    // 관리할 사용자 배열
+      @Published var mockUsers: [Model_SignIN_SignUP] = [
+          Model_SignIN_SignUP(id: "user1", password: "Password123!", name: "Alice"),
+          Model_SignIN_SignUP(id: "user2", password: "SecurePass1@", name: "Bob"),
+          Model_SignIN_SignUP(id: "user3", password: "TestUser#456", name: "Charlie"),
+          Model_SignIN_SignUP(id: "user4", password: "ExamplePwd789$", name: "David"),
+          Model_SignIN_SignUP(id: "user5", password: "DemoPass321#", name: "Eve")
+      ]
     
     
     func successForNewAccount () {
+        
         print("회원가입 성공 // success")
         print("""
               --------------------------------
@@ -36,66 +45,82 @@ class ViewModel_SignUP: ObservableObject {
               --------------------------------
 
               """)
-    
-    }
-    
-   
-    func checkingPasswordCondition(_ password: String) -> [PasswordCondition]  {
         
-        var results :[PasswordCondition] = []
-        let minLength = 8
-                let maxLength = 16
-                
-                if password.count < minLength {
-                    results.append(.short)
-                }
-                
-                if password.count > maxLength {
-                    results.append(.long)
-                }
-                
-                let upperCasePattern = ".*[A-Z]+.*"
-                let lowerCasePattern = ".*[a-z]+.*"
-                let numberPattern = ".*[0-9]+.*"
-                let specialCharacterPattern = ".*[!@#$%^&*(),.?\":{}|<>]+.*"
-                
-                if !NSPredicate(format: "SELF MATCHES %@", upperCasePattern).evaluate(with: password) {
-                    results.append(.nonUpperEng)
-                }
-                
-                if !NSPredicate(format: "SELF MATCHES %@", lowerCasePattern).evaluate(with: password) {
-                    results.append(.nonLowerEng)
-                }
-                
-                if !NSPredicate(format: "SELF MATCHES %@", numberPattern).evaluate(with: password) {
-                    results.append(.nonNumber)
-                }
-                
-                if !NSPredicate(format: "SELF MATCHES %@", specialCharacterPattern).evaluate(with: password) {
-                    results.append(.nonSpecialKey)
-                }
-                
-                return results.isEmpty ? [.success] : results
+        let newUser = Model_SignIN_SignUP(id: idForNewUser, password: pwForNewUser, name: nameForNewUser)
+        mockUsers.append(newUser)
         
-        
-    }
-    func validPassword (_ password: String) {
-        passwordValidationResult = checkingPasswordCondition(password)
+        print("""
+              회원 목록
+              
+              \(mockUsers)
+              
 
+
+
+
+              """)
+        
+        
+    
     }
     
-    func wrongForm () {
-        
-        if !idForNewUser.isEmpty && !nameForNewUser.isEmpty && !pwForNewUser.isEmpty && passwordValidationResult.contains(.success) {
-            
-            isFormWrong = false
-            
-        } else {
-            
-            isFormWrong = true
-            
-        }
-    }
+//   
+//    func checkingPasswordCondition(_ password: String) -> [PasswordCondition]  {
+//        
+//        var results :[PasswordCondition] = []
+//        let minLength = 8
+//                let maxLength = 16
+//                
+//                if password.count < minLength {
+//                    results.append(.short)
+//                }
+//                
+//                if password.count > maxLength {
+//                    results.append(.long)
+//                }
+//                
+//                let upperCasePattern = ".*[A-Z]+.*"
+//                let lowerCasePattern = ".*[a-z]+.*"
+//                let numberPattern = ".*[0-9]+.*"
+//                let specialCharacterPattern = ".*[!@#$%^&*(),.?\":{}|<>]+.*"
+//                
+//                if !NSPredicate(format: "SELF MATCHES %@", upperCasePattern).evaluate(with: password) {
+//                    results.append(.nonUpperEng)
+//                }
+//                
+//                if !NSPredicate(format: "SELF MATCHES %@", lowerCasePattern).evaluate(with: password) {
+//                    results.append(.nonLowerEng)
+//                }
+//                
+//                if !NSPredicate(format: "SELF MATCHES %@", numberPattern).evaluate(with: password) {
+//                    results.append(.nonNumber)
+//                }
+//                
+//                if !NSPredicate(format: "SELF MATCHES %@", specialCharacterPattern).evaluate(with: password) {
+//                    results.append(.nonSpecialKey)
+//                }
+//                
+//                return results.isEmpty ? [.success] : results
+//        
+//        
+//    }
+//    func validPassword (_ password: String) {
+//        passwordValidationResult = checkingPasswordCondition(password)
+//
+//    }
+//    
+//    func wrongForm () {
+//        
+//        if !idForNewUser.isEmpty && !nameForNewUser.isEmpty && !pwForNewUser.isEmpty && passwordValidationResult.contains(.success) {
+//            
+//            isFormWrong = false
+//            
+//        } else {
+//            
+//            isFormWrong = true
+//            
+//        }
+//    }
 }
 
 
