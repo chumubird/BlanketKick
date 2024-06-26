@@ -131,7 +131,11 @@ struct View_SignUP: View {
                 //                                            viewModel.idForNewUser = newValue.replacingOccurrences(of: " ", with: "")
                 //                                        }
                     .onChange(of: viewModel.idForNewUser) { oldValue, newValue in
-                        viewModel.idForNewUser = newValue.lowercased().replacingOccurrences(of: " ", with: "")
+                        //                        viewModel.idForNewUser = newValue.lowercased().replacingOccurrences(of: " ", with: "")
+                        let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9"}
+                        if filteredValue != newValue {
+                            viewModel.idForNewUser = filteredValue
+                        }
                         
                     }
                 
@@ -221,21 +225,31 @@ struct View_SignUP: View {
             GradientStrokeTextField(gradient: LinearGradient(colors: [.green, .purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Name", bindingValue: $viewModel.nameForNewUser)
                 .padding(.top)
                 .onChange(of: viewModel.nameForNewUser) { oldValue, newValue in
-                    viewModel.nameForNewUser = newValue.replacingOccurrences(of: " ", with: "")
+                    //                    viewModel.nameForNewUser = newValue.lowercased().replacingOccurrences(of: " ", with: "")
+                    //                    let filteredValue = newValue.lowercased().filter { $0.isLetter }
+                    let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <=  "9" }
+                    if filteredValue != newValue {
+                        viewModel.nameForNewUser = filteredValue
+                    }
+                    
                 }
             
             ZStack{
                 GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New PW", bindingValue: $viewModel.pwForNewUser, isVisibleCode: false)
                     .padding([.top, .bottom])
                     .onChange(of: viewModel.pwForNewUser) { oldValue, newValue in
-                        viewModel.pwForNewUser = newValue.replacingOccurrences(of: " ", with: "")
+                        //                        viewModel.pwForNewUser = newValue.replacingOccurrences(of: " ", with: "")
+                        let filteredValue = newValue.lowercased().filter {  $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9" || $0 >= "!" && $0 <= "~" }
+                        if filteredValue != newValue {
+                            viewModel.pwForNewUser = filteredValue
+                        }
                     }
                 
                 
                 Button(action: {
                     //                    isCheckingMark.toggle()
                     
-//                    viewModel.validPassword(viewModel.pwForNewUser)
+                    //                    viewModel.validPassword(viewModel.pwForNewUser)
                     //                    print("\(viewModel.checkingPasswordCondition(viewModel.pwForNewUser.description))")
                     print("\(viewModel.pwForNewUser)")
                 }, label: {
