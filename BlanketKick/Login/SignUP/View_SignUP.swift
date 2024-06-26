@@ -7,14 +7,13 @@ struct View_SignUP: View {
     
     @StateObject var viewModel = ViewModel_SignUP()
     
-    //    @State var isCheckingMark: Bool = true
     
-    @State var isAnimation : Bool = false
+//    @State var isAnimation : Bool = false
     
     
     @State var alreadyExist: Bool = false
     
-    @State var isAlertForCheckingID: Bool = false
+//    @State var isAlertForCheckingID: Bool = false
     
     @State var idUsable: Bool = false
     @State var idChecking : Bool = false
@@ -45,31 +44,24 @@ struct View_SignUP: View {
             ZStack {
                 WavyRectangle(waveHeight: 25, frequency: 20)
                     .fill(LinearGradient(
-                        gradient: isAnimation ? Gradient(colors: [Color("sublogoStart"), Color("sublogoEnd")]) : Gradient(colors: [/*Color("sublogoEnd"),Color("sublogoStart")*/.green,.orange]),
+                        gradient: viewModel.isAnimation ? Gradient(colors: [Color("sublogoStart"), Color("sublogoEnd")]) : Gradient(colors: [.green,.orange]),
                         startPoint: .leading,
                         endPoint: .trailing
                     ))
                     .ignoresSafeArea()
-                    .offset( x: isAnimation ? 600 : -100)
-                
-                //                    .animation(.easeInOut(duration: 5).repeatForever(), value: isAnimation)
-                //                    .onAppear(perform: {
-                //                        withAnimation(Animation.easeOut(duration: 3).repeatForever(autoreverses: true)) {
-                //                            isAnimation = true
-                //                        }
-                //                    })
+                    .offset( x: viewModel.isAnimation ? 600 : -100)
                     .onAppear(perform: {
                         withAnimation(Animation.easeOut(duration: 5)) {
-                            isAnimation = true
+                            viewModel.isAnimation = true
                         }
                     })
                     .frame(width: 1800)
-                    .opacity(isAnimation ? 0.5 : 1)
+                    .opacity(viewModel.isAnimation ? 0.5 : 1)
                 
                 
                 WavyRectangle(waveHeight: 25, frequency: 20)
                     .fill(LinearGradient(
-                        gradient: isAnimation ? Gradient(colors: [Color("logoStart"), Color("logoEnd")]) : Gradient(colors: [.yellow, .pink]),                        startPoint: .leading,
+                        gradient: viewModel.isAnimation ? Gradient(colors: [Color("logoStart"), Color("logoEnd")]) : Gradient(colors: [.yellow, .pink]),                        startPoint: .leading,
                         endPoint: .trailing
                     ))
                     .overlay(content: {
@@ -77,29 +69,18 @@ struct View_SignUP: View {
                     })
                     .ignoresSafeArea()
                     .frame(width: 1800)
-                    .offset(x: isAnimation ? -350 : 350)
-                    .opacity(isAnimation ? 0.3 : 1)
+                    .offset(x: viewModel.isAnimation ? -350 : 350)
+                    .opacity(viewModel.isAnimation ? 0.3 : 1)
                 
                 
                 
             }
         }
-        
-        
-        
+
         
         VStack{
             
-            Text("Join US")
-                .padding(.bottom)
-                .fontWeight(.black)
-                .font(.system(size: 45))
-                .foregroundStyle(.black)
-                .fontDesign(.rounded)
-                .fontWidth(Font.Width(100))
-            
-            
-            
+            viewModel.joinUsText()
             
             Spacer()
                 .frame(height: 30)
@@ -109,15 +90,8 @@ struct View_SignUP: View {
             }, label: {
                 
                 VStack{
-                    Image(systemName: "person.circle")
-                        .resizable()
-                        .frame(width: 100,height: 100)
-                        .foregroundStyle(Gradient(colors: [.mint,.purple]))
-                        .overlay {
-                            Circle()
-                                .background(.clear)
-                                .foregroundStyle(.clear)
-                        }
+                    viewModel.profilePhotoImage()
+                
                     Text("프로필 사진")
                         .foregroundStyle(Gradient(colors: [.green,.purple]))
                 }
@@ -127,55 +101,47 @@ struct View_SignUP: View {
             ZStack{
                 GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New ID", bindingValue: $viewModel.idForNewUser)
                     .padding(.top)
-                //                    .onChange(of: viewModel.idForNewUser) { newValue in
-                //                                            viewModel.idForNewUser = newValue.replacingOccurrences(of: " ", with: "")
-                //                                        }
                     .onChange(of: viewModel.idForNewUser) { oldValue, newValue in
-                        //                        viewModel.idForNewUser = newValue.lowercased().replacingOccurrences(of: " ", with: "")
-                        let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9"}
-                        if filteredValue != newValue {
-                            viewModel.idForNewUser = filteredValue
-                        }
-                        
+                        viewModel.filteringStringForUserId(newValue: newValue)
                     }
                 
                 HStack{
-                    if viewModel.idForNewUser.isEmpty {
-                        
-                        Image(systemName: "circle" )
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundStyle(.gray)
-                            .offset(x: 80, y: 7)
-                            .onAppear(perform: {
-                                idUsable = false
-                                idChecking = false
-                            })
-                    } else {
-                        if idChecking == true {
-                            Image(systemName: alreadyExist ? "x.circle" : "checkmark.circle" )
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(idUsable ? .green : .gray)
-                                .offset(x: 80, y: 7)
-                        }
-                        else {
-                            Image(systemName: "circle" )
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(idUsable ? .green : .gray)
-                                .offset(x: 80, y: 7)
-                            
-                        }
-                    }
+                    viewModel.idCheckingImage()
+//                    if viewModel.idForNewUser.isEmpty {
+//                        
+//                        Image(systemName: "circle" )
+//                            .aspectRatio(contentMode: .fit)
+//                            .foregroundStyle(.gray)
+//                            .offset(x: 80, y: 7)
+//                            .onAppear(perform: {
+//                                idUsable = false
+//                                idChecking = false
+//                            })
+//                    } else {
+//                        if idChecking == true {
+//                            Image(systemName: alreadyExist ? "x.circle" : "checkmark.circle" )
+//                                .aspectRatio(contentMode: .fit)
+//                                .foregroundStyle(idUsable ? .green : .gray)
+//                                .offset(x: 80, y: 7)
+//                        }
+//                        else {
+//                            Image(systemName: "circle" )
+//                                .aspectRatio(contentMode: .fit)
+//                                .foregroundStyle(idUsable ? .green : .gray)
+//                                .offset(x: 80, y: 7)
+//                            
+//                        }
+//                    }
                     
                     
                     
                     Button(action: {
                         if !viewModel.idForNewUser.isEmpty{
-                            //                            idChecking = true
-                            alreadyExist = viewModel.mockUsers.contains(where: { Model_SignIN_SignUP in
+                            viewModel.alreadyExist = viewModel.mockUsers.contains(where: { Model_SignIN_SignUP in
                                 Model_SignIN_SignUP.id == viewModel.idForNewUser
                             })
                         }
-                        isAlertForCheckingID.toggle()
+                            viewModel.isAlertForCheckingID.toggle()
                         
                     }, label: {
                         
@@ -192,29 +158,29 @@ struct View_SignUP: View {
                     .offset(x: 85,y: 7)
                     
                     
-                    .alert(isPresented: $isAlertForCheckingID) {
-                        if alreadyExist {
+                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
+                        if viewModel.alreadyExist {
                             return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-                                idUsable = false
-                                idChecking = false
+                                viewModel.idUsable = false
+                                viewModel.idChecking = false
                                 viewModel.idForNewUser = ""
                                 
                             }))
                         } else if viewModel.idForNewUser.isEmpty == true {
                             return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
                                 viewModel.idForNewUser = ""
-                                idUsable = false
-                                idChecking = false
+                                viewModel.idUsable = false
+                                viewModel.idChecking = false
                             })
                             )
                         } else {
                             return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
                                 viewModel.idForNewUser = ""
-                                idUsable = false
-                                idChecking = false
+                                viewModel.idUsable = false
+                                viewModel.idChecking = false
                             }), secondaryButton: .default(Text("사용하기"), action: {
-                                idUsable = true
-                                idChecking = true
+                                viewModel.idUsable = true
+                                viewModel.idChecking = true
                             }))
                         }
                     }
@@ -225,32 +191,18 @@ struct View_SignUP: View {
             GradientStrokeTextField(gradient: LinearGradient(colors: [.green, .purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Name", bindingValue: $viewModel.nameForNewUser)
                 .padding(.top)
                 .onChange(of: viewModel.nameForNewUser) { oldValue, newValue in
-                    //                    viewModel.nameForNewUser = newValue.lowercased().replacingOccurrences(of: " ", with: "")
-                    //                    let filteredValue = newValue.lowercased().filter { $0.isLetter }
-                    let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <=  "9" }
-                    if filteredValue != newValue {
-                        viewModel.nameForNewUser = filteredValue
-                    }
-                    
+                        viewModel.filteringStringForUserName(newValue: newValue)
                 }
             
             ZStack{
                 GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New PW", bindingValue: $viewModel.pwForNewUser, isVisibleCode: false)
                     .padding([.top, .bottom])
                     .onChange(of: viewModel.pwForNewUser) { oldValue, newValue in
-                        //                        viewModel.pwForNewUser = newValue.replacingOccurrences(of: " ", with: "")
-                        let filteredValue = newValue.lowercased().filter {  $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9" || $0 >= "!" && $0 <= "~" }
-                        if filteredValue != newValue {
-                            viewModel.pwForNewUser = filteredValue
-                        }
+                        viewModel.filteringStringForUserPw(newValue: newValue)
                     }
                 
                 
                 Button(action: {
-                    //                    isCheckingMark.toggle()
-                    
-                    //                    viewModel.validPassword(viewModel.pwForNewUser)
-                    //                    print("\(viewModel.checkingPasswordCondition(viewModel.pwForNewUser.description))")
                     print("\(viewModel.pwForNewUser)")
                 }, label: {
                     if rangeMinMax == true && hasNumber == true && hasEngLowcase == true && hasSpecialCharacter == true {
@@ -366,9 +318,7 @@ struct View_SignUP: View {
                             .foregroundStyle(.red)
                         
                     }
-                    
                 }
-                
                 
                 HStack{
                     if viewModel.pwForNewUser.rangeOfCharacter(from: .lowercaseLetters) != nil {
@@ -414,8 +364,6 @@ struct View_SignUP: View {
                         
                         Text(hasEngLowcase.description)
                             .foregroundStyle(.red)
-                        
-                        
                     }
                     
                 }
@@ -466,15 +414,9 @@ struct View_SignUP: View {
                     }
                     
                 }
-                
-                
-                
             }
             .padding(.bottom)
-            
-            
-            
-            
+                      
             Spacer()
                 .frame(height: 10)
             
@@ -482,8 +424,6 @@ struct View_SignUP: View {
             GradientStrokeButton(action: {
                 viewModel.successForNewAccount()
                 alertForNewUser.toggle()
-                
-                
                 
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
@@ -494,10 +434,6 @@ struct View_SignUP: View {
                     print("로그인 페이지로 이동합니다.")
                 }))
             })
-            
-            
-            
-            
             
             GradientStrokeButton(action: {
                 print("회원가입을 하지않고 다시 로그인페이지로 이동하기위해 현제 풀스크린 모달을 벗어납니다.")
@@ -514,10 +450,6 @@ struct View_SignUP: View {
     }
 }
 
-
 #Preview {
     View_SignUP(isCurrentModal: .constant(true) )
 }
-
-
-
