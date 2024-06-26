@@ -11,12 +11,12 @@ struct View_SignUP: View {
 //    @State var isAnimation : Bool = false
     
     
-    @State var alreadyExist: Bool = false
+//    @State var alreadyExist: Bool = false
     
 //    @State var isAlertForCheckingID: Bool = false
     
-    @State var idUsable: Bool = false
-    @State var idChecking : Bool = false
+//    @State var idUsable: Bool = false
+//    @State var idChecking : Bool = false
     
     
     @State var rangeMinMax : Bool = false
@@ -32,9 +32,6 @@ struct View_SignUP: View {
     
     @State var showingImagePicker: Bool = false
     @State var profileImage: UIImage?
-    
-    
-    
     
     var body: some View {
         
@@ -58,7 +55,6 @@ struct View_SignUP: View {
                     .frame(width: 1800)
                     .opacity(viewModel.isAnimation ? 0.5 : 1)
                 
-                
                 WavyRectangle(waveHeight: 25, frequency: 20)
                     .fill(LinearGradient(
                         gradient: viewModel.isAnimation ? Gradient(colors: [Color("logoStart"), Color("logoEnd")]) : Gradient(colors: [.yellow, .pink]),                        startPoint: .leading,
@@ -71,12 +67,9 @@ struct View_SignUP: View {
                     .frame(width: 1800)
                     .offset(x: viewModel.isAnimation ? -350 : 350)
                     .opacity(viewModel.isAnimation ? 0.3 : 1)
-                
-                
-                
+           
             }
         }
-
         
         VStack{
             
@@ -96,8 +89,7 @@ struct View_SignUP: View {
                         .foregroundStyle(Gradient(colors: [.green,.purple]))
                 }
             })
-            
-            
+        
             ZStack{
                 GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New ID", bindingValue: $viewModel.idForNewUser)
                     .padding(.top)
@@ -107,33 +99,6 @@ struct View_SignUP: View {
                 
                 HStack{
                     viewModel.idCheckingImage()
-//                    if viewModel.idForNewUser.isEmpty {
-//                        
-//                        Image(systemName: "circle" )
-//                            .aspectRatio(contentMode: .fit)
-//                            .foregroundStyle(.gray)
-//                            .offset(x: 80, y: 7)
-//                            .onAppear(perform: {
-//                                idUsable = false
-//                                idChecking = false
-//                            })
-//                    } else {
-//                        if idChecking == true {
-//                            Image(systemName: alreadyExist ? "x.circle" : "checkmark.circle" )
-//                                .aspectRatio(contentMode: .fit)
-//                                .foregroundStyle(idUsable ? .green : .gray)
-//                                .offset(x: 80, y: 7)
-//                        }
-//                        else {
-//                            Image(systemName: "circle" )
-//                                .aspectRatio(contentMode: .fit)
-//                                .foregroundStyle(idUsable ? .green : .gray)
-//                                .offset(x: 80, y: 7)
-//                            
-//                        }
-//                    }
-                    
-                    
                     
                     Button(action: {
                         if !viewModel.idForNewUser.isEmpty{
@@ -144,45 +109,15 @@ struct View_SignUP: View {
                             viewModel.isAlertForCheckingID.toggle()
                         
                     }, label: {
-                        
                         Image( systemName: "person.fill.questionmark")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20,height: 20)
                             .foregroundStyle(.gray)
-                        
-                        
-                        
-                        
                     })
                     .offset(x: 85,y: 7)
-                    
-                    
                     .alert(isPresented: $viewModel.isAlertForCheckingID) {
-                        if viewModel.alreadyExist {
-                            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-                                viewModel.idUsable = false
-                                viewModel.idChecking = false
-                                viewModel.idForNewUser = ""
-                                
-                            }))
-                        } else if viewModel.idForNewUser.isEmpty == true {
-                            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-                                viewModel.idForNewUser = ""
-                                viewModel.idUsable = false
-                                viewModel.idChecking = false
-                            })
-                            )
-                        } else {
-                            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-                                viewModel.idForNewUser = ""
-                                viewModel.idUsable = false
-                                viewModel.idChecking = false
-                            }), secondaryButton: .default(Text("사용하기"), action: {
-                                viewModel.idUsable = true
-                                viewModel.idChecking = true
-                            }))
-                        }
+                        viewModel.alertAlreadyExsitsId()
                     }
                 }
             }
@@ -427,7 +362,7 @@ struct View_SignUP: View {
                 
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
-            .disabled(idUsable && idChecking && passwordCheckingDone ? false : true)
+            .disabled(viewModel.idUsable && viewModel.idChecking && viewModel.passwordCheckingDone ? false : true)
             .alert(isPresented: $alertForNewUser, content: {
                 Alert(title:  Text("Welcome! \(viewModel.idForNewUser)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
                     isCurrentModal = false
@@ -443,10 +378,6 @@ struct View_SignUP: View {
             Spacer()
                 .frame(height: 10)
         }
-    }
-    
-    func rangeMinMaxOn () {
-        rangeMinMax = true
     }
 }
 

@@ -112,9 +112,9 @@ class ViewModel_SignUP: ObservableObject {
     }
  
     
-    func alertAlreadyExsitsId (_ 제목 : String, 내용 : String, 디스미스버튼 : String, 프라이머리버튼: String, 세컨더리버튼 : String) -> Alert {
+    func alertAlreadyExsitsId () -> Alert {
         if alreadyExist == true {
-            return Alert(title: Text(제목),dismissButton: .cancel(Text(디스미스버튼), action: {
+            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
                 self.idUsable = false
                 self.idChecking = false
                 self.idForNewUser = ""
