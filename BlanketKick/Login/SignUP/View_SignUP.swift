@@ -6,12 +6,7 @@ struct View_SignUP: View {
     @Binding var isCurrentModal : Bool
     
     @StateObject var viewModel = ViewModel_SignUP()
-//    
-//    @State var rangeMinMax : Bool = false
-//    @State var hasNumber : Bool = false
-//    @State var hasEngLowcase : Bool = false
-//    @State var hasSpecialCharacter : Bool = false
-//    
+
     @State var passwordCheckingDone : Bool = false
     
     @State var alertForNewUser : Bool = false
