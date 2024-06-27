@@ -48,7 +48,7 @@ struct View_SignIN: View {
                 
             }
             .onAppear(perform: {
-                withAnimation(Animation.easeOut(duration: 5)) {
+                withAnimation(Animation.easeOut(duration: 3)) {
                     isAnimation = true
                 }
             })

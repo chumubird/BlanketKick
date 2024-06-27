@@ -6,29 +6,15 @@ struct View_SignUP: View {
     @Binding var isCurrentModal : Bool
     
     @StateObject var viewModel = ViewModel_SignUP()
-    
-    
-//    @State var isAnimation : Bool = false
-    
-    
-//    @State var alreadyExist: Bool = false
-    
-//    @State var isAlertForCheckingID: Bool = false
-    
-//    @State var idUsable: Bool = false
-//    @State var idChecking : Bool = false
-    
-    
-    @State var rangeMinMax : Bool = false
-    @State var hasNumber : Bool = false
-    @State var hasEngLowcase : Bool = false
-    @State var hasSpecialCharacter : Bool = false
-    
+//    
+//    @State var rangeMinMax : Bool = false
+//    @State var hasNumber : Bool = false
+//    @State var hasEngLowcase : Bool = false
+//    @State var hasSpecialCharacter : Bool = false
+//    
     @State var passwordCheckingDone : Bool = false
     
     @State var alertForNewUser : Bool = false
-    
-    
     
     @State var showingImagePicker: Bool = false
     @State var profileImage: UIImage?
@@ -48,7 +34,7 @@ struct View_SignUP: View {
                     .ignoresSafeArea()
                     .offset( x: viewModel.isAnimation ? 600 : -100)
                     .onAppear(perform: {
-                        withAnimation(Animation.easeOut(duration: 5)) {
+                        withAnimation(Animation.easeOut(duration: 3)) {
                             viewModel.isAnimation = true
                         }
                     })
@@ -135,22 +121,12 @@ struct View_SignUP: View {
                     .onChange(of: viewModel.pwForNewUser) { oldValue, newValue in
                         viewModel.filteringStringForUserPw(newValue: newValue)
                     }
-                
-                
+
                 Button(action: {
                     print("\(viewModel.pwForNewUser)")
                 }, label: {
-                    if rangeMinMax == true && hasNumber == true && hasEngLowcase == true && hasSpecialCharacter == true {
-                        Image(systemName: "checkmark.circle")
-                            .foregroundStyle(.green)
-                            .onAppear(perform: {
-                                passwordCheckingDone = true
-                            })
-                        
-                    } else {
-                        Image(systemName: "circle")
-                            .foregroundStyle(.gray)
-                    }
+                    viewModel.pwCheckBoxImage()
+    
                 })
                 .offset(x: 70)
                 .disabled(true)
@@ -159,194 +135,23 @@ struct View_SignUP: View {
             
             VStack {
                 HStack{
-                    if viewModel.pwForNewUser.count >= 6 && viewModel.pwForNewUser.count <= 14 {
-                        
-                        Text("비밀번호: 길이 6자리에서 14자리")
-                            .foregroundStyle(.green)
-                        
-                        Image(systemName: "checkmark.circle")
-                            .foregroundStyle(.green)
-                            .onAppear(perform: {
-                                rangeMinMax = true
-                            })
-                        
-                        Text(rangeMinMax.description)
-                            .foregroundStyle(.green
-                            )
-                        
-                    }
-                    else if viewModel.pwForNewUser.isEmpty{
-                        
-                        Text("비밀번호는 6자리에서 14자리 까지")
-                            .foregroundStyle(.gray)
-                        
-                        Image(systemName: "questionmark.circle")
-                            .foregroundStyle(.gray)
-                            .onAppear(perform: {
-                                rangeMinMax = false
-                            })
-                        
-                        Text(/*rangeMinMax.description*/"empty")
-                            .foregroundStyle(.gray)
-                        
-                    } else {
-                        
-                        Text("비밀번호: 길이는 6자리에서 14자리")
-                            .foregroundStyle(.red)
-                        
-                        Image(systemName: "x.circle")
-                            .foregroundStyle(.red)
-                            .onAppear(perform: {
-                                rangeMinMax = false
-                            })
-                        
-                        Text(rangeMinMax.description)
-                            .foregroundStyle(.red)
-                        
-                    }
-                    
+                    viewModel.lengthConditionForCheckingPwText()
+                 
                 }
                 
                 HStack{
-                    if viewModel.pwForNewUser.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789")) != nil {
-                        
-                        Text("비밀번호는 0~9숫자를 반드시 포함")
-                            .foregroundStyle(.green)
-                        
-                        Image(systemName: "checkmark.circle")
-                            .foregroundStyle(.green)
-                            .onAppear(perform: {
-                                hasNumber = true
-                            })
-                        
-                        Text(rangeMinMax.description)
-                            .foregroundStyle(.green
-                            )
-                        
-                    }
-                    else if viewModel.pwForNewUser.isEmpty{
-                        
-                        Text("비밀번호는 0~9숫자를 반드시 포함")
-                            .foregroundStyle(.gray)
-                        
-                        Image(systemName: "questionmark.circle")
-                            .foregroundStyle(.gray)
-                            .onAppear(perform: {
-                                hasNumber = false
-                            })
-                        
-                        Text(/*rangeMinMax.description*/"empty")
-                            .foregroundStyle(.gray)
-                        
-                    } else {
-                        
-                        Text("비밀번호는 0~9숫자를 반드시 포함")
-                            .foregroundStyle(.red)
-                        
-                        Image(systemName: "x.circle")
-                            .foregroundStyle(.red)
-                            .onAppear(perform: {
-                                hasNumber = false
-                            })
-                        
-                        Text(hasNumber.description)
-                            .foregroundStyle(.red)
-                        
-                    }
+                    viewModel.numberConditionForPwText()
+                 
                 }
                 
                 HStack{
-                    if viewModel.pwForNewUser.rangeOfCharacter(from: .lowercaseLetters) != nil {
-                        
-                        Text("비밀번호는 영소문자를 반드시 포함")
-                            .foregroundStyle(.green)
-                        
-                        Image(systemName: "checkmark.circle")
-                            .foregroundStyle(.green)
-                            .onAppear(perform: {
-                                hasEngLowcase = true
-                            })
-                        
-                        
-                        Text(hasEngLowcase.description)
-                            .foregroundStyle(.green)
-                        
-                        
-                    } else if viewModel.pwForNewUser.isEmpty {
-                        
-                        Text("비밀번호는 영소문자를 반드시 포함")
-                            .foregroundStyle(.gray)
-                        
-                        Image(systemName: "questionmark.circle")
-                            .foregroundStyle(.gray)
-                            .onAppear(perform: {
-                                hasEngLowcase = false
-                            })
-                        
-                        Text(/*hasEngLowcase.description*/"empty")
-                            .foregroundStyle(.gray)
-                        
-                    } else {
-                        
-                        Text("비밀번호는 영소문자를 반드시 포함")
-                            .foregroundStyle(.red)
-                        
-                        Image(systemName: "x.circle")
-                            .foregroundStyle(.red)
-                            .onAppear(perform: {
-                                hasEngLowcase = false
-                            })
-                        
-                        Text(hasEngLowcase.description)
-                            .foregroundStyle(.red)
-                    }
+                    viewModel.lowcaseConditionForPwText()
+              
                     
                 }
                 HStack{
-                    if viewModel.pwForNewUser.rangeOfCharacter(from: CharacterSet(charactersIn: "!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/`~")) != nil {
-                        
-                        Text("비밀번호는 특수문자를 반드시 포함")
-                            .foregroundStyle(.green)
-                        
-                        Image(systemName: "checkmark.circle")
-                            .foregroundStyle(.green)
-                            .onAppear(perform: {
-                                hasSpecialCharacter = true
-                            })
-                        
-                        Text(hasEngLowcase.description)
-                            .foregroundStyle(.green)
-                        
-                        
-                    } else if  viewModel.pwForNewUser.isEmpty {
-                        
-                        Text("비밀번호는 특수문자를 반드시 포함")
-                            .foregroundStyle(.gray)
-                        
-                        Image(systemName: "questionmark.circle")
-                            .foregroundStyle(.gray)
-                            .onAppear(perform: {
-                                hasSpecialCharacter = false
-                            })
-                        
-                        Text(/*hasEngLowcase.description*/"empty")
-                            .foregroundStyle(.gray)
-                        
-                    } else {
-                        
-                        Text("비밀번호는 특수문자를 반드시 포함")
-                            .foregroundStyle(.red)
-                        
-                        Image(systemName: "x.circle")
-                            .foregroundStyle(.red)
-                            .onAppear(perform: {
-                                hasSpecialCharacter = false
-                            })
-                        
-                        Text(hasEngLowcase.description)
-                            .foregroundStyle(.red)
-                        
-                    }
+                    viewModel.specialCharacterText()
+                  
                     
                 }
             }
@@ -382,5 +187,5 @@ struct View_SignUP: View {
 }
 
 #Preview {
-    View_SignUP(isCurrentModal: .constant(true) )
+    View_SignUP( isCurrentModal: .constant(true) )
 }
