@@ -1,3 +1,4 @@
+// 백업 완료후 브랜치 테스트 커밋 18. 6 .24
 
 import SwiftUI
 
@@ -6,32 +7,51 @@ struct View_SignIN: View {
   
     @StateObject var viewModel = ViewModel_SignIN()
     
+    
+    @State var isAnimation : Bool = false
+
+    
+    
     var body: some View {
         
         VStack {
         
             ZStack{
                 
-                WavyRectangle(waveHeight: 40, frequency: 3.5)
+                WavyRectangle(waveHeight: 40, frequency: 20)
                     .fill(LinearGradient(
-                        gradient: Gradient(colors: [Color("sublogoStart"), Color("sublogoEnd")]),
+                        gradient: isAnimation ? Gradient(colors: [Color("logoEnd"), Color("logoStart")]) : Gradient(colors: [Color("rememberCircleStart"), Color("sublogoEnd")]) ,
                         startPoint: .leading,
                         endPoint: .trailing
                     ))
                     .ignoresSafeArea()
-                    .offset(x: -70)
+                    .frame(width: 1800)
+                    .opacity(isAnimation ? 0.5 : 1)
+//                    .offset(x: -70)
+                    .offset( x: isAnimation ? 600 : -100)
+
                 
-                WavyRectangle(waveHeight: 40, frequency: 3.5)
+                WavyRectangle(waveHeight: 40, frequency: 20)
                     .fill(LinearGradient(
-                        gradient: Gradient(colors: [Color("logoStart"), Color("logoEnd")]),                        startPoint: .leading,
+                        gradient: isAnimation ? Gradient(colors: [Color("rememberCircleStart"), Color("sublogoStart")]) : Gradient(colors: [Color("logoStart"), Color("sublogoEnd")]),                        startPoint: .leading,
                         endPoint: .trailing
                     ))
                     .overlay(content: {
                         
                     })
                     .ignoresSafeArea()
+                    .frame(width: 1800)
+                    .opacity(isAnimation ? 0.5 : 1)
+                    .offset(x: isAnimation ? -350 : 350)
+
+
                 
             }
+            .onAppear(perform: {
+                withAnimation(Animation.easeOut(duration: 3)) {
+                    isAnimation = true
+                }
+            })
             Text("Welcome!")
                 .font(.largeTitle)
                 .fontWeight(.black)

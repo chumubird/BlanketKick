@@ -1,9 +1,3 @@
-//
-//  ViewModel_SignIN.swift
-//  Blankick
-//
-//  Created by chul on 6/5/24.
-//
 
 import SwiftUI
 import Foundation

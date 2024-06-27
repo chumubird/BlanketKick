@@ -1,9 +1,3 @@
-//
-//  GradientStrokeSecureField.swift
-//  Blankick
-//
-//  Created by chul on 6/3/24.
-//
 
 import SwiftUI
 
@@ -29,6 +23,8 @@ struct GradientStrokeSecureField: View {
                             .stroke(gradient,lineWidth:1)
                     }
                     .keyboardType(.emailAddress)
+                    
+                    
                     
 
                 

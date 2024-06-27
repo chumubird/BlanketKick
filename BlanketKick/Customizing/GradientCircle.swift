@@ -1,9 +1,4 @@
-//
-//  GradientCircle.swift
-//  Blankick
-//
-//  Created by chul on 6/3/24.
-//
+
 
 import SwiftUI
 
