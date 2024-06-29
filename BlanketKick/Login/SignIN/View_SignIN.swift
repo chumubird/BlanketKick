@@ -1,4 +1,3 @@
-// 백업 완료후 브랜치 테스트 커밋 18. 6 .24
 
 import SwiftUI
 
@@ -56,7 +55,7 @@ struct View_SignIN: View {
                 .font(.largeTitle)
                 .fontWeight(.black)
             
-            GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User ID", bindingValue: $viewModel.idForLogin)
+            GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User Email", bindingValue: $viewModel.emailForLogin)
                 .padding()
             
             GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User PW", bindingValue: $viewModel.pwForLogin)
