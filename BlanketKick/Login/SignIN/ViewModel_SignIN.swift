@@ -8,7 +8,7 @@ class ViewModel_SignIN: ObservableObject {
     
     @Published var isWaving = false
 
-    @Published var idForLogin : String = ""
+    @Published var emailForLogin : String = ""
     @Published var pwForLogin : String = ""
     
     

@@ -72,9 +72,9 @@ struct View_SignUP: View {
             })
         
             ZStack{
-                GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New ID", bindingValue: $viewModel.idForNewUser)
+                GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Email", bindingValue: $viewModel.emailForNewUser)
                     .padding(.top)
-                    .onChange(of: viewModel.idForNewUser) { oldValue, newValue in
+                    .onChange(of: viewModel.emailForNewUser) { oldValue, newValue in
                         viewModel.filteringStringForUserId(newValue: newValue)
                     }
                 
@@ -82,9 +82,9 @@ struct View_SignUP: View {
                     viewModel.idCheckingImage()
                     
                     Button(action: {
-                        if !viewModel.idForNewUser.isEmpty{
+                        if !viewModel.emailForNewUser.isEmpty{
                             viewModel.alreadyExist = viewModel.mockUsers.contains(where: { Model_SignIN_SignUP in
-                                Model_SignIN_SignUP.id == viewModel.idForNewUser
+                                Model_SignIN_SignUP.email == viewModel.emailForNewUser
                             })
                         }
                             viewModel.isAlertForCheckingID.toggle()
@@ -162,9 +162,9 @@ struct View_SignUP: View {
                 
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
-            .disabled(viewModel.idUsable && viewModel.idChecking && viewModel.passwordCheckingDone ? false : true)
+            .disabled(viewModel.emailUsable && viewModel.emailChecking && viewModel.passwordCheckingDone ? false : true)
             .alert(isPresented: $alertForNewUser, content: {
-                Alert(title:  Text("Welcome! \(viewModel.idForNewUser)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
+                Alert(title:  Text("Welcome! \(viewModel.emailForNewUser)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
                     isCurrentModal = false
                     print("로그인 페이지로 이동합니다.")
                 }))

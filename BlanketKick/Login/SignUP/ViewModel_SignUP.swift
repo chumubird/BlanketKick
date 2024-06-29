@@ -10,7 +10,7 @@ class ViewModel_SignUP: ObservableObject {
 
     
     // main property for user data
-    @Published var idForNewUser: String = ""
+    @Published var emailForNewUser: String = ""
     @Published var nameForNewUser: String = ""
     @Published var pwForNewUser: String = ""
     
@@ -28,8 +28,8 @@ class ViewModel_SignUP: ObservableObject {
     
     
     //  about validation of user id
-    @Published var idUsable: Bool = false
-    @Published var idChecking : Bool = false
+    @Published var emailUsable: Bool = false
+    @Published var emailChecking : Bool = false
     
     
     // about validation of user pw
@@ -50,11 +50,11 @@ class ViewModel_SignUP: ObservableObject {
     
     // 관리할 사용자 배열
       @Published var mockUsers: [Model_SignIN_SignUP] = [
-          Model_SignIN_SignUP(id: "user1", password: "Password123!", name: "Alice"),
-          Model_SignIN_SignUP(id: "user2", password: "SecurePass1@", name: "Bob"),
-          Model_SignIN_SignUP(id: "user3", password: "TestUser#456", name: "Charlie"),
-          Model_SignIN_SignUP(id: "user4", password: "ExamplePwd789$", name: "David"),
-          Model_SignIN_SignUP(id: "user5", password: "DemoPass321#", name: "Eve")
+          Model_SignIN_SignUP(email: "user1", password: "Password123!", name: "Alice"),
+          Model_SignIN_SignUP(email: "user2", password: "SecurePass1@", name: "Bob"),
+          Model_SignIN_SignUP(email: "user3", password: "TestUser#456", name: "Charlie"),
+          Model_SignIN_SignUP(email: "user4", password: "ExamplePwd789$", name: "David"),
+          Model_SignIN_SignUP(email: "user5", password: "DemoPass321#", name: "Eve")
       ]
     
     
@@ -85,27 +85,27 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func idCheckingImage () -> some View {
-        if idForNewUser.isEmpty {
+        if emailForNewUser.isEmpty {
             
             Image(systemName: "circle" )
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(.gray)
                 .offset(x: 80, y: 7)
                 .onAppear(perform: {
-                    self.idUsable = false
-                    self.idChecking = false
+                    self.emailUsable = false
+                    self.emailChecking = false
                 })
         } else {
-            if idChecking == true {
+            if emailChecking == true {
                 Image(systemName: alreadyExist ? "x.circle" : "checkmark.circle" )
                     .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(idUsable ? .green : .gray)
+                    .foregroundStyle(emailUsable ? .green : .gray)
                     .offset(x: 80, y: 7)
             }
             else {
                 Image(systemName: "circle" )
                     .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(idUsable ? .green : .gray)
+                    .foregroundStyle(emailUsable ? .green : .gray)
                     .offset(x: 80, y: 7)
                 
             }
@@ -316,10 +316,13 @@ class ViewModel_SignUP: ObservableObject {
     // func
     
     // filtering String for new user account data ( id name pw )
-    func filteringStringForUserId (newValue: String) {
-        let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9"}
+    func filteringStringForUserId(newValue: String) {
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789@.")
+        let filteredValue = newValue.lowercased().filter { character in
+            character.unicodeScalars.first.map { allowedCharacters.contains($0) } ?? false
+        }
         if filteredValue != newValue {
-            idForNewUser = filteredValue
+            emailForNewUser = filteredValue
         }
     }
     
@@ -341,25 +344,25 @@ class ViewModel_SignUP: ObservableObject {
 func alertAlreadyExsitsId () -> Alert {
     if alreadyExist == true {
         return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-            self.idUsable = false
-            self.idChecking = false
-            self.idForNewUser = ""
+            self.emailUsable = false
+            self.emailChecking = false
+            self.emailForNewUser = ""
             
         }))
-    } else if idForNewUser.isEmpty == true {
+    } else if emailForNewUser.isEmpty == true {
         return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-            self.idForNewUser = ""
-            self.idUsable = false
-            self.idChecking = false
+            self.emailForNewUser = ""
+            self.emailUsable = false
+            self.emailChecking = false
         }))
     }else {
         return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-            self.idForNewUser = ""
-            self.idUsable = false
-            self.idChecking = false
+            self.emailForNewUser = ""
+            self.emailUsable = false
+            self.emailChecking = false
         }), secondaryButton: .default(Text("사용하기"), action: {
-            self.idUsable = true
-            self.idChecking = true
+            self.emailUsable = true
+            self.emailChecking = true
         }))
     }
 }
@@ -376,7 +379,7 @@ func alertAlreadyExsitsId () -> Alert {
               
                         회원가입된 유저 데이터
               
-                ID :   \(idForNewUser)
+                ID :   \(emailForNewUser)
               NAME :   \(nameForNewUser)
                 PW :   \(pwForNewUser)
               
@@ -385,7 +388,7 @@ func alertAlreadyExsitsId () -> Alert {
 
               """)
         
-        let newUser = Model_SignIN_SignUP(id: idForNewUser, password: pwForNewUser, name: nameForNewUser)
+        let newUser = Model_SignIN_SignUP(email: emailForNewUser, password: pwForNewUser, name: nameForNewUser)
         mockUsers.append(newUser)
     }
 }

@@ -5,7 +5,7 @@ import SwiftUI
 
 struct Model_SignIN_SignUP : Codable {
     
-        var id: String
+        var email: String
         var password: String
         var name: String?
     
