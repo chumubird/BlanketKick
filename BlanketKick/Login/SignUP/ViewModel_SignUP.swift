@@ -1,6 +1,8 @@
 // pull from developing branch  2024 28th june 8:51 am
 import SwiftUI
 import Foundation
+import FirebaseAuth
+import Combine
 
 class ViewModel_SignUP: ObservableObject {
     
@@ -44,7 +46,12 @@ class ViewModel_SignUP: ObservableObject {
     @Published var alertForNewUser : Bool = false
     
    
+    @Published var isSignUpSuccessful: Bool = false
+     @Published var errorMessage: String?
+//     @Published var isValidPassword: Bool = false
     
+    private var cancellables = Set<AnyCancellable>()
+
     
     
     
@@ -315,14 +322,16 @@ class ViewModel_SignUP: ObservableObject {
  
     // func
     
-    // filtering String for new user account data ( id name pw )
-    func filteringStringForUserId (newValue: String) {
-        let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9"}
+//     filtering String for new user account data ( id name pw )
+    func filteringStringForUserId(newValue: String) {
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789@.")
+        let filteredValue = newValue.lowercased().filter { character in
+            character.unicodeScalars.first.map { allowedCharacters.contains($0) } ?? false
+        }
         if filteredValue != newValue {
             idForNewUser = filteredValue
         }
     }
-    
     func filteringStringForUserName (newValue: String) {
         let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <=  "9" }
         if filteredValue != newValue {
@@ -388,6 +397,37 @@ func alertAlreadyExsitsId () -> Alert {
         let newUser = Model_SignIN_SignUP(id: idForNewUser, password: pwForNewUser, name: nameForNewUser)
         mockUsers.append(newUser)
     }
+    
+    // Firebase createUser를 Combine Future로 래핑
+       func createUser(withEmail email: String, password: String) -> Future<AuthDataResult, Error> {
+           return Future { promise in
+               Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                   if let error = error {
+                       promise(.failure(error))
+                   } else if let authResult = authResult {
+                       promise(.success(authResult))
+                   }
+               }
+           }
+       }
+       
+       // 회원가입 함수
+       func signUp() {
+//           guard isValidPassword else {
+//               errorMessage = "비밀번호는 6자 이상 14자 이하이어야 합니다."
+//               isSignUpSuccessful = false
+//               return
+//           }
+
+           createUser(withEmail: idForNewUser, password: pwForNewUser)
+               .map { _ in true }
+               .catch { [weak self] error -> Just<Bool> in
+                   self?.errorMessage = error.localizedDescription
+                   return Just(false)
+               }
+               .assign(to: \.isSignUpSuccessful, on: self)
+               .store(in: &cancellables)
+       }
 }
 
 

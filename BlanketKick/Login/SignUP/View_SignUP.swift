@@ -75,7 +75,7 @@ struct View_SignUP: View {
                 GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New ID", bindingValue: $viewModel.idForNewUser)
                     .padding(.top)
                     .onChange(of: viewModel.idForNewUser) { oldValue, newValue in
-                        viewModel.filteringStringForUserId(newValue: newValue)
+//                        viewModel.filteringStringForUserId(newValue: newValue)
                     }
                 
                 HStack{
@@ -159,6 +159,7 @@ struct View_SignUP: View {
             GradientStrokeButton(action: {
                 viewModel.successForNewAccount()
                 alertForNewUser.toggle()
+                viewModel.signUp()
                 
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
