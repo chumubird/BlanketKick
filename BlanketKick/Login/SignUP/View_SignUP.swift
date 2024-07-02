@@ -159,7 +159,7 @@ struct View_SignUP: View {
             GradientStrokeButton(action: {
                 viewModel.successForNewAccount()
                 alertForNewUser.toggle()
-                
+                    viewModel.signUPwithCombine()
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
             .disabled(viewModel.emailUsable && viewModel.emailChecking && viewModel.passwordCheckingDone ? false : true)
