@@ -9,7 +9,7 @@ struct View_SignUP: View {
 
     @State var passwordCheckingDone : Bool = false
     
-    @State var alertForNewUser : Bool = false
+//    @State var alertForNewUser : Bool = false
     
     @State var showingImagePicker: Bool = false
     @State var profileImage: UIImage?
@@ -158,15 +158,16 @@ struct View_SignUP: View {
             
             GradientStrokeButton(action: {
                 viewModel.successForNewAccount()
-                alertForNewUser.toggle()
-                    viewModel.signUPwithCombine()
+//                alertForNewUser.toggle()
+                viewModel.signUPwithCombine()
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
             .disabled(viewModel.emailUsable && viewModel.emailChecking && viewModel.passwordCheckingDone ? false : true)
-            .alert(isPresented: $alertForNewUser, content: {
+            .alert(isPresented: $viewModel.alertForNewUser, content: {
                 Alert(title:  Text("Welcome! \(viewModel.emailForNewUser)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
                     isCurrentModal = false
                     print("로그인 페이지로 이동합니다.")
+                    viewModel.alertForNewUser.toggle()
                 }))
             })
             

@@ -43,6 +43,9 @@ class ViewModel_SignUP: ObservableObject {
     @Published var passwordCheckingDone : Bool = false
     
     
+    
+    
+    
     // about newuser account complete and welcome alert
     @Published var alertForNewUser : Bool = false
     
@@ -391,8 +394,6 @@ class ViewModel_SignUP: ObservableObject {
               --------------------------------
               """)
         
-        let newUser = Model_SignIN_SignUP(email: emailForNewUser, password: pwForNewUser, name: nameForNewUser)
-        mockUsers.append(newUser)
     }
     
     // Firebase createUser를 Combine Future로 래핑
@@ -402,6 +403,12 @@ class ViewModel_SignUP: ObservableObject {
                 if let error = error {
                     promise(.failure(error))
                     print(error)
+                    self.emailUsable = false
+                    self.emailChecking = false
+                    self.emailForNewUser = ""
+                    self.pwForNewUser = ""
+                    self.nameForNewUser = ""
+                    
                 } else if let authResult = authResult {
                     promise(.success(authResult))
                 }
@@ -481,6 +488,7 @@ class ViewModel_SignUP: ObservableObject {
                 switch completion {
                 case .finished:
                     self?.isSignUpSuccessful = true
+                    self?.alertForNewUser = true
                     
                 case .failure(let error):
                     self?.isSignUpSuccessful = false
