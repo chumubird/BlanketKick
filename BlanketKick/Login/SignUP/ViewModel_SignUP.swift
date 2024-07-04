@@ -55,7 +55,7 @@ class ViewModel_SignUP: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     private let db = Firestore.firestore() // Firestore 인스턴스 생성
-
+    
     
     
     
@@ -351,31 +351,31 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     // user id checking alert with 3 conditions
-    func alertAlreadyExsitsId () -> Alert {
-        if alreadyExist == true {
-            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-                self.emailUsable = false
-                self.emailChecking = false
-                self.emailForNewUser = ""
-                
-            }))
-        } else if emailForNewUser.isEmpty == true {
-            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-                self.emailForNewUser = ""
-                self.emailUsable = false
-                self.emailChecking = false
-            }))
-        }else {
-            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-                self.emailForNewUser = ""
-                self.emailUsable = false
-                self.emailChecking = false
-            }), secondaryButton: .default(Text("사용하기"), action: {
-                self.emailUsable = true
-                self.emailChecking = true
-            }))
-        }
-    }
+//    func alertAlreadyExsitsId () -> Alert {
+//        if alreadyExist == true {
+//            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
+//                self.emailUsable = false
+//                self.emailChecking = false
+//                self.emailForNewUser = ""
+//                
+//            }))
+//        } else if emailForNewUser.isEmpty == true {
+//            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
+//                self.emailForNewUser = ""
+//                self.emailUsable = false
+//                self.emailChecking = false
+//            }))
+//        }else {
+//            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
+//                self.emailForNewUser = ""
+//                self.emailUsable = false
+//                self.emailChecking = false
+//            }), secondaryButton: .default(Text("사용하기"), action: {
+//                self.emailUsable = true
+//                self.emailChecking = true
+//            }))
+//        }
+//    }
     
     // done button click event
     func successForNewAccount () {
@@ -396,6 +396,43 @@ class ViewModel_SignUP: ObservableObject {
         
     }
     
+    func checkingEmailExist () ->  Future<Void, Error> {
+        return Future { promise in
+            let documentName = self.emailForNewUser
+            self.db.collection("EmailChecking").document(documentName).getDocument { userMail, error in
+                if let error = error {
+                    promise(.failure(error))
+                    print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
+                }  else if let document = userMail, document.exists {
+                    promise(.success(()))
+                    print("이메일이 이미 존재함")
+                } else {
+                    promise(.success(()))
+                    print("이 이메일은 가입이 가능함")
+
+                }
+            }
+        }
+    }
+    func checkingEmailExistWithCombine () {
+        checkingEmailExist()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished :
+                    print("호출성공")
+                case .failure(let error) :
+                    print(error)
+                    print("애러난거같음")
+                
+                }
+                
+            }, receiveValue: {_ in 
+                print("checking success")
+            })
+            .store(in: &cancellables)
+    }
+    
+    
     // Firebase createUser를 Combine Future로 래핑
     func createUserWithCombine(withEmail email: String, password: String) -> Future<AuthDataResult, Error> {
         return Future { promise in
@@ -415,40 +452,7 @@ class ViewModel_SignUP: ObservableObject {
             }
         }
     }
-    
-//    func checkingUserEmailWithFirebase (_ email : String) {
-//        
-//    }
-//    
-    // 이메일을 Firestore에 등록하는 함수
-//      func checkingUserEmailWithFirebase1(_ email: String) {
-//          let documentID = UUID().uuidString // 문서 ID를 UUID로 생성
-//
-//          // 이메일을 Firestore의 EmailChecking 컬렉션에 추가
-//          db.collection("EmailChecking").document(documentID).setData(["email": email]) { error in
-//              if let error = error {
-//                  print("Error adding document: \(error.localizedDescription)")
-//              } else {
-//                  print("Document successfully added with ID: \(documentID)")
-//              }
-//          }
-//      }
-//    
-    // 이메일을 Firestore에 등록하는 함수 (Combine 사용)
-//    func checkingUserEmailWithCombine(_ email: String) -> Future<Void, Error> {
-//        return Future { [self] promise in
-//                let documentID = UUID().uuidString // 문서 ID를 UUID로 생성
-//                db.collection("EmailChecking").document(documentID).setData(["email": email]) { error in
-//                    if let error = error {
-//                        promise(.failure(error))
-//                    } else {
-//                        promise(.success(()))
-//                    }
-//                }
-//            }
-//        }
-//    
-    func checkchcek () -> Future<Void, Error> {
+    func addEmailDocumentFireStore () -> Future<Void, Error> {
         return Future { [self] promise in
             let userMail = self.emailForNewUser
             db.collection("EmailChecking").document(userMail).setData(["email" : userMail]) { error in
@@ -460,29 +464,16 @@ class ViewModel_SignUP: ObservableObject {
             }
         }
     }
-    
-    // 회원가입 함수
-//    func signUp() {
-//        
-//        createUser(withEmail: emailForNewUser, password: pwForNewUser)
-//            .map { _ in true }
-//            .catch { [weak self] error -> Just<Bool> in
-//                self?.errorMessage = error.localizedDescription
-//                return Just(false)
-//            }
-//            .assign(to: \.isSignUpSuccessful, on: self)
-//            .store(in: &cancellables)
-//    }
-    
+
     func signUPwithCombine () {
         createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
             .flatMap { [weak self] authResult -> Future<Void, Error> in
                 guard let self = self else {
                     return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-                }               
-                return checkchcek()
+                }
+                return addEmailDocumentFireStore()
             }
-
+        
         
             .sink(receiveCompletion: {[weak self] completion in
                 switch completion {
