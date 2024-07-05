@@ -349,33 +349,7 @@ class ViewModel_SignUP: ObservableObject {
             pwForNewUser = filteredValue
         }
     }
-    
-    // user id checking alert with 3 conditions
-//    func alertAlreadyExsitsId () -> Alert {
-//        if alreadyExist == true {
-//            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-//                self.emailUsable = false
-//                self.emailChecking = false
-//                self.emailForNewUser = ""
-//                
-//            }))
-//        } else if emailForNewUser.isEmpty == true {
-//            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-//                self.emailForNewUser = ""
-//                self.emailUsable = false
-//                self.emailChecking = false
-//            }))
-//        }else {
-//            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-//                self.emailForNewUser = ""
-//                self.emailUsable = false
-//                self.emailChecking = false
-//            }), secondaryButton: .default(Text("사용하기"), action: {
-//                self.emailUsable = true
-//                self.emailChecking = true
-//            }))
-//        }
-//    }
+  
     
     // done button click event
     func successForNewAccount () {
@@ -396,6 +370,9 @@ class ViewModel_SignUP: ObservableObject {
         
     }
     
+  
+    
+    // Combine + firebase for checking New email already exists or not
     func checkingEmailExist () ->  Future<Void, Error> {
         return Future { promise in
             let documentName = self.emailForNewUser
@@ -426,14 +403,16 @@ class ViewModel_SignUP: ObservableObject {
                 
                 }
                 
-            }, receiveValue: {_ in 
-                print("checking success")
+            }, receiveValue: {_ in
+                print("Email checking success")
             })
             .store(in: &cancellables)
     }
     
     
-    // Firebase createUser를 Combine Future로 래핑
+    
+    // Combine + firebase for creating new user  on firebase Auth and uploading data ( user email for preventing that new user try to get email which already exists
+    
     func createUserWithCombine(withEmail email: String, password: String) -> Future<AuthDataResult, Error> {
         return Future { promise in
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
@@ -483,6 +462,7 @@ class ViewModel_SignUP: ObservableObject {
                     
                 case .failure(let error):
                     self?.isSignUpSuccessful = false
+                    print(error)
                 }
             },receiveValue: {   authResult in
                 
