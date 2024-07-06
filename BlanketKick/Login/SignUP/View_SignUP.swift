@@ -82,12 +82,8 @@ struct View_SignUP: View {
                     viewModel.idCheckingImage()
                     
                     Button(action: {
-                        if !viewModel.emailForNewUser.isEmpty{
-                            viewModel.alreadyExist = viewModel.mockUsers.contains(where: { Model_SignIN_SignUP in
-                                Model_SignIN_SignUP.email == viewModel.emailForNewUser
-                            })
-                        }
-                            viewModel.isAlertForCheckingID.toggle()
+                        viewModel.checkingEmailExistWithCombine()
+//                            viewModel.isAlertForCheckingID.toggle()
                         
                     }, label: {
                         Image( systemName: "person.fill.questionmark")
@@ -97,9 +93,9 @@ struct View_SignUP: View {
                             .foregroundStyle(.gray)
                     })
                     .offset(x: 85,y: 7)
-                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
-                        viewModel.alertAlreadyExsitsId()
-                    }
+//                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
+//                        viewModel.alertAlreadyExsitsId()
+//                    }
                 }
             }
             
@@ -159,14 +155,15 @@ struct View_SignUP: View {
             GradientStrokeButton(action: {
                 viewModel.successForNewAccount()
                 alertForNewUser.toggle()
-                
+                viewModel.signUPwithCombine()
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
             .disabled(viewModel.emailUsable && viewModel.emailChecking && viewModel.passwordCheckingDone ? false : true)
-            .alert(isPresented: $alertForNewUser, content: {
+            .alert(isPresented: $viewModel.alertForNewUser, content: {
                 Alert(title:  Text("Welcome! \(viewModel.emailForNewUser)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
                     isCurrentModal = false
                     print("로그인 페이지로 이동합니다.")
+                    viewModel.alertForNewUser.toggle()
                 }))
             })
             

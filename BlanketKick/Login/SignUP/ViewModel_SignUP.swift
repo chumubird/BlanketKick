@@ -1,13 +1,16 @@
 // pull from SignINandUP branch  2024 30th june 6:39 am
 import SwiftUI
 import Foundation
+import FirebaseAuth
+import Combine
+import FirebaseFirestoreInternal
 
 class ViewModel_SignUP: ObservableObject {
     
     
     //main background animation
     @Published var isAnimation : Bool = false
-
+    
     
     // main property for user data
     @Published var emailForNewUser: String = ""
@@ -17,8 +20,8 @@ class ViewModel_SignUP: ObservableObject {
     // visible on off :  user pw
     @Published var checkingPW: Bool = false
     
-
-     
+    
+    
     
     // checiking this id already exists or not
     @Published var alreadyExist: Bool = false
@@ -40,27 +43,22 @@ class ViewModel_SignUP: ObservableObject {
     @Published var passwordCheckingDone : Bool = false
     
     
+    
+    
+    
     // about newuser account complete and welcome alert
     @Published var alertForNewUser : Bool = false
     
-   
+    
+    @Published var isSignUpSuccessful: Bool = false
+    @Published var errorMessage: String?
     
     
+    private var cancellables = Set<AnyCancellable>()
+    private let db = Firestore.firestore() // Firestore 인스턴스 생성
     
     
-    // 관리할 사용자 배열
-      @Published var mockUsers: [Model_SignIN_SignUP] = [
-          Model_SignIN_SignUP(email: "user1", password: "Password123!", name: "Alice"),
-          Model_SignIN_SignUP(email: "user2", password: "SecurePass1@", name: "Bob"),
-          Model_SignIN_SignUP(email: "user3", password: "TestUser#456", name: "Charlie"),
-          Model_SignIN_SignUP(email: "user4", password: "ExamplePwd789$", name: "David"),
-          Model_SignIN_SignUP(email: "user5", password: "DemoPass321#", name: "Eve")
-      ]
-    
-    
-    
-    
-    
+ 
     //viewbuilder
     
     @ViewBuilder func joinUsText () -> some View {
@@ -126,7 +124,7 @@ class ViewModel_SignUP: ObservableObject {
         
     }
     
-  @ViewBuilder func lengthConditionForCheckingPwText () -> some View {
+    @ViewBuilder func lengthConditionForCheckingPwText () -> some View {
         if pwForNewUser.count >= 6 && pwForNewUser.count <= 14 {
             Text("비밀번호: 길이 6자리에서 14자리")
                 .foregroundStyle(.green)
@@ -310,12 +308,12 @@ class ViewModel_SignUP: ObservableObject {
             
         }
     }
-
     
- 
+    
+    
     // func
     
-    // filtering String for new user account data ( id name pw )
+    //     filtering String for new user account data ( id name pw )
     func filteringStringForUserId(newValue: String) {
         let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789@.")
         let filteredValue = newValue.lowercased().filter { character in
@@ -325,7 +323,6 @@ class ViewModel_SignUP: ObservableObject {
             emailForNewUser = filteredValue
         }
     }
-    
     func filteringStringForUserName (newValue: String) {
         let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <=  "9" }
         if filteredValue != newValue {
@@ -339,37 +336,10 @@ class ViewModel_SignUP: ObservableObject {
             pwForNewUser = filteredValue
         }
     }
-    
-    // user id checking alert with 3 conditions
-func alertAlreadyExsitsId () -> Alert {
-    if alreadyExist == true {
-        return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-            self.emailUsable = false
-            self.emailChecking = false
-            self.emailForNewUser = ""
-            
-        }))
-    } else if emailForNewUser.isEmpty == true {
-        return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-            self.emailForNewUser = ""
-            self.emailUsable = false
-            self.emailChecking = false
-        }))
-    }else {
-        return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-            self.emailForNewUser = ""
-            self.emailUsable = false
-            self.emailChecking = false
-        }), secondaryButton: .default(Text("사용하기"), action: {
-            self.emailUsable = true
-            self.emailChecking = true
-        }))
-    }
-}
+  
     
     // done button click event
     func successForNewAccount () {
-        
         print("회원가입 성공 // success")
         print("""
               --------------------------------
@@ -382,14 +352,110 @@ func alertAlreadyExsitsId () -> Alert {
                 ID :   \(emailForNewUser)
               NAME :   \(nameForNewUser)
                 PW :   \(pwForNewUser)
-              
-              
               --------------------------------
-
               """)
         
-        let newUser = Model_SignIN_SignUP(email: emailForNewUser, password: pwForNewUser, name: nameForNewUser)
-        mockUsers.append(newUser)
+    }
+    
+  
+    
+    // Combine + firebase for checking New email already exists or not
+    func checkingEmailExist () ->  Future<Void, Error> {
+        return Future { promise in
+            let documentName = self.emailForNewUser
+            self.db.collection("EmailChecking").document(documentName).getDocument { userMail, error in
+                if let error = error {
+                    promise(.failure(error))
+                    print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
+                }  else if let document = userMail, document.exists {
+                    promise(.success(()))
+                    print("이메일이 이미 존재함")
+                } else {
+                    promise(.success(()))
+                    print("이 이메일은 가입이 가능함")
+
+                }
+            }
+        }
+    }
+    func checkingEmailExistWithCombine () {
+        checkingEmailExist()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished :
+                    print("호출성공")
+                case .failure(let error) :
+                    print(error)
+                    print("애러난거같음")
+                
+                }
+                
+            }, receiveValue: {_ in
+                print("Email checking success")
+            })
+            .store(in: &cancellables)
+    }
+    
+    
+    
+    // Combine + firebase for creating new user  on firebase Auth and uploading data ( user email for preventing that new user try to get email which already exists
+    
+    func createUserWithCombine(withEmail email: String, password: String) -> Future<AuthDataResult, Error> {
+        return Future { promise in
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    promise(.failure(error))
+                    print(error)
+                    self.emailUsable = false
+                    self.emailChecking = false
+                    self.emailForNewUser = ""
+                    self.pwForNewUser = ""
+                    self.nameForNewUser = ""
+                    
+                } else if let authResult = authResult {
+                    promise(.success(authResult))
+                }
+            }
+        }
+    }
+    func addEmailDocumentFireStore () -> Future<Void, Error> {
+        return Future { [self] promise in
+            let userMail = self.emailForNewUser
+            db.collection("EmailChecking").document(userMail).setData(["email" : userMail]) { error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    promise(.success(()))
+                }
+            }
+        }
+    }
+
+    func signUPwithCombine () {
+        createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
+            .flatMap { [weak self] authResult -> Future<Void, Error> in
+                guard let self = self else {
+                    return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+                }
+                return addEmailDocumentFireStore()
+            }
+        
+        
+            .sink(receiveCompletion: {[weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.isSignUpSuccessful = true
+                    self?.alertForNewUser = true
+                    
+                case .failure(let error):
+                    self?.isSignUpSuccessful = false
+                    print(error)
+                }
+            },receiveValue: {   authResult in
+                
+            }
+            )
+            .store(in: &cancellables)
     }
 }
 
