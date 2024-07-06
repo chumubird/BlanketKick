@@ -433,6 +433,27 @@ class ViewModel_SignUP: ObservableObject {
             }
         }
     }
+    
+
+    func getUserDataOnFireStoreDataBase () -> Future<Void, Error> {
+        return Future { [self] promise in
+            let userUUID = UUID().uuidString
+            let mail = self.emailForNewUser
+            let name = self.nameForNewUser
+            let pw = self.pwForNewUser
+            db.collection("UserData").document(userUUID).setData(["email" : mail, "name" : name , "password" : pw]) { error in
+                if let error = error {
+                    promise(.failure(error))
+                    print("문서가 없음")
+                    
+                } else {
+                    promise(.success(()))
+                    print("유저데이터 입력 승인")
+                }
+            }
+            
+        }
+    }
 
     func signUPwithCombine () {
         createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
@@ -442,7 +463,12 @@ class ViewModel_SignUP: ObservableObject {
                 }
                 return addEmailDocumentFireStore()
             }
-        
+            .flatMap { [weak self] authResult -> Future<Void, Error> in
+                guard let self = self else {
+                    return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+                }
+                    return getUserDataOnFireStoreDataBase()
+            }
         
             .sink(receiveCompletion: {[weak self] completion in
                 switch completion {
@@ -460,6 +486,35 @@ class ViewModel_SignUP: ObservableObject {
             )
             .store(in: &cancellables)
     }
+    
+    
+//     user id checking alert with 3 conditions
+    func alertAlreadyExsitsId () -> Alert {
+        if alreadyExist == true {
+            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
+                self.emailUsable = false
+                self.emailChecking = false
+                self.emailForNewUser = ""
+
+            }))
+        } else if emailForNewUser.isEmpty == true {
+            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
+                self.emailForNewUser = ""
+                self.emailUsable = false
+                self.emailChecking = false
+            }))
+        }else {
+            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
+                self.emailForNewUser = ""
+                self.emailUsable = false
+                self.emailChecking = false
+            }), secondaryButton: .default(Text("사용하기"), action: {
+                self.emailUsable = true
+                self.emailChecking = true
+            }))
+        }
+    }
+
 }
 
 

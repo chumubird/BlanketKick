@@ -97,7 +97,7 @@ struct View_SignUP: View {
                     
                     Button(action: {
                         viewModel.checkingEmailExistWithCombine()
-//                            viewModel.isAlertForCheckingID.toggle()
+                            viewModel.isAlertForCheckingID.toggle()
                         
                     }, label: {
                         Image( systemName: "person.fill.questionmark")
@@ -107,9 +107,9 @@ struct View_SignUP: View {
                             .foregroundStyle(.gray)
                     })
                     .offset(x: 85,y: 7)
-//                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
-//                        viewModel.alertAlreadyExsitsId()
-//                    }
+                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
+                        viewModel.alertAlreadyExsitsId()
+                    }
                 }
             }
             
