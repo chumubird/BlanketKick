@@ -435,13 +435,13 @@ class ViewModel_SignUP: ObservableObject {
     }
     
 
-    func getUserDataOnFireStoreDataBase () -> Future<Void, Error> {
+    func getUserDataOnFireStoreDataBase (uid: String) -> Future<Void, Error> {
         return Future { [self] promise in
             let userUUID = UUID().uuidString
             let mail = self.emailForNewUser
             let name = self.nameForNewUser
             let pw = self.pwForNewUser
-            db.collection("UserData").document(userUUID).setData(["email" : mail, "name" : name , "password" : pw]) { error in
+            db.collection("UserData").document(uid).setData(["email" : mail, "name" : name , "password" : pw]) { error in
                 if let error = error {
                     promise(.failure(error))
                     print("문서가 없음")
@@ -464,10 +464,10 @@ class ViewModel_SignUP: ObservableObject {
                 return addEmailDocumentFireStore()
             }
             .flatMap { [weak self] authResult -> Future<Void, Error> in
-                guard let self = self else {
+                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
                     return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
                 }
-                    return getUserDataOnFireStoreDataBase()
+                return getUserDataOnFireStoreDataBase(uid: uid)
             }
         
             .sink(receiveCompletion: {[weak self] completion in
