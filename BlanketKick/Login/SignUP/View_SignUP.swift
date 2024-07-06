@@ -11,8 +11,8 @@ struct View_SignUP: View {
     
     @State var alertForNewUser : Bool = false
     
-    @State var showingImagePicker: Bool = false
-    @State var profileImage: UIImage?
+//    @State var showingImagePicker: Bool = false
+//    @State var profileImage: UIImage?
     
     var body: some View {
         
@@ -61,15 +61,28 @@ struct View_SignUP: View {
             
             Button(action: {
                 
+                viewModel.showingImagePicker.toggle()
+
             }, label: {
                 
                 VStack{
-                    viewModel.profilePhotoImage()
+                    if let profileImage = viewModel.profileImage {
+                                               Image(uiImage: profileImage)
+                                                   .resizable()
+                                                   .scaledToFill()
+                                                   .frame(width: 100, height: 100)
+                                                   .clipShape(Circle())
+                                           } else {
+                                               viewModel.profilePhotoImage()
+                                           }
                 
                     Text("프로필 사진")
                         .foregroundStyle(Gradient(colors: [.green,.purple]))
                 }
             })
+            .sheet(isPresented: $viewModel.showingImagePicker) {
+                ImagePicker(image: $viewModel.profileImage)
+            }
         
             ZStack{
                 GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Email", bindingValue: $viewModel.emailForNewUser)
