@@ -42,6 +42,10 @@ class ViewModel_SignUP: ObservableObject {
     @Published var hasSpecialCharacter : Bool = false
     @Published var passwordCheckingDone : Bool = false
     
+    // about user profile image with imagepicker
+    
+    @Published var showingImagePicker: Bool = false
+    @Published var profileImage: UIImage?
     
     
     
