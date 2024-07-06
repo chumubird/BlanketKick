@@ -1,4 +1,3 @@
-// pull complete from FirebaseForeUserData branch  2024 6th july  5:54 am
 import SwiftUI
 import Foundation
 import FirebaseAuth
