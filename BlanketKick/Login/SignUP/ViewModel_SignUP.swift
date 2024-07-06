@@ -53,25 +53,12 @@ class ViewModel_SignUP: ObservableObject {
     @Published var isSignUpSuccessful: Bool = false
     @Published var errorMessage: String?
     
+    
     private var cancellables = Set<AnyCancellable>()
     private let db = Firestore.firestore() // Firestore 인스턴스 생성
     
     
-    
-    
-    // 관리할 사용자 배열
-    @Published var mockUsers: [Model_SignIN_SignUP] = [
-        Model_SignIN_SignUP(email: "user1", password: "Password123!", name: "Alice"),
-        Model_SignIN_SignUP(email: "user2", password: "SecurePass1@", name: "Bob"),
-        Model_SignIN_SignUP(email: "user3", password: "TestUser#456", name: "Charlie"),
-        Model_SignIN_SignUP(email: "user4", password: "ExamplePwd789$", name: "David"),
-        Model_SignIN_SignUP(email: "user5", password: "DemoPass321#", name: "Eve")
-    ]
-    
-    
-    
-    
-    
+ 
     //viewbuilder
     
     @ViewBuilder func joinUsText () -> some View {

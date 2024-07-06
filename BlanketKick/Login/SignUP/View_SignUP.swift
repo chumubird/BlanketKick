@@ -9,7 +9,7 @@ struct View_SignUP: View {
 
     @State var passwordCheckingDone : Bool = false
     
-//    @State var alertForNewUser : Bool = false
+    @State var alertForNewUser : Bool = false
     
     @State var showingImagePicker: Bool = false
     @State var profileImage: UIImage?
@@ -154,7 +154,7 @@ struct View_SignUP: View {
             
             GradientStrokeButton(action: {
                 viewModel.successForNewAccount()
-//                alertForNewUser.toggle()
+                alertForNewUser.toggle()
                 viewModel.signUPwithCombine()
             }, label: "Done", gradient: LinearGradient(colors: [.yellow,.green], startPoint: .leading, endPoint: .trailing))
             .padding(.bottom)
