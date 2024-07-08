@@ -1,8 +1,11 @@
-import SwiftUI
 import Foundation
-import FirebaseAuth
+
+import SwiftUI
 import Combine
-import FirebaseFirestoreInternal
+
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
 
 class ViewModel_SignUP: ObservableObject {
     
@@ -437,7 +440,6 @@ class ViewModel_SignUP: ObservableObject {
 
     func getUserDataOnFireStoreDataBase (uid: String) -> Future<Void, Error> {
         return Future { [self] promise in
-            let userUUID = UUID().uuidString
             let mail = self.emailForNewUser
             let name = self.nameForNewUser
             let pw = self.pwForNewUser
@@ -550,8 +552,6 @@ class ViewModel_SignUP: ObservableObject {
         }
     }
     
-    
-
 }
 
 
