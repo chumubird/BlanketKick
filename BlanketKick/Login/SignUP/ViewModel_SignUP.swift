@@ -487,6 +487,41 @@ class ViewModel_SignUP: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // auth logout method with combine + firebase
+    
+    func authLogOutWithCombine () -> Future<Void,Error> {
+        return Future { promise in
+            do {
+                try Auth.auth().signOut()
+                promise(.success(()))
+                print("auth 사용자 회원가입완료후 자동 로그인되는것을 로그아웃 시켜줌")
+                
+            } catch let authUserLogOut as NSError {
+                promise(.failure(authUserLogOut))
+                print("Error signing out: %@", authUserLogOut)
+                    
+                
+            }
+        }
+    }
+    func authSignOut () {
+        authLogOutWithCombine()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished :
+                    print("auth 로그아웃 성공")
+                case .failure(let error) :
+                    print(error)
+                    print("auth  로그아웃 실패")
+                }
+            }, receiveValue: {
+
+            })
+            .store(in: &cancellables )
+            
+    }
+    
+    
     
 //     user id checking alert with 3 conditions
     func alertAlreadyExsitsId () -> Alert {
@@ -514,6 +549,8 @@ class ViewModel_SignUP: ObservableObject {
             }))
         }
     }
+    
+    
 
 }
 
