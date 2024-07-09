@@ -62,9 +62,11 @@ class ViewModel_SignUP: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     private let db = Firestore.firestore() // Firestore 인스턴스 생성
+    private let storage = Storage.storage() // Firebase Storage 인스턴스 생성
     
     
- 
+    
+    
     //viewbuilder
     
     @ViewBuilder func joinUsText () -> some View {
@@ -315,6 +317,33 @@ class ViewModel_SignUP: ObservableObject {
         }
     }
     
+    //     user id checking alert with 3 conditions
+    func alertAlreadyExsitsId () -> Alert {
+        if alreadyExist == true {
+            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
+                self.emailUsable = false
+                self.emailChecking = false
+                self.emailForNewUser = ""
+                
+            }))
+        } else if emailForNewUser.isEmpty == true {
+            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
+                self.emailForNewUser = ""
+                self.emailUsable = false
+                self.emailChecking = false
+            }))
+        }else {
+            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
+                self.emailForNewUser = ""
+                self.emailUsable = false
+                self.emailChecking = false
+            }), secondaryButton: .default(Text("사용하기"), action: {
+                self.emailUsable = true
+                self.emailChecking = true
+            }))
+        }
+    }
+    
     
     
     // func
@@ -342,7 +371,7 @@ class ViewModel_SignUP: ObservableObject {
             pwForNewUser = filteredValue
         }
     }
-  
+    
     
     // done button click event
     func successForNewAccount () {
@@ -363,7 +392,7 @@ class ViewModel_SignUP: ObservableObject {
         
     }
     
-  
+    
     
     // Combine + firebase for checking New email already exists or not
     func checkingEmailExist () ->  Future<Void, Error> {
@@ -379,7 +408,7 @@ class ViewModel_SignUP: ObservableObject {
                 } else {
                     promise(.success(()))
                     print("이 이메일은 가입이 가능함")
-
+                    
                 }
             }
         }
@@ -393,7 +422,7 @@ class ViewModel_SignUP: ObservableObject {
                 case .failure(let error) :
                     print(error)
                     print("애러난거같음")
-                
+                    
                 }
                 
             }, receiveValue: {_ in
@@ -424,6 +453,8 @@ class ViewModel_SignUP: ObservableObject {
             }
         }
     }
+    
+    
     func addEmailDocumentFireStore () -> Future<Void, Error> {
         return Future { [self] promise in
             let userMail = self.emailForNewUser
@@ -437,13 +468,44 @@ class ViewModel_SignUP: ObservableObject {
         }
     }
     
+    func uploadProfileImage(uid: String) -> Future<String, Error> {
+        return Future { promise in
+            guard let image = self.profileImage,
+                  let imageData = image.jpegData(compressionQuality: 0.8) else {
+//                promise(.failure(NSError(domain: "Invalid image", code: -1, userInfo: nil)))
+                promise(.success("")) // 빈 문자열 반환
 
-    func getUserDataOnFireStoreDataBase (uid: String) -> Future<Void, Error> {
+                return
+            }
+            
+            // Create a reference to 'UserProfilePhoto/UID/image.jpg'
+            let storageRef = self.storage.reference().child("user_profile_photo/\(uid)/image.jpg")
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            storageRef.putData(imageData, metadata: metadata) { metadata, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    storageRef.downloadURL { url, error in
+                        if let error = error {
+                            promise(.failure(error))
+                        } else if let url = url {
+                            promise(.success(url.absoluteString))
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getUserDataOnFireStoreDataBase (uid: String  , imgURL: String ) -> Future<Void, Error> {
         return Future { [self] promise in
             let mail = self.emailForNewUser
             let name = self.nameForNewUser
             let pw = self.pwForNewUser
-            db.collection("UserData").document(uid).setData(["email" : mail, "name" : name , "password" : pw]) { error in
+                        let photo = imgURL
+            db.collection("UserData").document(uid).setData(["email" : mail, "name" : name , "password" : pw , "photo" : photo ]) { error in
                 if let error = error {
                     promise(.failure(error))
                     print("문서가 없음")
@@ -456,38 +518,118 @@ class ViewModel_SignUP: ObservableObject {
             
         }
     }
-
-    func signUPwithCombine () {
-        createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
-            .flatMap { [weak self] authResult -> Future<Void, Error> in
-                guard let self = self else {
-                    return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-                }
-                return addEmailDocumentFireStore()
-            }
-            .flatMap { [weak self] authResult -> Future<Void, Error> in
-                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
-                    return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-                }
-                return getUserDataOnFireStoreDataBase(uid: uid)
-            }
+    
+    func putProfilePhotoDataOnUserData ( uid: String , imgURL: String) -> Future<Void, Error> {
         
-            .sink(receiveCompletion: {[weak self] completion in
-                switch completion {
-                case .finished:
-                    self?.isSignUpSuccessful = true
-                    self?.alertForNewUser = true
-                    
-                case .failure(let error):
-                    self?.isSignUpSuccessful = false
-                    print(error)
+        return Future { [self] promise in
+            let profilePhoto = imgURL
+            db.collection("UserData").document(uid).setData( ["Photo" : profilePhoto ]) { error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    promise(.success(()))
                 }
-            },receiveValue: {   authResult in
-                
             }
-            )
-            .store(in: &cancellables)
+        }
     }
+    
+    
+    func signUPwithCombine () {
+        
+            createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
+                .flatMap { [weak self] authResult -> Future<Void, Error> in
+                    guard let self = self else {
+                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+                    }
+                    return addEmailDocumentFireStore()
+                }
+                .flatMap { [weak self] authResult -> Future<String, Error> in
+                    guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+                    }
+                    return uploadProfileImage(uid: uid)
+                }
+                .flatMap { [weak self] imgURL -> Future<Void, Error> in
+                    guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+                    }
+                    return getUserDataOnFireStoreDataBase(uid: uid , imgURL: imgURL)
+                }
+            
+                .sink(receiveCompletion: {[weak self] completion in
+                    switch completion {
+                    case .finished:
+                        self?.isSignUpSuccessful = true
+                        self?.alertForNewUser = true
+                        
+                    case .failure(let error):
+                        self?.isSignUpSuccessful = false
+                        print(error)
+                    }
+                },receiveValue: { authResult in
+                    
+                }
+                )
+                .store(in: &cancellables)
+       
+    }
+//    func profilePhotoForSignUP () {
+//        if let profileImage = self.profileImage {
+//            createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
+//                .flatMap { [weak self] authResult -> Future<String, Error> in
+//                    guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+//                    }
+//                    return uploadProfileImage(uid: uid)
+//                }
+//                .flatMap { [weak self] imgURL -> Future<Void, Error> in
+//                    guard let self = self , let uid = Auth.auth().currentUser?.uid
+//                    else {
+//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+//                    }
+//                    return putProfilePhotoDataOnUserData(uid: uid, imgURL: imgURL)
+//                }
+//                .sink(receiveCompletion: { completion in
+//                    switch completion {
+//                    case .finished:
+//                        print("선택한 이미지를 유저프로필 사진으로 업로드")
+//                    case .failure(let error):
+//                        print(error)
+//                    }
+//                    
+//                }, receiveValue: {
+//                    
+//                })
+//                .store(in: &cancellables)
+//        } else {
+//            createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
+//                .flatMap { [weak self] authResult -> Future<String, Error> in
+//                    guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+//                    }
+//                    return uploadProfileImage(uid: uid)
+//                }
+//                .flatMap { [weak self] imgURL -> Future<Void, Error> in
+//                    guard let self = self , let uid = Auth.auth().currentUser?.uid
+//                    else {
+//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
+//                    }
+//                    return putProfilePhotoDataOnUserData(uid: uid, imgURL: "")
+//                }
+//                .sink(receiveCompletion: { completion in
+//                    switch completion {
+//                    case .finished:
+//                        print("선택한 이미지가 없음으로 유저프로필 파이어스토 필드를 공백으로 업로드")
+//                    case .failure(let error):
+//                        print(error)
+//                    }
+//                    
+//                }, receiveValue: {
+//                    
+//                })
+//                .store(in: &cancellables)
+//        }
+//    }
     
     // auth logout method with combine + firebase
     
@@ -501,7 +643,7 @@ class ViewModel_SignUP: ObservableObject {
             } catch let authUserLogOut as NSError {
                 promise(.failure(authUserLogOut))
                 print("Error signing out: %@", authUserLogOut)
-                    
+                
                 
             }
         }
@@ -517,40 +659,13 @@ class ViewModel_SignUP: ObservableObject {
                     print("auth  로그아웃 실패")
                 }
             }, receiveValue: {
-
+                
             })
             .store(in: &cancellables )
-            
+        
     }
     
     
-    
-//     user id checking alert with 3 conditions
-    func alertAlreadyExsitsId () -> Alert {
-        if alreadyExist == true {
-            return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
-                self.emailUsable = false
-                self.emailChecking = false
-                self.emailForNewUser = ""
-
-            }))
-        } else if emailForNewUser.isEmpty == true {
-            return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-                self.emailForNewUser = ""
-                self.emailUsable = false
-                self.emailChecking = false
-            }))
-        }else {
-            return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-                self.emailForNewUser = ""
-                self.emailUsable = false
-                self.emailChecking = false
-            }), secondaryButton: .default(Text("사용하기"), action: {
-                self.emailUsable = true
-                self.emailChecking = true
-            }))
-        }
-    }
     
 }
 
