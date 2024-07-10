@@ -32,6 +32,7 @@
 		37A452412C21286100A2AFDA /* WavyRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A452402C21286100A2AFDA /* WavyRectangle.swift */; };
 		37DCA73D2C3E260A00E47E33 /* User_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DCA73C2C3E260A00E47E33 /* User_View.swift */; };
 		37DCA73F2C3E261F00E47E33 /* User_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DCA73E2C3E261F00E47E33 /* User_ViewModel.swift */; };
+		37DCA7422C3E2AFF00E47E33 /* MainTab_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DCA7412C3E2AFF00E47E33 /* MainTab_View.swift */; };
 		6C77749D42A5EC6ADE49FEDE /* Pods_BlanketKickTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1660888A979CDF83E261760B /* Pods_BlanketKickTests.framework */; };
 		F99CF32ED76959AAB175132C /* Pods_BlanketKick_BlanketKickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A299D3595A4DC0687FA0FC /* Pods_BlanketKick_BlanketKickUITests.framework */; };
 /* End PBXBuildFile section */
@@ -99,6 +100,7 @@
 		37A452402C21286100A2AFDA /* WavyRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavyRectangle.swift; sourceTree = "<group>"; };
 		37DCA73C2C3E260A00E47E33 /* User_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_View.swift; sourceTree = "<group>"; };
 		37DCA73E2C3E261F00E47E33 /* User_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_ViewModel.swift; sourceTree = "<group>"; };
+		37DCA7412C3E2AFF00E47E33 /* MainTab_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab_View.swift; sourceTree = "<group>"; };
 		5BE68F83D61E5EC4828D4552 /* Pods-BlanketKick-BlanketKickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlanketKick-BlanketKickUITests.debug.xcconfig"; path = "Target Support Files/Pods-BlanketKick-BlanketKickUITests/Pods-BlanketKick-BlanketKickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlanketKick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E8DDCBB0677C2277F5D937 /* Pods-BlanketKickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlanketKickTests.debug.xcconfig"; path = "Target Support Files/Pods-BlanketKickTests/Pods-BlanketKickTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 		37DCA73A2C3E25C900E47E33 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				37DCA7402C3E2AD700E47E33 /* Main_Tab */,
 				37DCA73B2C3E25D700E47E33 /* User */,
 			);
 			path = Main;
@@ -261,6 +264,14 @@
 				37DCA73E2C3E261F00E47E33 /* User_ViewModel.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		37DCA7402C3E2AD700E47E33 /* Main_Tab */ = {
+			isa = PBXGroup;
+			children = (
+				37DCA7412C3E2AFF00E47E33 /* MainTab_View.swift */,
+			);
+			path = Main_Tab;
 			sourceTree = "<group>";
 		};
 		876E55FE1678588BC6193248 /* Pods */ = {
@@ -537,6 +548,7 @@
 				37A452332C2127E200A2AFDA /* Model_SignIN_SignUP.swift in Sources */,
 				372B59652C21266C001ED696 /* Persistence.swift in Sources */,
 				372B595C2C21266B001ED696 /* BlanketKickApp.swift in Sources */,
+				37DCA7422C3E2AFF00E47E33 /* MainTab_View.swift in Sources */,
 				37A452412C21286100A2AFDA /* WavyRectangle.swift in Sources */,
 				37A452392C21282300A2AFDA /* GradientStrokeButton.swift in Sources */,
 				37A452352C21280100A2AFDA /* ImagePicker.swift in Sources */,
