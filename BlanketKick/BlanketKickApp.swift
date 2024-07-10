@@ -21,6 +21,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct BlanketKickApp: App {
     
+    @State private var isLoggedIn : Bool  = false
+    
+    
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
@@ -28,8 +31,13 @@ struct BlanketKickApp: App {
 
     var body: some Scene {
         WindowGroup {
-            View_SignIN()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            if isLoggedIn {
+                MainTab_View()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            } else {
+                View_SignIN(isLoggedIn: $isLoggedIn)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            }
         }
     }
 }
