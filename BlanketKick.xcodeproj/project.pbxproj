@@ -30,6 +30,8 @@
 		37A4523D2C21284400A2AFDA /* GradientStrokeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A4523C2C21284400A2AFDA /* GradientStrokeTextField.swift */; };
 		37A4523F2C21285300A2AFDA /* GradientStrokeSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A4523E2C21285300A2AFDA /* GradientStrokeSecureField.swift */; };
 		37A452412C21286100A2AFDA /* WavyRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A452402C21286100A2AFDA /* WavyRectangle.swift */; };
+		37DCA73D2C3E260A00E47E33 /* User_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DCA73C2C3E260A00E47E33 /* User_View.swift */; };
+		37DCA73F2C3E261F00E47E33 /* User_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DCA73E2C3E261F00E47E33 /* User_ViewModel.swift */; };
 		6C77749D42A5EC6ADE49FEDE /* Pods_BlanketKickTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1660888A979CDF83E261760B /* Pods_BlanketKickTests.framework */; };
 		F99CF32ED76959AAB175132C /* Pods_BlanketKick_BlanketKickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A299D3595A4DC0687FA0FC /* Pods_BlanketKick_BlanketKickUITests.framework */; };
 /* End PBXBuildFile section */
@@ -95,6 +97,8 @@
 		37A4523C2C21284400A2AFDA /* GradientStrokeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientStrokeTextField.swift; sourceTree = "<group>"; };
 		37A4523E2C21285300A2AFDA /* GradientStrokeSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientStrokeSecureField.swift; sourceTree = "<group>"; };
 		37A452402C21286100A2AFDA /* WavyRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavyRectangle.swift; sourceTree = "<group>"; };
+		37DCA73C2C3E260A00E47E33 /* User_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_View.swift; sourceTree = "<group>"; };
+		37DCA73E2C3E261F00E47E33 /* User_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_ViewModel.swift; sourceTree = "<group>"; };
 		5BE68F83D61E5EC4828D4552 /* Pods-BlanketKick-BlanketKickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlanketKick-BlanketKickUITests.debug.xcconfig"; path = "Target Support Files/Pods-BlanketKick-BlanketKickUITests/Pods-BlanketKick-BlanketKickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlanketKick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E8DDCBB0677C2277F5D937 /* Pods-BlanketKickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlanketKickTests.debug.xcconfig"; path = "Target Support Files/Pods-BlanketKickTests/Pods-BlanketKickTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 		372B595A2C21266B001ED696 /* BlanketKick */ = {
 			isa = PBXGroup;
 			children = (
+				37DCA73A2C3E25C900E47E33 /* Main */,
 				37A452272C21270300A2AFDA /* Login */,
 				37A452262C2126F100A2AFDA /* Customizing */,
 				37A452242C2126E100A2AFDA /* Tool */,
@@ -239,6 +244,23 @@
 				37A4522C2C21278800A2AFDA /* ViewModel_SignIN.swift */,
 			);
 			path = SignIN;
+			sourceTree = "<group>";
+		};
+		37DCA73A2C3E25C900E47E33 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				37DCA73B2C3E25D700E47E33 /* User */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		37DCA73B2C3E25D700E47E33 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				37DCA73C2C3E260A00E47E33 /* User_View.swift */,
+				37DCA73E2C3E261F00E47E33 /* User_ViewModel.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		876E55FE1678588BC6193248 /* Pods */ = {
@@ -507,6 +529,8 @@
 				37A4522D2C21278800A2AFDA /* ViewModel_SignIN.swift in Sources */,
 				37A4523F2C21285300A2AFDA /* GradientStrokeSecureField.swift in Sources */,
 				37A4523B2C21283500A2AFDA /* GradientCircle.swift in Sources */,
+				37DCA73D2C3E260A00E47E33 /* User_View.swift in Sources */,
+				37DCA73F2C3E261F00E47E33 /* User_ViewModel.swift in Sources */,
 				37A4522B2C21276F00A2AFDA /* View_SignIN.swift in Sources */,
 				37A4523D2C21284400A2AFDA /* GradientStrokeTextField.swift in Sources */,
 				37A452312C2127C400A2AFDA /* ViewModel_SignUP.swift in Sources */,
