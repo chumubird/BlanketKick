@@ -565,6 +565,12 @@ class ViewModel_SignUP: ObservableObject {
                     case .failure(let error):
                         self?.isSignUpSuccessful = false
                         print(error)
+                        self?.emailUsable = false
+                        self?.emailChecking = false
+                        self?.emailForNewUser = ""
+                        self?.pwForNewUser = ""
+                        self?.nameForNewUser = ""
+                        
                     }
                 },receiveValue: { authResult in
                     
@@ -573,63 +579,6 @@ class ViewModel_SignUP: ObservableObject {
                 .store(in: &cancellables)
        
     }
-//    func profilePhotoForSignUP () {
-//        if let profileImage = self.profileImage {
-//            createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
-//                .flatMap { [weak self] authResult -> Future<String, Error> in
-//                    guard let self = self , let uid = Auth.auth().currentUser?.uid else {
-//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-//                    }
-//                    return uploadProfileImage(uid: uid)
-//                }
-//                .flatMap { [weak self] imgURL -> Future<Void, Error> in
-//                    guard let self = self , let uid = Auth.auth().currentUser?.uid
-//                    else {
-//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-//                    }
-//                    return putProfilePhotoDataOnUserData(uid: uid, imgURL: imgURL)
-//                }
-//                .sink(receiveCompletion: { completion in
-//                    switch completion {
-//                    case .finished:
-//                        print("선택한 이미지를 유저프로필 사진으로 업로드")
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                    
-//                }, receiveValue: {
-//                    
-//                })
-//                .store(in: &cancellables)
-//        } else {
-//            createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
-//                .flatMap { [weak self] authResult -> Future<String, Error> in
-//                    guard let self = self , let uid = Auth.auth().currentUser?.uid else {
-//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-//                    }
-//                    return uploadProfileImage(uid: uid)
-//                }
-//                .flatMap { [weak self] imgURL -> Future<Void, Error> in
-//                    guard let self = self , let uid = Auth.auth().currentUser?.uid
-//                    else {
-//                        return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
-//                    }
-//                    return putProfilePhotoDataOnUserData(uid: uid, imgURL: "")
-//                }
-//                .sink(receiveCompletion: { completion in
-//                    switch completion {
-//                    case .finished:
-//                        print("선택한 이미지가 없음으로 유저프로필 파이어스토 필드를 공백으로 업로드")
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                    
-//                }, receiveValue: {
-//                    
-//                })
-//                .store(in: &cancellables)
-//        }
-//    }
     
     // auth logout method with combine + firebase
     
