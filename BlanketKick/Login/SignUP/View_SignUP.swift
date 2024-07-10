@@ -97,7 +97,7 @@ struct View_SignUP: View {
                     
                     Button(action: {
                         viewModel.checkingEmailExistWithCombine()
-//                            viewModel.isAlertForCheckingID.toggle()
+                            viewModel.isAlertForCheckingID.toggle()
                         
                     }, label: {
                         Image( systemName: "person.fill.questionmark")
@@ -107,9 +107,9 @@ struct View_SignUP: View {
                             .foregroundStyle(.gray)
                     })
                     .offset(x: 85,y: 7)
-//                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
-//                        viewModel.alertAlreadyExsitsId()
-//                    }
+                    .alert(isPresented: $viewModel.isAlertForCheckingID) {
+                        viewModel.alertAlreadyExsitsId()
+                    }
                 }
             }
             
@@ -178,6 +178,7 @@ struct View_SignUP: View {
                     isCurrentModal = false
                     print("로그인 페이지로 이동합니다.")
                     viewModel.alertForNewUser.toggle()
+                        viewModel.authSignOut()
                 }))
             })
             
