@@ -4,7 +4,10 @@ import SwiftUI
 struct User_View: View {
     
     @State var userPhoto : Image?
+    
+    @State var userEmail : String = "user Email"
     @State var userName : String = "user name"
+    
     
     var body: some View {
         
@@ -43,10 +46,21 @@ struct User_View: View {
                     .background(.clear)
                     .frame(width: 230,height: 60)
                     .overlay {
+                        GradientText(text: userEmail, gradient: LinearGradient(colors: [.blue,.purple], startPoint: .leading, endPoint: .trailing), fontSize: .headline)
+                            
+                    }
+                    .padding(.top)
+                
+                
+                RoundedRectangle(cornerRadius: 25.0)
+                    .stroke(.blue)
+                    .background(.clear)
+                    .frame(width: 230,height: 60)
+                    .overlay {
                         GradientText(text: userName, gradient: LinearGradient(colors: [.blue,.purple], startPoint: .leading, endPoint: .trailing), fontSize: .headline)
                             
                     }
-                    .padding()
+                    .padding(.bottom)
                 
                 Spacer()
                 
