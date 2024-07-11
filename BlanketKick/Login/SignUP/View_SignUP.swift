@@ -1,4 +1,4 @@
-// pull complete from SignUP branch  2024 6th july  7:12 pm ( imagePicker )
+// pull complete from Developing branch  2024 10th july  11:09 am  (after combine+firebase for new acc)
 
 import SwiftUI
 

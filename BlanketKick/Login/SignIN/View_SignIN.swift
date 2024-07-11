@@ -4,6 +4,8 @@ import SwiftUI
 
 struct View_SignIN: View {
   
+    @Binding var isLoggedIn : Bool
+    
     @StateObject var viewModel = ViewModel_SignIN()
     
     
@@ -102,7 +104,7 @@ struct View_SignIN: View {
             }
             
             GradientStrokeButton(action: {
-                
+                isLoggedIn = true
             }, label: "Login", gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing))
             
             HStack{
@@ -172,7 +174,7 @@ struct View_SignIN: View {
 
 
 #Preview {
-    View_SignIN()
+    View_SignIN(isLoggedIn: .constant(false))
 }
 
 
