@@ -9,7 +9,7 @@ struct MainTab_View: View {
                     Label("Tab 1", systemImage: "1.square")
                 }
             
-            Text("Other Tab 2")
+            MyMapView()
                 .tabItem {
                     Label("Tab 2", systemImage: "2.square")
                 }
