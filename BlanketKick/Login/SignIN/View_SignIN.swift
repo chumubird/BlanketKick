@@ -104,9 +104,10 @@ struct View_SignIN: View {
             }
             
             GradientStrokeButton(action: {
-//                isLoggedIn = true
-                viewModel.loginCombine(isLoggedIn: isLoggedIn)
+                viewModel.loginCombine()
+                
             }, label: "Login", gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing))
+        
             
             HStack{
                 Text("New User ?")
@@ -167,6 +168,10 @@ struct View_SignIN: View {
                 .font(.system(size: 10))
                 .fontWeight(.light)
                 .foregroundStyle(.gray)
+        
+                .onReceive(viewModel.$isLoggedIn) { updatedIsLoggedIn in
+                           self.isLoggedIn = updatedIsLoggedIn
+                       }
         }
     }
 

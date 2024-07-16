@@ -19,7 +19,10 @@ class ViewModel_SignIN: ObservableObject {
     
     @Published var userLoginStatus : Bool = false
     
-    
+    @Published var isLoggedIn: Bool = false // 추가
+
+
+
     @Published var isRememberUser : Bool = false
     @Published var isSignUPmodal: Bool = false
     
@@ -78,27 +81,33 @@ class ViewModel_SignIN: ObservableObject {
         }
     }
     
-    func loginCombine (isLoggedIn : Bool) {
+    func loginCombine () {
         userLogin()
             .flatMap { [weak self] authResult -> Future <Void, Error> in
-                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+//                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+                guard let self = self else {
+
                     return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Self is nil"])))
                     }
                 }
+                let uid = authResult.user.uid
                 return afterLoginGetData(uid: uid)
             }
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
                     print("login + combine success")
+                    
+                    self.isLoggedIn = true // 로그인 성공 시 isLoggedIn을 true로 설정
+
+
                 case .failure(let error):
                     print("login + combine error")
                     print(error)
                 }
                 
             }, receiveValue: {
-                let isLoggedIn = true
-                
+               
             })
             .store(in: &cancellables)
     }
@@ -111,7 +120,7 @@ class ViewModel_SignIN: ObservableObject {
 
 
 
-//
-//#Preview {
-//    View_SignIN(isLoggedIn: .constant(false))
-//}
+
+#Preview {
+    View_SignIN(isLoggedIn: .constant(false))
+}
