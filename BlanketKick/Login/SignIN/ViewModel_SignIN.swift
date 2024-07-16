@@ -63,9 +63,9 @@ class ViewModel_SignIN: ObservableObject {
     
     func afterLoginGetData (uid: String) -> Future<Void,Error> {
         return Future { [self] promise in
-            let loginStatus = userLoginStatus
-            
-            db.collection("UserData").document(uid).setData(["Login_Status" : loginStatus]) { error in
+            var loginStatus = userLoginStatus
+            loginStatus = true
+            db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { error in
                 if let error = error {
                     promise(.failure(error))
                     print(error)
@@ -78,7 +78,7 @@ class ViewModel_SignIN: ObservableObject {
         }
     }
     
-    func loginCombine () {
+    func loginCombine (isLoggedIn : Bool) {
         userLogin()
             .flatMap { [weak self] authResult -> Future <Void, Error> in
                 guard let self = self , let uid = Auth.auth().currentUser?.uid else {
@@ -97,6 +97,7 @@ class ViewModel_SignIN: ObservableObject {
                 }
                 
             }, receiveValue: {
+                let isLoggedIn = true
                 
             })
             .store(in: &cancellables)
