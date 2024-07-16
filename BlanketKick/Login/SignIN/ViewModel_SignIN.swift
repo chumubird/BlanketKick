@@ -10,17 +10,23 @@ import FirebaseFirestore
 
 class ViewModel_SignIN: ObservableObject {
     
-    
-    
     @Published var isWaving = false
 
+    
     @Published var emailForLogin : String = ""
     @Published var pwForLogin : String = ""
     
     
+    @Published var userLoginStatus : Bool = false
+    
+    
     @Published var isRememberUser : Bool = false
     @Published var isSignUPmodal: Bool = false
-            
+    
+    private var cancellables = Set<AnyCancellable>()
+    private let db = Firestore.firestore()
+    private let storage = Storage.storage()
+
     
     @ViewBuilder func Buttonforget () -> some View {
 
@@ -51,6 +57,49 @@ class ViewModel_SignIN: ObservableObject {
                 }
             }
         }
+    }
+    
+    // after login userdata get new data field for login time : timer  and login status : Bool ( off -> on )
+    
+    func afterLoginGetData (uid: String) -> Future<Void,Error> {
+        return Future { [self] promise in
+            let loginStatus = userLoginStatus
+            
+            db.collection("UserData").document(uid).setData(["Login_Status" : loginStatus]) { error in
+                if let error = error {
+                    promise(.failure(error))
+                    print(error)
+                    print("문서가 없음 // 애러")
+                } else {
+                    promise(.success(()))
+                            print("로그인 상태 업데이트 완료 off -> on")
+                }
+            }
+        }
+    }
+    
+    func loginCombine () {
+        userLogin()
+            .flatMap { [weak self] authResult -> Future <Void, Error> in
+                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+                    return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Self is nil"])))
+                    }
+                }
+                return afterLoginGetData(uid: uid)
+            }
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("login + combine success")
+                case .failure(let error):
+                    print("login + combine error")
+                    print(error)
+                }
+                
+            }, receiveValue: {
+                
+            })
+            .store(in: &cancellables)
     }
     
     
