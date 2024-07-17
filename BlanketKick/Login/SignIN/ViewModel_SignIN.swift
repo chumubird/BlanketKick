@@ -76,6 +76,8 @@ class ViewModel_SignIN: ObservableObject {
                 } else {
                     promise(.success(()))
                             print("로그인 상태 업데이트 완료 off -> on")
+                    
+                    self.currentUser()
                 }
             }
         }
@@ -93,6 +95,7 @@ class ViewModel_SignIN: ObservableObject {
                 let uid = authResult.user.uid
                 return afterLoginGetData(uid: uid)
             }
+           
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -107,9 +110,19 @@ class ViewModel_SignIN: ObservableObject {
                 }
                 
             }, receiveValue: {
-               
             })
             .store(in: &cancellables)
+    }
+    
+    func currentUser () {
+        if let user = Auth.auth().currentUser {
+                let uid = user.uid
+                let email = user.email ?? "이메일 없음"
+                print("현재 로그인한 사용자 UID: \(uid)")
+                print("현재 로그인한 사용자 이메일: \(email)")
+            } else {
+                print("현재 로그인한 사용자가 없습니다.")
+            }
     }
     
     
