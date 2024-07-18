@@ -412,6 +412,7 @@ class ViewModel_SignUP: ObservableObject {
 //            }
 //        }
 //    }
+    
     func checkingEmailExistWithCombine () {
         Firebase.shared.checkingEmailExist(documentName: emailForNewUser)
             .sink(receiveCompletion: { completion in
@@ -434,7 +435,7 @@ class ViewModel_SignUP: ObservableObject {
     
     // Combine + firebase for creating new user  on firebase Auth and uploading data ( user email for preventing that new user try to get email which already exists
     
-    func createUserWithCombine(withEmail email: String, password: String) -> Future<AuthDataResult, Error> {
+    func createUserWithCombine( email: String, password: String) -> Future<AuthDataResult, Error> {
         return Future { promise in
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                 if let error = error {
@@ -467,75 +468,75 @@ class ViewModel_SignUP: ObservableObject {
         }
     }
     
-    func uploadProfileImage(uid: String) -> Future<String, Error> {
-        return Future { promise in
-            guard let image = self.profileImage,
-                  let imageData = image.jpegData(compressionQuality: 0.8) else {
-//                promise(.failure(NSError(domain: "Invalid image", code: -1, userInfo: nil)))
-                promise(.success("")) // 빈 문자열 반환
-
-                return
-            }
-            
-            // Create a reference to 'UserProfilePhoto/UID/image.jpg'
-            let storageRef = self.storage.reference().child("user_profile_photo/\(uid)/image.jpg")
-            let metadata = StorageMetadata()
-            metadata.contentType = "image/jpeg"
-            
-            storageRef.putData(imageData, metadata: metadata) { metadata, error in
-                if let error = error {
-                    promise(.failure(error))
-                } else {
-                    storageRef.downloadURL { url, error in
-                        if let error = error {
-                            promise(.failure(error))
-                        } else if let url = url {
-                            promise(.success(url.absoluteString))
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    func uploadProfileImage(uid: String) -> Future<String, Error> {
+//        return Future { promise in
+//            guard let image = self.profileImage,
+//                  let imageData = image.jpegData(compressionQuality: 0.8) else {
+////                promise(.failure(NSError(domain: "Invalid image", code: -1, userInfo: nil)))
+//                promise(.success("")) // 빈 문자열 반환
+//
+//                return
+//            }
+//            
+//            // Create a reference to 'UserProfilePhoto/UID/image.jpg'
+//            let storageRef = self.storage.reference().child("user_profile_photo/\(uid)/image.jpg")
+//            let metadata = StorageMetadata()
+//            metadata.contentType = "image/jpeg"
+//            
+//            storageRef.putData(imageData, metadata: metadata) { metadata, error in
+//                if let error = error {
+//                    promise(.failure(error))
+//                } else {
+//                    storageRef.downloadURL { url, error in
+//                        if let error = error {
+//                            promise(.failure(error))
+//                        } else if let url = url {
+//                            promise(.success(url.absoluteString))
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
-    func getUserDataOnFireStoreDataBase (uid: String  , imgURL: String ) -> Future<Void, Error> {
-        return Future { [self] promise in
-            let mail = self.emailForNewUser
-            let name = self.nameForNewUser
-            let pw = self.pwForNewUser
-                        let photo = imgURL
-            db.collection("UserData").document(uid).setData(["email" : mail, "name" : name , "password" : pw , "photo" : photo ]) { error in
-                if let error = error {
-                    promise(.failure(error))
-                    print("문서가 없음")
-                    
-                } else {
-                    promise(.success(()))
-                    print("유저데이터 입력 승인")
-                }
-            }
-            
-        }
-    }
+//    func getUserDataOnFireStoreDataBase (uid: String  , imgURL: String ) -> Future<Void, Error> {
+//        return Future { [self] promise in
+//            let mail = self.emailForNewUser
+//            let name = self.nameForNewUser
+//            let pw = self.pwForNewUser
+//                        let photo = imgURL
+//            db.collection("UserData").document(uid).setData(["email" : mail, "name" : name , "password" : pw , "photo" : photo ]) { error in
+//                if let error = error {
+//                    promise(.failure(error))
+//                    print("문서가 없음")
+//                    
+//                } else {
+//                    promise(.success(()))
+//                    print("유저데이터 입력 승인")
+//                }
+//            }
+//            
+//        }
+//    }
     
-    func putProfilePhotoDataOnUserData ( uid: String , imgURL: String) -> Future<Void, Error> {
-        
-        return Future { [self] promise in
-            let profilePhoto = imgURL
-            db.collection("UserData").document(uid).setData( ["Photo" : profilePhoto ]) { error in
-                if let error = error {
-                    promise(.failure(error))
-                } else {
-                    promise(.success(()))
-                }
-            }
-        }
-    }
+//    func putProfilePhotoDataOnUserData ( uid: String , imgURL: String) -> Future<Void, Error> {
+//        
+//        return Future { [self] promise in
+//            let profilePhoto = imgURL
+//            db.collection("UserData").document(uid).setData( ["Photo" : profilePhoto ]) { error in
+//                if let error = error {
+//                    promise(.failure(error))
+//                } else {
+//                    promise(.success(()))
+//                }
+//            }
+//        }
+//    }
     
     
     func signUPwithCombine () {
         
-            createUserWithCombine(withEmail: emailForNewUser, password: pwForNewUser)
+            createUserWithCombine(email: emailForNewUser, password: pwForNewUser)
                 .flatMap { [weak self] authResult -> Future<Void, Error> in
                     guard let self = self else {
                         return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
@@ -546,13 +547,13 @@ class ViewModel_SignUP: ObservableObject {
                     guard let self = self , let uid = Auth.auth().currentUser?.uid else {
                         return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
                     }
-                    return uploadProfileImage(uid: uid)
+                    return Firebase.shared.getProfileImageOnStorage(uid: uid, image: profileImage)
                 }
                 .flatMap { [weak self] imgURL -> Future<Void, Error> in
                     guard let self = self , let uid = Auth.auth().currentUser?.uid else {
                         return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
                     }
-                    return getUserDataOnFireStoreDataBase(uid: uid , imgURL: imgURL)
+                    return Firebase.shared.getUserDataOnFireStoreDataBase(uid: uid, mail: emailForNewUser, name: nameForNewUser, pw: pwForNewUser, imgURL: imgURL)
                 }
             
                 .sink(receiveCompletion: {[weak self] completion in

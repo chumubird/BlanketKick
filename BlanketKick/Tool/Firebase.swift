@@ -22,6 +22,115 @@ class Firebase: ObservableObject {
     private let storage = Storage.storage()
     
     
+//    creating new user on firebase auth
+    func createUserWithCombine( email: String, password: String) ->  Future<AuthDataResult, Error> {
+        return Future {promise in
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    
+                    
+                    promise(.failure(error))
+                    
+                    
+                } else if let authResult = authResult {
+                    
+                    
+                    promise(.success(authResult))
+                    
+                    
+                }
+            }
+        }
+    }
+    
+    
+    // adding Email data on firestore for preventing other user try to use
+    
+    func addEmailDocumentFireStore (email:String) -> Future<Void,Error> {
+        return Future { [self] promise in
+        let userEmail = email
+            db.collection("EmailChecking").document(userEmail).setData(["email" : userEmail]) { error in
+                if let error = error {
+                    promise(.failure(error))
+                    print(error)
+                } else {
+                    promise(.success(()))
+                }
+            }
+        }
+    }
+    func getProfileImageOnStorage(uid: String, image: UIImage?) -> Future <String, Error > {
+        return Future { promise in
+            guard let image = image,
+                  let imageData = image.jpegData(compressionQuality: 0.8) else {
+                return promise(.success(""))
+            }
+            let storageReference = self.storage.reference().child("user_profile_photo/\(uid)/image.jpg")
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            storageReference.putData(imageData, metadata: metadata) {
+                metadata, error in
+                if let error = error {
+                    promise(.failure(error))
+                    
+                } else {
+                    storageReference.downloadURL() { url , error in
+                        if let error = error {
+                            promise(.failure(error))
+                            
+                        } else if let url = url {
+                            promise(.success(url.absoluteString))
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getUserDataOnFireStoreDataBase (uid: String, mail:String,name:String,pw:String, imgURL: String) -> Future<Void, Error> {
+        return Future { [self] promise in
+            let mail = mail
+            let name = name
+            let pw = pw
+            let photo = imgURL
+            
+            let userData : [String: Any] = [
+                "email" : mail,
+                "name" : name,
+                "pw" : pw,
+                "photo" : photo
+            ]
+            
+            db.collection("UserData").document(uid).setData(userData) { error in
+                if let error = error {
+                    promise(.failure(error))
+                    print("문서가 없습니다.")
+                    
+                } else {
+                    promise(.success(()))
+                    print("유저데이터 입력 승인")
+                }
+            }
+        }
+    }
+    
+//    func profilePhotoDataonUserDataFireStoreDataBase ( uid : String, imgURL: String) -> Future<Void, Error> {
+//        return Future { [self] promise in
+//            let profilePhoto = imgURL
+//            db.collection("UserData").document(uid).setData(["Photo" : profilePhoto] ) { error in
+//                if let error = error {
+//                    promise(.failure(error))
+//                } else {
+//                    promise(.success(()))
+//                }
+//            }
+//        }
+//    }
+//    
+    
+//    Email chekcing if its already exists or not
+    
     func checkingEmailExist(documentName: String) -> Future<Void,Error> {
         return Future { [self] promise in
             let documentName = documentName
@@ -41,15 +150,6 @@ class Firebase: ObservableObject {
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -87,6 +187,7 @@ class Firebase: ObservableObject {
             }
         }
     }
+    
     // after login userdata get new data field for login time : timer  and login status : Bool ( off -> on )
     
     func userLoginStatusData (uid: String, loginStatus: Bool) -> Future<Void,Error> {
@@ -109,7 +210,7 @@ class Firebase: ObservableObject {
     }
     
     // auth logout method with combine + firebase
-
+    
     func authSignOut () -> Future<Void,Error> {
         return Future { promise in
             do{
