@@ -389,32 +389,31 @@ class ViewModel_SignUP: ObservableObject {
                 PW :   \(pwForNewUser)
               --------------------------------
               """)
-        
     }
     
     
     
     // Combine + firebase for checking New email already exists or not
-    func checkingEmailExist () ->  Future<Void, Error> {
-        return Future { promise in
-            let documentName = self.emailForNewUser
-            self.db.collection("EmailChecking").document(documentName).getDocument { userMail, error in
-                if let error = error {
-                    promise(.failure(error))
-                    print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
-                }  else if let document = userMail, document.exists {
-                    promise(.success(()))
-                    print("이메일이 이미 존재함")
-                } else {
-                    promise(.success(()))
-                    print("이 이메일은 가입이 가능함")
-                    
-                }
-            }
-        }
-    }
+//    func checkingEmailExist () ->  Future<Void, Error> {
+//        return Future { promise in
+//            let documentName = self.emailForNewUser
+//            self.db.collection("EmailChecking").document(documentName).getDocument { userMail, error in
+//                if let error = error {
+//                    promise(.failure(error))
+//                    print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
+//                }  else if let document = userMail, document.exists {
+//                    promise(.success(()))
+//                    print("이메일이 이미 존재함")
+//                } else {
+//                    promise(.success(()))
+//                    print("이 이메일은 가입이 가능함")
+//                    
+//                }
+//            }
+//        }
+//    }
     func checkingEmailExistWithCombine () {
-        checkingEmailExist()
+        Firebase.shared.checkingEmailExist(documentName: emailForNewUser)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished :
@@ -582,23 +581,23 @@ class ViewModel_SignUP: ObservableObject {
     
     // auth logout method with combine + firebase
     
-    func authLogOutWithCombine () -> Future<Void,Error> {
-        return Future { promise in
-            do {
-                try Auth.auth().signOut()
-                promise(.success(()))
-                print("auth 사용자 회원가입완료후 자동 로그인되는것을 로그아웃 시켜줌")
-                
-            } catch let authUserLogOut as NSError {
-                promise(.failure(authUserLogOut))
-                print("Error signing out: %@", authUserLogOut)
-                
-                
-            }
-        }
-    }
-    func authSignOut () {
-        authLogOutWithCombine()
+//    func authSignOut () -> Future<Void,Error> {
+//        return Future { promise in
+//            do {
+//                try Auth.auth().signOut()
+//                promise(.success(()))
+//                print("auth 사용자 회원가입완료후 자동 로그인되는것을 로그아웃 시켜줌")
+//                
+//            } catch let authUserLogOut as NSError {
+//                promise(.failure(authUserLogOut))
+//                print("Error signing out: %@", authUserLogOut)
+//                
+//                
+//            }
+//        }
+//    }
+    func authLogOutWithCombine () {
+        Firebase.shared.authSignOut()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished :

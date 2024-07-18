@@ -21,6 +21,40 @@ class Firebase: ObservableObject {
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
     
+    
+    func checkingEmailExist(documentName: String) -> Future<Void,Error> {
+        return Future { [self] promise in
+            let documentName = documentName
+            db.collection("EmailCheking").document(documentName).getDocument {
+                userEmail, error in
+                if let error = error {
+                    promise(.failure(error))
+                    print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
+
+                }else if let document = userEmail, document.exists {
+                    promise(.success(()))
+                    print("이메일이 이미 존재함")
+                } else {
+                    promise(.success(()))
+                    print("이 이메일은 가입이 가능함")
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // For Login
     // user Login with Firebase + combine method
     // login with firebase auth
@@ -70,6 +104,21 @@ class Firebase: ObservableObject {
                     print("--------- 지금 로그인 한 유저 ---------")
                     self.currentUser()
                 }
+            }
+        }
+    }
+    
+    // auth logout method with combine + firebase
+
+    func authSignOut () -> Future<Void,Error> {
+        return Future { promise in
+            do{
+                try Auth.auth().signOut()
+                promise(.success(()))
+                print("auth 사용자 회원가입완료후 자동 로그인되는것을 로그아웃 시켜줌")
+            } catch let authUserLogOut as NSError {
+                promise(.failure(authUserLogOut))
+                print("Error signing out : %@", authUserLogOut)
             }
         }
     }
