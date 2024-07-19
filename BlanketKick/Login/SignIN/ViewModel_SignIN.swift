@@ -1,20 +1,35 @@
 
 import SwiftUI
 import Foundation
+import Combine
+
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseFirestore
+
 
 class ViewModel_SignIN: ObservableObject {
     
-    
-    
     @Published var isWaving = false
 
+    
     @Published var emailForLogin : String = ""
     @Published var pwForLogin : String = ""
     
     
+    @Published var userLoginStatus : Bool = false
+    
+    @Published var isLoggedIn: Bool = false // 추가
+
+
+
     @Published var isRememberUser : Bool = false
     @Published var isSignUPmodal: Bool = false
-            
+    
+    private var cancellables = Set<AnyCancellable>()
+    private let db = Firestore.firestore()
+    private let storage = Storage.storage()
+
     
     @ViewBuilder func Buttonforget () -> some View {
 
@@ -26,12 +41,46 @@ class ViewModel_SignIN: ObservableObject {
                 .font(.system(size: 13))
         })
     }
+    
+    
+    // user Login with Firebase + combine
+
+    func loginCombine () {
+        Firebase.shared.userLogin(email: emailForLogin, password: pwForLogin)
+            .flatMap { [weak self] authResult -> Future <Void, Error> in
+//                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
+                guard let self = self else {
+
+                    return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Self is nil"])))
+                    }
+                }
+                let uid = authResult.user.uid
+                return Firebase.shared.userLoginStatusData(uid: uid, loginStatus: userLoginStatus)
+            }
+           
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("login + combine success")
+                    
+                    self.isLoggedIn = true // 로그인 성공 시 isLoggedIn을 true로 설정
+
+
+                case .failure(let error):
+                    print("login + combine error")
+                    print(error)
+                }
+                
+            }, receiveValue: {
+            })
+            .store(in: &cancellables)
+    }
 }
 
 
 
 
-//
-//#Preview {
-//    View_SignIN(isLoggedIn: .constant(false))
-//}
+
+#Preview {
+    View_SignIN(isLoggedIn: .constant(false))
+}
