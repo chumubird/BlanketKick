@@ -394,25 +394,7 @@ class ViewModel_SignUP: ObservableObject {
     
     
     // Combine + firebase for checking New email already exists or not
-//    func checkingEmailExist () ->  Future<Void, Error> {
-//        return Future { promise in
-//            let documentName = self.emailForNewUser
-//            self.db.collection("EmailChecking").document(documentName).getDocument { userMail, error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                    print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
-//                }  else if let document = userMail, document.exists {
-//                    promise(.success(()))
-//                    print("이메일이 이미 존재함")
-//                } else {
-//                    promise(.success(()))
-//                    print("이 이메일은 가입이 가능함")
-//                    
-//                }
-//            }
-//        }
-//    }
-    
+
     func checkingEmailExistWithCombine () {
         Firebase.shared.checkingEmailExist(documentName: emailForNewUser)
             .sink(receiveCompletion: { completion in
@@ -455,85 +437,6 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     
-    func addEmailDocumentFireStore () -> Future<Void, Error> {
-        return Future { [self] promise in
-            let userMail = self.emailForNewUser
-            db.collection("EmailChecking").document(userMail).setData(["email" : userMail]) { error in
-                if let error = error {
-                    promise(.failure(error))
-                } else {
-                    promise(.success(()))
-                }
-            }
-        }
-    }
-    
-//    func uploadProfileImage(uid: String) -> Future<String, Error> {
-//        return Future { promise in
-//            guard let image = self.profileImage,
-//                  let imageData = image.jpegData(compressionQuality: 0.8) else {
-////                promise(.failure(NSError(domain: "Invalid image", code: -1, userInfo: nil)))
-//                promise(.success("")) // 빈 문자열 반환
-//
-//                return
-//            }
-//            
-//            // Create a reference to 'UserProfilePhoto/UID/image.jpg'
-//            let storageRef = self.storage.reference().child("user_profile_photo/\(uid)/image.jpg")
-//            let metadata = StorageMetadata()
-//            metadata.contentType = "image/jpeg"
-//            
-//            storageRef.putData(imageData, metadata: metadata) { metadata, error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                } else {
-//                    storageRef.downloadURL { url, error in
-//                        if let error = error {
-//                            promise(.failure(error))
-//                        } else if let url = url {
-//                            promise(.success(url.absoluteString))
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-//    func getUserDataOnFireStoreDataBase (uid: String  , imgURL: String ) -> Future<Void, Error> {
-//        return Future { [self] promise in
-//            let mail = self.emailForNewUser
-//            let name = self.nameForNewUser
-//            let pw = self.pwForNewUser
-//                        let photo = imgURL
-//            db.collection("UserData").document(uid).setData(["email" : mail, "name" : name , "password" : pw , "photo" : photo ]) { error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                    print("문서가 없음")
-//                    
-//                } else {
-//                    promise(.success(()))
-//                    print("유저데이터 입력 승인")
-//                }
-//            }
-//            
-//        }
-//    }
-    
-//    func putProfilePhotoDataOnUserData ( uid: String , imgURL: String) -> Future<Void, Error> {
-//        
-//        return Future { [self] promise in
-//            let profilePhoto = imgURL
-//            db.collection("UserData").document(uid).setData( ["Photo" : profilePhoto ]) { error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                } else {
-//                    promise(.success(()))
-//                }
-//            }
-//        }
-//    }
-    
-    
     func signUPwithCombine () {
         
             createUserWithCombine(email: emailForNewUser, password: pwForNewUser)
@@ -541,7 +444,7 @@ class ViewModel_SignUP: ObservableObject {
                     guard let self = self else {
                         return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
                     }
-                    return addEmailDocumentFireStore()
+                    return Firebase.shared.addEmailDocumentFireStore(email: emailForNewUser)
                 }
                 .flatMap { [weak self] authResult -> Future<String, Error> in
                     guard let self = self , let uid = Auth.auth().currentUser?.uid else {
@@ -581,22 +484,7 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     // auth logout method with combine + firebase
-    
-//    func authSignOut () -> Future<Void,Error> {
-//        return Future { promise in
-//            do {
-//                try Auth.auth().signOut()
-//                promise(.success(()))
-//                print("auth 사용자 회원가입완료후 자동 로그인되는것을 로그아웃 시켜줌")
-//                
-//            } catch let authUserLogOut as NSError {
-//                promise(.failure(authUserLogOut))
-//                print("Error signing out: %@", authUserLogOut)
-//                
-//                
-//            }
-//        }
-//    }
+
     func authLogOutWithCombine () {
         Firebase.shared.authSignOut()
             .sink(receiveCompletion: { completion in

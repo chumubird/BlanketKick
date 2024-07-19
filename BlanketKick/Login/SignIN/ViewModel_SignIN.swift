@@ -44,58 +44,7 @@ class ViewModel_SignIN: ObservableObject {
     
     
     // user Login with Firebase + combine
-    
-//    
-//    
-//    func currentUser () {
-//        if let user = Auth.auth().currentUser {
-//                let uid = user.uid
-//                let email = user.email ?? "이메일 없음"
-//                print("현재 로그인한 사용자 UID: \(uid)")
-//                print("현재 로그인한 사용자 이메일: \(email)")
-//            } else {
-//                print("현재 로그인한 사용자가 없습니다.")
-//            }
-//    }
-//    
-//    func userLogin () -> Future<AuthDataResult, Error> {
-//        return Future { [self] promise in
-//            Auth.auth().signIn(withEmail: emailForLogin, password: pwForLogin) { authResult, error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                    print(error)
-//                    print("firebase for login with auth 호출 실패")
-//                    
-//                } else if let authResult = authResult {
-//                    promise(.success(authResult))
-//                    print(authResult)
-//                    print("firebase for login with auth 호출완료")
-//                }
-//            }
-//        }
-//    }
-    
-    // after login userdata get new data field for login time : timer  and login status : Bool ( off -> on )
-//    
-//    func userLoginStatusData (uid: String) -> Future<Void,Error> {
-//        return Future { [self] promise in
-//            var loginStatus = userLoginStatus
-//            loginStatus = true
-//            db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                    print(error)
-//                    print("문서가 없음 // 애러")
-//                } else {
-//                    promise(.success(()))
-//                            print("로그인 상태 업데이트 완료 off -> on")
-//                    
-//                    self.currentUser()
-//                }
-//            }
-//        }
-//    }
-    
+
     func loginCombine () {
         Firebase.shared.userLogin(email: emailForLogin, password: pwForLogin)
             .flatMap { [weak self] authResult -> Future <Void, Error> in
@@ -126,11 +75,6 @@ class ViewModel_SignIN: ObservableObject {
             })
             .store(in: &cancellables)
     }
-    
-    
-    
-    
-    
 }
 
 
