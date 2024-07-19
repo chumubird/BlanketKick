@@ -1,9 +1,4 @@
-//
-//  BlanketKickApp.swift
-//  BlanketKick
-//
-//  Created by chul on 6/18/24.
-//
+//pull and commit
 
 import SwiftUI
 // FireBase + SwiftUI
