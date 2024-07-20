@@ -7,7 +7,7 @@ import SwiftUI
 struct User_View: View {
     
     
-    let viewModel = User_ViewModel()
+   @StateObject var viewModel = User_ViewModel()
     
     
     var body: some View {
@@ -49,6 +49,19 @@ struct User_View: View {
                 
                 Spacer()
             }
+        }
+        
+        .onAppear {
+            // 데이터 로드
+            viewModel.loadUserData()
+                .sink(receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Failed to load user data: \(error.localizedDescription)")
+                    }
+                }, receiveValue: {
+                    print("접속한 유저의 데이터를 성공적으로 불러왔습니다.")
+                })
+                .store(in: &viewModel.cancellables)
         }
     }
 }
