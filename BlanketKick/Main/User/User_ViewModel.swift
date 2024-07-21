@@ -11,9 +11,11 @@ import Combine
 
 class User_ViewModel: ObservableObject {
     
+    //firebase
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
     
+    //combine
      var cancellables = Set<AnyCancellable>()
     
     @Published var userPhoto : UIImage?
