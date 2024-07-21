@@ -43,6 +43,34 @@ class ViewModel_SignIN: ObservableObject {
     }
     
     
+    //filtering for text && secure field
+    
+    func filteringStringForUserID (newValue : String) {
+        //for email
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789@.")
+        let filteredValue = newValue.lowercased().filter { Character in
+            Character.unicodeScalars.first.map {
+                allowedCharacters.contains($0) } ?? false
+        } 
+        if filteredValue != newValue {
+            emailForLogin = filteredValue
+        }
+    }
+    
+    func filterdStringForUserPw (newValue: String) {
+        let filterdCharacter = newValue.lowercased().filter {
+            $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "z" || $0 >= "!" && $0 <= "~"
+        }
+        if filterdCharacter != newValue {
+            pwForLogin = filterdCharacter
+        }
+    }
+    
+    
+    
+    
+    
+    
     // user Login with Firebase + combine
 
     func loginCombine () {

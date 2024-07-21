@@ -84,7 +84,7 @@ struct View_SignUP: View {
             .sheet(isPresented: $viewModel.showingImagePicker) {
                 ImagePicker(image: $viewModel.profileImage)
             }
-        
+    
             ZStack{
                 GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Email", bindingValue: $viewModel.emailForNewUser)
                     .padding(.top)
