@@ -68,6 +68,7 @@ class User_ViewModel: ObservableObject {
                    if let error = error {
                        promise(.failure(error))
                        print("Failed to load user data: \(error.localizedDescription)")
+                       print("유저데이터 불러오기 이메일 이름 포토 가져오기 애러")
                    } else if let document = document, document.exists {
                        self?.userEmail = document.get("email") as? String ?? "No Email"
                        self?.userName = document.get("name") as? String ?? "No Name"
@@ -89,6 +90,7 @@ class User_ViewModel: ObservableObject {
                        }
                        
                        promise(.success(()))
+                       print("유저데이터 이메일 이름 프로필사진 불러오기 성공함")
                    } else {
                        promise(.failure(NSError(domain: "DocumentError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])))
                    }
@@ -105,6 +107,7 @@ class User_ViewModel: ObservableObject {
                        print("Error loading photo: \(error.localizedDescription)")
                    } else if let data = data, let uiImage = UIImage(data: data) {
                        promise(.success(uiImage))
+                       print("유저 프로필 포토 이미지 다운로드 완료")
                    } else {
                        promise(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create UIImage from data"])))
                    }
