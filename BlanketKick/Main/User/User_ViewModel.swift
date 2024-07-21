@@ -72,7 +72,9 @@ class User_ViewModel: ObservableObject {
                        self?.userEmail = document.get("email") as? String ?? "No Email"
                        self?.userName = document.get("name") as? String ?? "No Name"
                        
-                       if let photoURLString = document.get("photo") as? String {
+                       //  if photo field has only value = "" <---- when user didnt set photo for profile
+                       // now app will not die and showing non proifle = default photo image on user view 
+                       if let photoURLString = document.get("photo") as? String, !photoURLString.isEmpty {
                            self?.loadUserPhoto(photoURLString: photoURLString)
                                .sink(receiveCompletion: { completion in
                                    if case .failure(let error) = completion {
