@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-//commit
+//pull done and checked done
 struct View_SignIN: View {
   
     @Binding var isLoggedIn : Bool
