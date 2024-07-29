@@ -1,6 +1,4 @@
-//  commit after pull
-
-// loading user data on Userview for gettin photo name email from firebase api
+// test commit
 
 import SwiftUI
 
