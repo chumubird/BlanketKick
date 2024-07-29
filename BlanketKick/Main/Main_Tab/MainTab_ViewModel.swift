@@ -90,15 +90,6 @@ class MainTab_ViewModel: ObservableObject {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @ViewBuilder func itemForMain () -> some View {
         
         Button(action:  {
@@ -113,15 +104,12 @@ class MainTab_ViewModel: ObservableObject {
                 Text("Tab 1")
                     .foregroundColor(selectedTab == 0 ? .blue : .gray)
                     .font(.system(size: 10))
-
             }
         }
     }
     
     @ViewBuilder func itemForUser () -> some View {
-        
         if let uiImage = userPhoto {
-            
             Button(action: {
                 self.selectedTab = 1
             } ) {
@@ -141,7 +129,6 @@ class MainTab_ViewModel: ObservableObject {
                     Text("ME")
                         .foregroundColor(selectedTab == 1 ? .blue : .gray)
                         .font(.system(size: 10))
-
                 }
             }
         } else {

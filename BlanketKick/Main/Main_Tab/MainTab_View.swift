@@ -4,10 +4,7 @@ struct MainTab_View: View {
     
     @StateObject var viewModel = MainTab_ViewModel()
 
-    
-    
-    
-    
+
     var body: some View {
         VStack {
 
@@ -37,6 +34,7 @@ struct MainTab_View: View {
             
         }
         .onAppear(perform: {
+            viewModel.selectedTab = 1
             viewModel.loadUserPhotoOnItem()
                 .sink(receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -49,7 +47,6 @@ struct MainTab_View: View {
                 })
                 .store(in: &viewModel.cancellables)
         })
-        
     }
 }
     
