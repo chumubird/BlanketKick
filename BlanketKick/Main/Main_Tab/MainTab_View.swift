@@ -20,7 +20,9 @@ struct MainTab_View: View {
                 }
             User_View()
                 .tabItem {
-                    Label("User", systemImage: "person")
+//                    Label("User", systemImage: "person")
+                    viewModel.itemForUser()
+                     
                 }
         }
     }
