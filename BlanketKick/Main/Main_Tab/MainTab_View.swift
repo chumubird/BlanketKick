@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct MainTab_View: View {
+    
+  @StateObject var viewModel = MainTab_ViewModel()
+    
+    
+    
     var body: some View {
         TabView {
             

@@ -11,9 +11,11 @@ import FirebaseStorage
 
 
 
-class MainTab_ViewModel: ObservedObject{
+class MainTab_ViewModel: ObservableObject {
  
-    
+    func userDataForTabBarItem () {
+        
+    }
     
     
     
