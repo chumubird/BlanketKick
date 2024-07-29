@@ -11,10 +11,8 @@ struct MainTab_View: View {
     var body: some View {
         VStack {
 
-            
-            
             TabView(selection: $viewModel.selectedTab) {
-                Text("Other Tab 1")
+                Text(" Tab 1")
                     .tag(0)
                 User_View()
                     .tag(1)
@@ -35,9 +33,22 @@ struct MainTab_View: View {
             }
             .padding([.leading, .trailing])
             .background(.clear)
-            .offset(CGSize(width: 0, height: 25))
+            .offset(CGSize(width: 0, height: 15))
             
         }
+        .onAppear(perform: {
+            viewModel.loadUserPhotoOnItem()
+                .sink(receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Failed to load user data: \(error.localizedDescription)")
+
+                    }
+                }, receiveValue: {
+                    print("탭바에 유저의 프로필사진을 성공적으로 불러왔습니다.")
+
+                })
+                .store(in: &viewModel.cancellables)
+        })
         
     }
 }
