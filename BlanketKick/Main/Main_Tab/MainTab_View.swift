@@ -36,6 +36,9 @@ import SwiftUI
 struct MainTab_View: View {
     
   @StateObject var viewModel = MainTab_ViewModel()
+    let isSelected: Bool = false
+   
+    
     @State private var selectedTab: Int = 0
 
     
@@ -52,13 +55,30 @@ struct MainTab_View: View {
               
                   HStack {
                       Spacer()
-                      TabBarButton(title: "Tab 1", imageName: "1.square", isSelected: selectedTab == 0) {
-                          selectedTab = 0
+             
+                      Button(action:  {} ) {
+                          VStack {
+                              Image(systemName: "1.square")
+                                  .resizable()
+                                  .frame(width: 30, height: 30)
+                                  .foregroundColor(isSelected ? .red : .gray)
+                              Text("Tab 1")
+                                  .foregroundColor(isSelected ? .red : .gray)
+                          }
+                      }
                       }
                       Spacer()
-                      TabBarButton(title: "User", imageName: "person.circle", isSelected: selectedTab == 1) {
-                          selectedTab = 1
-                      }
+
+              Button(action: {} ) {
+                  VStack {
+                      Image(systemName: "person.circle")
+                          .resizable()
+                          .frame(width: 30, height: 30)
+                          .foregroundColor(isSelected ? .red : .gray)
+                      Text("User")
+                          .foregroundColor(isSelected ? .red : .gray)
+                  }
+              }
                       Spacer()
                   }
                   .padding([.leading, .trailing])
@@ -69,29 +89,8 @@ struct MainTab_View: View {
               }
             
           }
-      }
     
-    
-    struct TabBarButton: View {
-        let title: String
-        let imageName: String
-        let isSelected: Bool
-        let action: () -> Void
-
-        var body: some View {
-            Button(action: action) {
-                VStack {
-                    Image(systemName: imageName)
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(isSelected ? .red : .gray)
-                    Text(title)
-                        .foregroundColor(isSelected ? .red : .gray)
-                }
-            }
-        }
-    }
-
+   
 
 
 
