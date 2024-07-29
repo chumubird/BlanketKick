@@ -17,21 +17,16 @@ struct MainTab_View: View {
             User_View()
                 .tabItem {
 //                    Label("User", systemImage: "person")
-                    viewModel.itemForUser()
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .foregroundStyle(.red)
+                        .background(.red)
+//                    viewModel.itemForUser()
                      
                 }
         }
         .onAppear {
-            // 데이터 로드
-            viewModel.loadUserPhotoForitem()
-                .sink(receiveCompletion: { completion in
-                    if case .failure(let error) = completion {
-                        print("Failed to load user data: \(error.localizedDescription)")
-                    }
-                }, receiveValue: {
-                    print("접속한 유저의 데이터를 성공적으로 불러왔습니다.")
-                })
-                .store(in: &viewModel.cancellables)
+          print("Main tab view onAppear")
         }
     }
 }
