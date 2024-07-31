@@ -16,6 +16,8 @@
 		372B597C2C21266C001ED696 /* BlanketKickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372B597B2C21266C001ED696 /* BlanketKickUITests.swift */; };
 		372B597E2C21266C001ED696 /* BlanketKickUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372B597D2C21266C001ED696 /* BlanketKickUITestsLaunchTests.swift */; };
 		372F5E572C5715A900064283 /* MainTab_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E562C5715A900064283 /* MainTab_ViewModel.swift */; };
+		372F5E612C5A0D5600064283 /* Todo_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E602C5A0D5600064283 /* Todo_View.swift */; };
+		372F5E632C5A0D6400064283 /* Todo_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */; };
 		375858EB2C2E47FE002978EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 375858EA2C2E47FD002978EE /* GoogleService-Info.plist */; };
 		375858EC2C2E48CE002978EE /* Pods_BlanketKick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */; };
 		375858ED2C2E48CE002978EE /* Pods_BlanketKick.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -88,6 +90,8 @@
 		372B597B2C21266C001ED696 /* BlanketKickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlanketKickUITests.swift; sourceTree = "<group>"; };
 		372B597D2C21266C001ED696 /* BlanketKickUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlanketKickUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		372F5E562C5715A900064283 /* MainTab_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab_ViewModel.swift; sourceTree = "<group>"; };
+		372F5E602C5A0D5600064283 /* Todo_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo_View.swift; sourceTree = "<group>"; };
+		372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo_ViewModel.swift; sourceTree = "<group>"; };
 		375858EA2C2E47FD002978EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		37A4522A2C21276F00A2AFDA /* View_SignIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_SignIN.swift; sourceTree = "<group>"; };
 		37A4522C2C21278800A2AFDA /* ViewModel_SignIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel_SignIN.swift; sourceTree = "<group>"; };
@@ -203,6 +207,15 @@
 			path = BlanketKickUITests;
 			sourceTree = "<group>";
 		};
+		372F5E5F2C5A0D4500064283 /* Todo */ = {
+			isa = PBXGroup;
+			children = (
+				372F5E602C5A0D5600064283 /* Todo_View.swift */,
+				372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */,
+			);
+			path = Todo;
+			sourceTree = "<group>";
+		};
 		37A452242C2126E100A2AFDA /* Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,7 +269,7 @@
 		37DCA73A2C3E25C900E47E33 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				37DCA7482C4CF54E00E47E33 /* MAP */,
+				372F5E5F2C5A0D4500064283 /* Todo */,
 				37DCA7402C3E2AD700E47E33 /* Main_Tab */,
 				37DCA73B2C3E25D700E47E33 /* User */,
 			);
@@ -279,13 +292,6 @@
 				372F5E562C5715A900064283 /* MainTab_ViewModel.swift */,
 			);
 			path = Main_Tab;
-			sourceTree = "<group>";
-		};
-		37DCA7482C4CF54E00E47E33 /* MAP */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MAP;
 			sourceTree = "<group>";
 		};
 		876E55FE1678588BC6193248 /* Pods */ = {
@@ -555,6 +561,7 @@
 				37A4523F2C21285300A2AFDA /* GradientStrokeSecureField.swift in Sources */,
 				37A4523B2C21283500A2AFDA /* GradientCircle.swift in Sources */,
 				37DCA73D2C3E260A00E47E33 /* User_View.swift in Sources */,
+				372F5E632C5A0D6400064283 /* Todo_ViewModel.swift in Sources */,
 				37DCA73F2C3E261F00E47E33 /* User_ViewModel.swift in Sources */,
 				37A4522B2C21276F00A2AFDA /* View_SignIN.swift in Sources */,
 				37A4523D2C21284400A2AFDA /* GradientStrokeTextField.swift in Sources */,
@@ -562,6 +569,7 @@
 				37A452332C2127E200A2AFDA /* Model_SignIN_SignUP.swift in Sources */,
 				37DCA7472C489C2300E47E33 /* Firebase.swift in Sources */,
 				372B59652C21266C001ED696 /* Persistence.swift in Sources */,
+				372F5E612C5A0D5600064283 /* Todo_View.swift in Sources */,
 				372B595C2C21266B001ED696 /* BlanketKickApp.swift in Sources */,
 				37DCA7422C3E2AFF00E47E33 /* MainTab_View.swift in Sources */,
 				37A452412C21286100A2AFDA /* WavyRectangle.swift in Sources */,
