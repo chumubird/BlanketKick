@@ -1,9 +1,5 @@
-//
-//  Todo_View.swift
-//  BlanketKick
-//
-//  Created by chul on 7/31/24.
-//
+// pull done
+
 
 import SwiftUI
 
