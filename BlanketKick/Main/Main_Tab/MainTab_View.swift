@@ -9,11 +9,13 @@ struct MainTab_View: View {
         VStack {
 
             TabView(selection: $viewModel.selectedTab) {
-                Text(" Tab 1")
+                Todo_View()
                     .tag(0)
+//                    .background(.red)
                 User_View()
                     .tag(1)
-                
+//                    .background(.red)
+
             }
             
             HStack {
@@ -34,7 +36,7 @@ struct MainTab_View: View {
             
         }
         .onAppear(perform: {
-            viewModel.selectedTab = 1
+            viewModel.selectedTab = 0
             viewModel.loadUserPhotoOnItem()
                 .sink(receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -47,6 +49,7 @@ struct MainTab_View: View {
                 })
                 .store(in: &viewModel.cancellables)
         })
+//        .background(.blue)
     }
 }
     

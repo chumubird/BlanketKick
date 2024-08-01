@@ -11,15 +11,30 @@ struct Todo_View: View {
     
     var body: some View {
         
-        
-        
-        VStack{
-            
-            
-            Spacer()
-            GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "ToDo Value", bindingValue: $textFieldValue)
-            
-        }
+        ZStack{
+            VStack{
+                
+                HStack{
+                    
+                    Text("My Page")
+                        .font(.title)
+                        .fontWeight(.black)
+                        .padding()
+                    Spacer()
+                }
+                
+                Spacer()
+                    .frame(height: 100)
+                Image("pika")
+                    .resizable()
+                    .frame(width: 300,height: 250)
+              
+                
+                
+                Spacer()
+                GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "ToDo Value", bindingValue: $textFieldValue)
+            }
+        }       
     }
 }
 
