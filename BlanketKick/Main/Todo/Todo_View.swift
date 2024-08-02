@@ -32,7 +32,29 @@ struct Todo_View: View {
                 
                 
                 Spacer()
-                GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "ToDo Value", bindingValue: $textFieldValue)
+                HStack{
+                    GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "ToDo Value", bindingValue: $textFieldValue)
+                    
+                    Button(action: {
+                        print(textFieldValue)
+                    }, label: {
+                        
+                        RoundedRectangle(cornerRadius: 25.0)
+                            .frame(width: 90, height: 65)
+                            .foregroundStyle(Color(uiColor: .magenta))
+                            .opacity(0.3)
+                            .overlay(alignment: .center) {
+                                Text("ADD")
+                                    .foregroundStyle(.black)
+                                    .fontWeight(.black)
+                                    
+                            }
+                            
+                        
+                    })
+                    
+                }
+                
             }
         }       
     }
