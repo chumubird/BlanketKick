@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import Foundation
 
-struct Todo_ViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
+
+class Todo_ViewModel: ObservableObject {
+    
 }
 
+
 #Preview {
-    Todo_ViewModel()
+    Todo_View()
 }
