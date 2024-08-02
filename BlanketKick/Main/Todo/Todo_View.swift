@@ -28,35 +28,34 @@ struct Todo_View: View {
                 Image("pika")
                     .resizable()
                     .frame(width: 300,height: 250)
-              
-                
                 
                 Spacer()
                 HStack{
-                    GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "ToDo Value", bindingValue: $textFieldValue)
+                    GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "Add Something To Do !", bindingValue: $textFieldValue)
+                    
+                 
                     
                     Button(action: {
-                        print(textFieldValue)
+                        if textFieldValue.isEmpty {
+                            print("값을 입력하시오")
+                        } else {
+                            print("'\(textFieldValue)'")
+                        }
                     }, label: {
                         
                         RoundedRectangle(cornerRadius: 25.0)
                             .frame(width: 90, height: 65)
-                            .foregroundStyle(Color(uiColor: .magenta))
-                            .opacity(0.3)
+                            .foregroundStyle(LinearGradient(colors: [.pink,.indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .opacity( textFieldValue.isEmpty ?  0.3 : 1.0)
                             .overlay(alignment: .center) {
                                 Text("ADD")
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.white)
                                     .fontWeight(.black)
-                                    
                             }
-                            
-                        
                     })
-                    
                 }
-                
             }
-        }       
+        }
     }
 }
 
