@@ -40,10 +40,16 @@ struct Todo_View: View {
                     Button(action: {
                         if textFieldValue.isEmpty {
                             print("값을 입력하시오")
+                        } else if  items.count >= 10 {
+                            print("10가지 할일을 먼저 끝내셔야합니다.")
+                            
                         } else {
                             print("Todo List 에 '\(textFieldValue)' 을 추가합니다.")
                             items.append(textFieldValue)
-                            print("Todo List 에 \(items) 항목들이 있습니다.")
+                            print("""
+                                    Todo List 항목 수 : \(items.count.description)
+                                    Todo List 에 \(items) 항목들이 있습니다.
+                                    """)
                             //                            DispatchQueue.main.async {
                             //                                sleep(3)
                             //                                print("DispatchQueue")
