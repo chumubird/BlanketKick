@@ -5,7 +5,7 @@ import SwiftUI
 
 struct Todo_View: View {
     
-   
+    
     @State var textFieldValue : String = ""
     
     @State var items : [String] = []
@@ -43,7 +43,17 @@ struct Todo_View: View {
                         } else {
                             print("Todo List 에 '\(textFieldValue)' 을 추가합니다.")
                             items.append(textFieldValue)
-                            print("Todo List : \(items)")
+                            print("Todo List 에 \(items) 항목들이 있습니다.")
+                            //                            DispatchQueue.main.async {
+                            //                                sleep(3)
+                            //                                print("DispatchQueue")
+                            //                                textFieldValue = ""
+                            //                                print("Todo TextFiled Clear for Next Value")
+                            //                            }
+                            textFieldValue = ""
+                            print("Todo TextFiled Clear for Next Value")
+                            
+                            
                         }
                     }, label: {
                         
