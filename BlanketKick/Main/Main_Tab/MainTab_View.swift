@@ -16,7 +16,6 @@ struct MainTab_View: View {
                     User_View()
                         .tag(1)
                     //                    .background(.red)
-                    
                 }
                 
                 HStack {

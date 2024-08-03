@@ -17,12 +17,12 @@ import Combine
 class Firebase: ObservableObject {
     
     static let shared = Firebase()
-
+    
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
     
     
-//    creating new user on firebase auth
+    //    creating new user on firebase auth
     func createUserWithCombine( email: String, password: String) ->  Future<AuthDataResult, Error> {
         return Future {promise in
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
@@ -40,7 +40,7 @@ class Firebase: ObservableObject {
     
     func addEmailDocumentFireStore (email:String) -> Future<Void,Error> {
         return Future { [self] promise in
-        let userEmail = email
+            let userEmail = email
             db.collection("EmailChecking").document(userEmail).setData(["email" : userEmail]) { error in
                 if let error = error {
                     promise(.failure(error))
@@ -107,21 +107,21 @@ class Firebase: ObservableObject {
         }
     }
     
-//    func profilePhotoDataonUserDataFireStoreDataBase ( uid : String, imgURL: String) -> Future<Void, Error> {
-//        return Future { [self] promise in
-//            let profilePhoto = imgURL
-//            db.collection("UserData").document(uid).setData(["Photo" : profilePhoto] ) { error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                } else {
-//                    promise(.success(()))
-//                }
-//            }
-//        }
-//    }
-//    
+    //    func profilePhotoDataonUserDataFireStoreDataBase ( uid : String, imgURL: String) -> Future<Void, Error> {
+    //        return Future { [self] promise in
+    //            let profilePhoto = imgURL
+    //            db.collection("UserData").document(uid).setData(["Photo" : profilePhoto] ) { error in
+    //                if let error = error {
+    //                    promise(.failure(error))
+    //                } else {
+    //                    promise(.success(()))
+    //                }
+    //            }
+    //        }
+    //    }
+    //
     
-//    Email chekcing if its already exists or not
+    //    Email chekcing if its already exists or not
     
     func checkingEmailExist(documentName: String) -> Future<Void,Error> {
         return Future { [self] promise in
@@ -131,7 +131,7 @@ class Firebase: ObservableObject {
                 if let error = error {
                     promise(.failure(error))
                     print("처음부터 애러난거같음 이 애러라면 아마 규칙 어쩌고 지랄임")
-
+                    
                 }else if let document = userEmail, document.exists {
                     promise(.success(()))
                     print("이메일이 이미 존재함")
@@ -155,13 +155,13 @@ class Firebase: ObservableObject {
     
     func currentUser () {
         if let user = Auth.auth().currentUser {
-                let uid = user.uid
-                let email = user.email ?? "이메일 없음"
-                print("현재 로그인한 사용자 UID: \(uid)")
-                print("현재 로그인한 사용자 이메일: \(email)")
-            } else {
-                print("현재 로그인한 사용자가 없습니다.")
-            }
+            let uid = user.uid
+            let email = user.email ?? "이메일 없음"
+            print("현재 로그인한 사용자 UID: \(uid)")
+            print("현재 로그인한 사용자 이메일: \(email)")
+        } else {
+            print("현재 로그인한 사용자가 없습니다.")
+        }
     }
     
     func userLogin (email: String, password: String) -> Future<AuthDataResult, Error> {

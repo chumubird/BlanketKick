@@ -5,9 +5,11 @@ import SwiftUI
 
 struct Todo_View: View {
     
-    let items = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
-    
+   
     @State var textFieldValue : String = ""
+    
+    @State var items : [String] = []
+    
     
     var body: some View {
         
@@ -33,13 +35,15 @@ struct Todo_View: View {
                 HStack{
                     GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "Add Something To Do !", bindingValue: $textFieldValue)
                     
-                 
+                    
                     
                     Button(action: {
                         if textFieldValue.isEmpty {
                             print("값을 입력하시오")
                         } else {
-                            print("'\(textFieldValue)'")
+                            print("Todo List 에 '\(textFieldValue)' 을 추가합니다.")
+                            items.append(textFieldValue)
+                            print("Todo List : \(items)")
                         }
                     }, label: {
                         
