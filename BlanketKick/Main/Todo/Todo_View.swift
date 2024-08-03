@@ -27,15 +27,35 @@ struct Todo_View: View {
                 
                 Spacer()
                     .frame(height: 100)
-                Image("pika")
-                    .resizable()
-                    .frame(width: 300,height: 250)
+//                Image("pika")
+//                    .resizable()
+//                    .frame(width: 300,height: 250)
+//
+                
+                
+                Button(action: {
+                    
+                }
+                       , label: {
+                    RoundedRectangle(cornerRadius: 25.0)
+                        .frame(width: 120, height: 120)
+                        .foregroundStyle(LinearGradient(colors: [.pink,.indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .opacity( items.isEmpty ?  0.3 : 1.0)
+                        .overlay(alignment: .center) {
+                            Text("Check Your TODO")
+                                .foregroundStyle(.white)
+                                .fontWeight(.black)
+                                .font(.system(size: 30))
+                        }
+                    
+                  
+                })
+                .disabled(items.isEmpty ? true : false)
+                
                 
                 Spacer()
                 HStack{
                     GradientStrokeTextField(gradient: LinearGradient(colors: [.pink,.purple], startPoint: .topLeading, endPoint: .bottomTrailing), placeholderValue: "Add Something To Do !", bindingValue: $textFieldValue)
-                    
-                    
                     
                     Button(action: {
                         if textFieldValue.isEmpty {
@@ -50,15 +70,8 @@ struct Todo_View: View {
                                     Todo List 항목 수 : \(items.count.description)
                                     Todo List 에 \(items) 항목들이 있습니다.
                                     """)
-                            //                            DispatchQueue.main.async {
-                            //                                sleep(3)
-                            //                                print("DispatchQueue")
-                            //                                textFieldValue = ""
-                            //                                print("Todo TextFiled Clear for Next Value")
-                            //                            }
                             textFieldValue = ""
                             print("Todo TextFiled Clear for Next Value")
-                            
                             
                         }
                     }, label: {
