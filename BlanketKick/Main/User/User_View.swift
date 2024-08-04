@@ -15,7 +15,8 @@ struct User_View: View {
             VStack{
                 
                 VStack{
-                    
+                    Spacer()
+                        .frame(height: 60)
                     HStack{
                         
                         viewModel.TextForTitle()
@@ -61,6 +62,7 @@ struct User_View: View {
                 })
                 .store(in: &viewModel.cancellables)
         }
+        .ignoresSafeArea()
     }
 }
 

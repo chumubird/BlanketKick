@@ -16,6 +16,9 @@ struct Todo_View: View {
         ZStack{
             VStack{
                 
+                Spacer()
+                    .frame(height: 60)
+                
                 HStack{
                     
                     Text("My Page")
@@ -27,10 +30,10 @@ struct Todo_View: View {
                 
                 Spacer()
                     .frame(height: 100)
-//                Image("pika")
-//                    .resizable()
-//                    .frame(width: 300,height: 250)
-//
+                //                Image("pika")
+                //                    .resizable()
+                //                    .frame(width: 300,height: 250)
+                //
                 
                 
                 Button(action: {
@@ -48,35 +51,35 @@ struct Todo_View: View {
                                 .font(.system(size: 30))
                         }
                     
-                  
+                    
                 })
                 .disabled(items.isEmpty ? true : false)
                 
-//                ForEach($items) { items in
-//                    Button {
-//                        
-//                    } label: {
-//                        Text(items)
-//                    }
-//
-//                }
+                //                ForEach($items) { items in
+                //                    Button {
+                //
+                //                    } label: {
+                //                        Text(items)
+                //                    }
+                //
+                //                }
                 List {
-                                   ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-                                       Button(action: {
-                                           // Item action
-                                       }) {
-                                           HStack{
-                                               Text(item)
-                                               Spacer()
-                                               Image(systemName: "trash")
-                                                   .onTapGesture {
-                                                       print("delete Button clicked!")
-                                                   }
-                                           }
-                                       }
-                                   }
-                               }
-
+                    ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                        Button(action: {
+                            // Item action
+                        }) {
+                            HStack{
+                                Text(item)
+                                Spacer()
+                                Image(systemName: "trash")
+                                    .onTapGesture {
+                                        print("delete Button clicked!")
+                                    }
+                            }
+                        }
+                    }
+                }
+                
                 
                 
                 Spacer()
@@ -113,9 +116,14 @@ struct Todo_View: View {
                             }
                     })
                 }
+                Spacer()
+                    .frame(height: 10)
             }
         }
+        .ignoresSafeArea()
+//        .background(.blue)
     }
+    
 }
 
 #Preview {
