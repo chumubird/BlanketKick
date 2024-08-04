@@ -52,6 +52,32 @@ struct Todo_View: View {
                 })
                 .disabled(items.isEmpty ? true : false)
                 
+//                ForEach($items) { items in
+//                    Button {
+//                        
+//                    } label: {
+//                        Text(items)
+//                    }
+//
+//                }
+                List {
+                                   ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                                       Button(action: {
+                                           // Item action
+                                       }) {
+                                           HStack{
+                                               Text(item)
+                                               Spacer()
+                                               Image(systemName: "trash")
+                                                   .onTapGesture {
+                                                       print("delete Button clicked!")
+                                                   }
+                                           }
+                                       }
+                                   }
+                               }
+
+                
                 
                 Spacer()
                 HStack{
