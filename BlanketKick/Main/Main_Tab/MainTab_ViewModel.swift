@@ -91,20 +91,33 @@ class MainTab_ViewModel: ObservableObject {
     
     
     @ViewBuilder func itemForMain () -> some View {
-        
-        Button(action:  {
-            self.selectedTab = 0
-        } ) {
-            VStack {
-                Image(systemName: "1.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .foregroundStyle(Gradient(colors: selectedTab == 0 ? [.blue, .purple] : [.red,.orange]))
-                Text("Tab 1")
-                    .foregroundColor(selectedTab == 0 ? .blue : .gray)
-                    .font(.system(size: 10))
-            }
+//        
+//        Button(action:  {
+//            self.selectedTab = 0
+//        } ) {
+//            VStack {
+//                Image(systemName: "checklist")
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 25, height: 25)
+//                    .foregroundStyle(Gradient(colors: selectedTab == 0 ? [.blue, .purple] : [.red,.orange]))
+//                Text("ToDo")
+//                    .foregroundColor(selectedTab == 0 ? .blue : .gray)
+//                    .font(.system(size: 10))
+//            }
+//        }
+        VStack {
+            Image(systemName: "checklist")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 25, height: 25)
+                .foregroundStyle(Gradient(colors: selectedTab == 0 ? [.blue, .purple] : [.red,.orange]))
+            Text("ToDo")
+                .foregroundColor(selectedTab == 0 ? .blue : .gray)
+                .font(.system(size: 10))
+        }
+        .onTapGesture {
+                        self.selectedTab = 0
         }
     }
     

@@ -63,6 +63,8 @@ struct Todo_View: View {
                 //                    }
                 //
                 //                }
+                
+                
                 List {
                     ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                         Button(action: {
@@ -79,6 +81,8 @@ struct Todo_View: View {
                         }
                     }
                 }
+                
+                
                 
                 
                 
@@ -117,7 +121,7 @@ struct Todo_View: View {
                     })
                 }
                 Spacer()
-                    .frame(height: 10)
+                    .frame(height: 15)
             }
         }
         .ignoresSafeArea()

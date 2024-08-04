@@ -31,9 +31,9 @@ struct MainTab_View: View {
                     
                     Spacer()
                 }
-                .padding([.leading, .trailing])
+//                .padding([.leading, .trailing])
                 .background(.clear)
-                .offset(CGSize(width: 0, height: 15))
+                .offset(CGSize(width: 0, height: 0))
                 
             }
             .onAppear(perform: {
