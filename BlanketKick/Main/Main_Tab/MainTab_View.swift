@@ -70,7 +70,8 @@ struct MainTab_View: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Content area
+           
+            
             Group {
                 if viewModel.selectedTab == 0 {
                     Todo_View()
@@ -80,7 +81,7 @@ struct MainTab_View: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            // Custom TabBar
+
             HStack {
                 Spacer()
                 
@@ -92,8 +93,8 @@ struct MainTab_View: View {
                 
                 Spacer()
             }
-            .frame(height: 50) // Adjust the height as needed
-            .background(Color.white) // Set the background color for the TabBar
+            .frame(height: 50)
+            .background(Color.white) 
         }
         .onAppear {
             viewModel.selectedTab = 0
