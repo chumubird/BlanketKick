@@ -94,24 +94,43 @@ class MainTab_ViewModel: ObservableObject {
         
         Button(action:  {
             self.selectedTab = 0
+            print("첫번째 아이탬 클릭")
         } ) {
             VStack {
-                Image(systemName: "1.circle")
+                Image(systemName: "checklist")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 25, height: 25)
                     .foregroundStyle(Gradient(colors: selectedTab == 0 ? [.blue, .purple] : [.red,.orange]))
-                Text("Tab 1")
+                Text("ToDo")
                     .foregroundColor(selectedTab == 0 ? .blue : .gray)
                     .font(.system(size: 10))
             }
         }
+//        VStack {
+//            Image(systemName: "checklist")
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width: 25, height: 25)
+////                .background(.red)
+//                .foregroundStyle(Gradient(colors: selectedTab == 0 ? [.blue, .purple] : [.red,.orange]))
+//            Text("ToDo")
+//                .foregroundColor(selectedTab == 0 ? .blue : .gray)
+//                .font(.system(size: 10))
+//        }
+////        .background(.red)
+//        .onTapGesture {
+//                        self.selectedTab = 0
+//            print("첫번째 아이탬 클릭")
+//        }
     }
     
     @ViewBuilder func itemForUser () -> some View {
         if let uiImage = userPhoto {
             Button(action: {
                 self.selectedTab = 1
+                print("두번째 아이탬 클릭")
+
             } ) {
                 VStack {
                     Circle()
@@ -134,6 +153,8 @@ class MainTab_ViewModel: ObservableObject {
         } else {
             Button(action: {
                 self.selectedTab = 1
+                print("두번째 아이탬 클릭")
+
             }) {
                 VStack{
                 
