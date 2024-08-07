@@ -1,7 +1,5 @@
+// pull done
 
-//pull done
-// app state about login logout state need
-// appstate branch 
 import SwiftUI
 
 struct User_View: View {
