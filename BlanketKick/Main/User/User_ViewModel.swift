@@ -114,7 +114,28 @@ class User_ViewModel: ObservableObject {
                }
            }
        }
+    
+    func userLogOut () {
+        
+        Firebase.shared.userLogoutStatusData()
+            .sink(receiveCompletion: { complete in
+                switch complete {
+                case .finished:
+                    print("유저로그아웃 콤바인 성공")
+                case .failure(let error):
+                    print("유저로그아웃 콤바인 애러")
+                }
+            }, receiveValue: {
+                
+            })
+            .store(in: &cancellables)
+        
+    }
+    
+    
    }
+
+
 
 
 
