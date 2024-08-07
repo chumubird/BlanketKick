@@ -204,9 +204,10 @@ class Firebase: ObservableObject {
     func userLogoutStatusData() -> Future<Void,Error> {
         return Future { [self] promise in
             
-            var loginStatus = false
+            let loginStatus = false
             if let user = Auth.auth().currentUser {
                 let uid = user.uid
+                let email = user.email
                 
                 db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { error in
                     if let error = error {
@@ -217,7 +218,8 @@ class Firebase: ObservableObject {
                         promise(.success(()))
                         print("로그인 상태 업데이트 완료 on -> off")
                         print("--------- 지금 로그아웃 한 유저 ---------")
-                        self.currentUser()
+                        print("방금 로그아웃한 사용자 UID: \(uid)")
+                        print("방금 로그아웃한 사용자 이메일: \(email)")
                     }
                 }
             }

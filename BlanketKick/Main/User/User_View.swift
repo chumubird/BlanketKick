@@ -28,8 +28,11 @@ struct User_View: View {
                         Button(action: {
                             print("logout button clicked")
                             //firebase + combine logout logic
-                            appState.isLoggedIn = false
-
+                                viewModel.userLogOut()
+                            
+                            if viewModel.logOutSuccess == true {
+                                appState.isLoggedIn = false
+                            }
                         }, label: {
                             VStack{
                                 Image(systemName: "person.crop.circle.badge.minus")
