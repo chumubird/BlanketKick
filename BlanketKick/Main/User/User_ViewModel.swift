@@ -117,16 +117,23 @@ class User_ViewModel: ObservableObject {
     
     
     @Published var logOutSuccess : Bool = false
+
     func userLogOut () {
-        
         Firebase.shared.userLogoutStatusData()
-            .sink(receiveCompletion: { complete in
-                switch complete {
+            .flatMap { _ in
+                Firebase.shared.authSignOut()
+            }
+            .sink(receiveCompletion: { completion in
+                switch completion {
                 case .finished:
                     print("유저로그아웃 콤바인 성공")
+
                 case .failure(let error):
+                    
                     print("유저로그아웃 콤바인 애러")
+                    print("Error CODE : \(error)")
                 }
+                
             }, receiveValue: {
                 self.logOutSuccess = true
                 print("로그아웃 성공 변수 : \(self.logOutSuccess.description)")

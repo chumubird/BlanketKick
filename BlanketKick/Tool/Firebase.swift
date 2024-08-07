@@ -207,9 +207,9 @@ class Firebase: ObservableObject {
             let loginStatus = false
             if let user = Auth.auth().currentUser {
                 let uid = user.uid
-                let email = user.email
+                let email = user.email ?? "이메일 없음"
                 
-                db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { error in
+                db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { [self] error in
                     if let error = error {
                         promise(.failure(error))
                         print("문서가 없음 // 에러")
@@ -220,6 +220,7 @@ class Firebase: ObservableObject {
                         print("--------- 지금 로그아웃 한 유저 ---------")
                         print("방금 로그아웃한 사용자 UID: \(uid)")
                         print("방금 로그아웃한 사용자 이메일: \(email)")
+
                     }
                 }
             }

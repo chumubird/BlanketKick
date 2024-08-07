@@ -29,10 +29,6 @@ struct User_View: View {
                             print("logout button clicked")
                             //firebase + combine logout logic
                                 viewModel.userLogOut()
-                            
-                            if viewModel.logOutSuccess == true {
-                                appState.isLoggedIn = false
-                            }
                         }, label: {
                             VStack{
                                 Image(systemName: "person.crop.circle.badge.minus")
@@ -86,8 +82,11 @@ struct User_View: View {
                 })
                 .store(in: &viewModel.cancellables)
         }
-     
-        
+        .onReceive(viewModel.$logOutSuccess) { logOutSuccess in
+                   if logOutSuccess {
+                       appState.isLoggedIn = false
+                   }
+               }
         .ignoresSafeArea()
     }
 }
