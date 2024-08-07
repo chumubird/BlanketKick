@@ -107,8 +107,12 @@ class ViewModel_SignIN: ObservableObject {
 
 
 
-
-
+//
+//
+//#Preview {
+//    View_SignIN(isLoggedIn: .constant(false))
+//}
 #Preview {
-    View_SignIN(isLoggedIn: .constant(false))
+    View_SignIN()
+        .environmentObject(AppStateForLoginLogOut())
 }

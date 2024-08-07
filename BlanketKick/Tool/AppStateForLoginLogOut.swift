@@ -1,6 +1,6 @@
 import SwiftUI
 import Combine
 
-class AppState: ObservableObject {
+class AppStateForLoginLogOut: ObservableObject {
     @Published var isLoggedIn: Bool = false
 }
