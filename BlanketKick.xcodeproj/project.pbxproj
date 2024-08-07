@@ -18,6 +18,7 @@
 		372F5E572C5715A900064283 /* MainTab_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E562C5715A900064283 /* MainTab_ViewModel.swift */; };
 		372F5E612C5A0D5600064283 /* Todo_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E602C5A0D5600064283 /* Todo_View.swift */; };
 		372F5E632C5A0D6400064283 /* Todo_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */; };
+		372F5E652C6385C200064283 /* AppStateForLoginLogOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E642C6385C200064283 /* AppStateForLoginLogOut.swift */; };
 		375858EB2C2E47FE002978EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 375858EA2C2E47FD002978EE /* GoogleService-Info.plist */; };
 		375858EC2C2E48CE002978EE /* Pods_BlanketKick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */; };
 		375858ED2C2E48CE002978EE /* Pods_BlanketKick.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -92,6 +93,7 @@
 		372F5E562C5715A900064283 /* MainTab_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab_ViewModel.swift; sourceTree = "<group>"; };
 		372F5E602C5A0D5600064283 /* Todo_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo_View.swift; sourceTree = "<group>"; };
 		372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo_ViewModel.swift; sourceTree = "<group>"; };
+		372F5E642C6385C200064283 /* AppStateForLoginLogOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateForLoginLogOut.swift; sourceTree = "<group>"; };
 		375858EA2C2E47FD002978EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		37A4522A2C21276F00A2AFDA /* View_SignIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_SignIN.swift; sourceTree = "<group>"; };
 		37A4522C2C21278800A2AFDA /* ViewModel_SignIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel_SignIN.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			children = (
 				37A452342C21280100A2AFDA /* ImagePicker.swift */,
 				37DCA7462C489C2300E47E33 /* Firebase.swift */,
+				372F5E642C6385C200064283 /* AppStateForLoginLogOut.swift */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 				37DCA7472C489C2300E47E33 /* Firebase.swift in Sources */,
 				372B59652C21266C001ED696 /* Persistence.swift in Sources */,
 				372F5E612C5A0D5600064283 /* Todo_View.swift in Sources */,
+				372F5E652C6385C200064283 /* AppStateForLoginLogOut.swift in Sources */,
 				372B595C2C21266B001ED696 /* BlanketKickApp.swift in Sources */,
 				37DCA7422C3E2AFF00E47E33 /* MainTab_View.swift in Sources */,
 				37A452412C21286100A2AFDA /* WavyRectangle.swift in Sources */,
