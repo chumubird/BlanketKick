@@ -1,4 +1,4 @@
-// pull done
+// pull done from UI
 
 
 import SwiftUI
