@@ -5,8 +5,8 @@ import SwiftUI
 struct User_View: View {
     
     
-   @StateObject var viewModel = User_ViewModel()
-    
+    @StateObject var viewModel = User_ViewModel()
+
     
     var body: some View {
         
@@ -21,6 +21,23 @@ struct User_View: View {
                         
                         viewModel.TextForTitle()
                         Spacer()
+                        
+                        
+                        Button(action: {
+                            print("logout button clicked")
+                            //firebase + combine logout logic
+                        }, label: {
+                            VStack{
+                                Image(systemName: "person.crop.circle.badge.minus")
+                                    .resizable()
+                                    .frame( width: 30 , height: 30)
+                                    .foregroundStyle(.blue)
+//                                    .padding()
+                            }
+                        })
+                        Spacer()
+                            .frame(width: 10)
+                        
                     }
                 }
                 
@@ -62,6 +79,8 @@ struct User_View: View {
                 })
                 .store(in: &viewModel.cancellables)
         }
+     
+        
         .ignoresSafeArea()
     }
 }
