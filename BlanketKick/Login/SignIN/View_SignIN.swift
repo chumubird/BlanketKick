@@ -4,7 +4,9 @@ import SwiftUI
 //pull done and checked done
 struct View_SignIN: View {
   
-    @Binding var isLoggedIn : Bool
+//    @Binding var isLoggedIn : Bool
+    @EnvironmentObject var appState: AppStateForLoginLogOut
+
     
     @StateObject var viewModel = ViewModel_SignIN()
     
@@ -177,7 +179,9 @@ struct View_SignIN: View {
                 .foregroundStyle(.gray)
         
                 .onReceive(viewModel.$isLoggedIn) { updatedIsLoggedIn in
-                           self.isLoggedIn = updatedIsLoggedIn
+//                           self.isLoggedIn = updatedIsLoggedIn
+                    appState.isLoggedIn = updatedIsLoggedIn
+
                        }
         }
     }
@@ -185,9 +189,12 @@ struct View_SignIN: View {
 
 
 
-
+//
+//#Preview {
+//    View_SignIN(isLoggedIn: .constant(false))
+//}
+//
 #Preview {
-    View_SignIN(isLoggedIn: .constant(false))
+    View_SignIN()
+        .environmentObject(AppStateForLoginLogOut())
 }
-
-

@@ -1,11 +1,13 @@
 
 //pull done
 // app state about login logout state need
-
+// appstate branch 
 import SwiftUI
 
 struct User_View: View {
     
+    @EnvironmentObject var appState: AppStateForLoginLogOut
+
     
     @StateObject var viewModel = User_ViewModel()
 
@@ -28,6 +30,8 @@ struct User_View: View {
                         Button(action: {
                             print("logout button clicked")
                             //firebase + combine logout logic
+                            appState.isLoggedIn = false
+
                         }, label: {
                             VStack{
                                 Image(systemName: "person.crop.circle.badge.minus")
@@ -87,9 +91,14 @@ struct User_View: View {
     }
 }
 
+//
+//#Preview {
+//    User_View()
+//}
+//
+
 
 #Preview {
     User_View()
+        .environmentObject(AppStateForLoginLogOut())
 }
-
-
