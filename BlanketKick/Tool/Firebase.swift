@@ -209,7 +209,7 @@ class Firebase: ObservableObject {
                 let uid = user.uid
                 let email = user.email ?? "이메일 없음"
                 
-                db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { [self] error in
+                db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { error in
                     if let error = error {
                         promise(.failure(error))
                         print("문서가 없음 // 에러")
@@ -223,6 +223,8 @@ class Firebase: ObservableObject {
 
                     }
                 }
+            } else {
+                print("에러")
             }
         }
     }

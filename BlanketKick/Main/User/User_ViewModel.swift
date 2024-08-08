@@ -22,6 +22,10 @@ class User_ViewModel: ObservableObject {
     @Published var userEmail : String = "user Email"
     @Published var userName : String = "user Name"
     
+    //for logout
+    @Published var logOutSuccess : Bool = false
+    
+    
     @ViewBuilder func TextForTitle () -> some View {
         Text("My Page")
             .font(.title)
@@ -98,6 +102,7 @@ class User_ViewModel: ObservableObject {
         }
     }
     
+    
     func loadUserPhoto(photoURLString: String) -> Future<UIImage, Error> {
         return Future { promise in
             let storageRef = self.storage.reference(forURL: photoURLString)
@@ -116,8 +121,7 @@ class User_ViewModel: ObservableObject {
     }
     
     
-    @Published var logOutSuccess : Bool = false
-
+    
     func userLogOut () {
         Firebase.shared.userLogoutStatusData()
             .flatMap { _ in
@@ -127,7 +131,7 @@ class User_ViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     print("유저로그아웃 콤바인 성공")
-
+                    
                 case .failure(let error):
                     
                     print("유저로그아웃 콤바인 애러")
@@ -139,7 +143,6 @@ class User_ViewModel: ObservableObject {
                 print("로그아웃 성공 변수 : \(self.logOutSuccess.description)")
             })
             .store(in: &cancellables)
-        
     }
     
     
