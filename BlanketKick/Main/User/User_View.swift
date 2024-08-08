@@ -1,7 +1,5 @@
+// pull done
 
-//pull done
-// app state about login logout state need
-// appstate branch 
 import SwiftUI
 
 struct User_View: View {
@@ -30,8 +28,7 @@ struct User_View: View {
                         Button(action: {
                             print("logout button clicked")
                             //firebase + combine logout logic
-                            appState.isLoggedIn = false
-
+                                viewModel.userLogOut()
                         }, label: {
                             VStack{
                                 Image(systemName: "person.crop.circle.badge.minus")
@@ -85,8 +82,11 @@ struct User_View: View {
                 })
                 .store(in: &viewModel.cancellables)
         }
-     
-        
+        .onReceive(viewModel.$logOutSuccess) { logOutSuccess in
+                   if logOutSuccess {
+                       appState.isLoggedIn = false
+                   }
+               }
         .ignoresSafeArea()
     }
 }

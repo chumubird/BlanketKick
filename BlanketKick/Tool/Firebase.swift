@@ -201,7 +201,36 @@ class Firebase: ObservableObject {
         }
     }
     
+    func userLogoutStatusData() -> Future<Void,Error> {
+        return Future { [self] promise in
+            
+            let loginStatus = false
+            if let user = Auth.auth().currentUser {
+                let uid = user.uid
+                let email = user.email ?? "이메일 없음"
+                
+                db.collection("UserData").document(uid).updateData(["Login_Status" : loginStatus]) { error in
+                    if let error = error {
+                        promise(.failure(error))
+                        print("문서가 없음 // 에러")
+                        
+                    } else {
+                        promise(.success(()))
+                        print("로그인 상태 업데이트 완료 on -> off")
+                        print("--------- 지금 로그아웃 한 유저 ---------")
+                        print("방금 로그아웃한 사용자 UID: \(uid)")
+                        print("방금 로그아웃한 사용자 이메일: \(email)")
+
+                    }
+                }
+            } else {
+                print("에러")
+            }
+        }
+    }
+    
     // auth logout method with combine + firebase
+    
     
     func authSignOut () -> Future<Void,Error> {
         return Future { promise in
