@@ -1,4 +1,4 @@
-// pull done
+// pull done about logout combine+ firebase api
 
 import SwiftUI
 
