@@ -1,4 +1,5 @@
-// pull done about logout combine+ firebase api
+// pull done
+// code refactoring start  for logic from view -> viewmodel about logout
 
 import SwiftUI
 
