@@ -17,10 +17,13 @@ class User_ViewModel: ObservableObject {
     
     //combine
     var cancellables = Set<AnyCancellable>()
+    //model
+    @Published var user = User(email: "", name: "", password: "", profileImage: nil)
+
     
-    @Published var userPhoto : UIImage?
-    @Published var userEmail : String = "user Email"
-    @Published var userName : String = "user Name"
+//    @Published var userPhoto : UIImage?
+//    @Published var userEmail : String = "user Email"
+//    @Published var userName : String = "user Name"
     
     //for logout
     @Published var logOutSuccess : Bool = false
@@ -34,7 +37,7 @@ class User_ViewModel: ObservableObject {
     }
     
     @ViewBuilder func userProfilePhotoImage () -> some View {
-        if let uiImage = userPhoto {
+        if let uiImage = user.profileImage {
             Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFill()
@@ -74,8 +77,8 @@ class User_ViewModel: ObservableObject {
                     print("Failed to load user data: \(error.localizedDescription)")
                     print("유저데이터 불러오기 이메일 이름 포토 가져오기 애러")
                 } else if let document = document, document.exists {
-                    self?.userEmail = document.get("email") as? String ?? "No Email"
-                    self?.userName = document.get("name") as? String ?? "No Name"
+                    self?.user.email = document.get("email") as? String ?? "No Email"
+                    self?.user.name = document.get("name") as? String ?? "No Name"
                     
                     //  if photo field has only value = "" <---- when user didnt set photo for profile
                     // now app will not die and showing non proifle = default photo image on user view
@@ -86,11 +89,11 @@ class User_ViewModel: ObservableObject {
                                     print("Failed to load photo: \(error.localizedDescription)")
                                 }
                             }, receiveValue: { [weak self] image in
-                                self?.userPhoto = image
+                                self?.user.profileImage = image
                             })
                             .store(in: &self!.cancellables)
                     } else {
-                        self?.userPhoto = nil
+                        self?.user.profileImage = nil
                     }
                     
                     promise(.success(()))

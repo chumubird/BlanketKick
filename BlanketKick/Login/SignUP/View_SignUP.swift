@@ -86,9 +86,9 @@ struct View_SignUP: View {
             }
     
             ZStack{
-                GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Email", bindingValue: $viewModel.emailForNewUser)
+                GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Email", bindingValue: $viewModel.user.email)
                     .padding(.top)
-                    .onChange(of: viewModel.emailForNewUser) { oldValue, newValue in
+                    .onChange(of: viewModel.user.email) { oldValue, newValue in
                         viewModel.filteringStringForUserId(newValue: newValue)
                     }
                 
@@ -114,21 +114,21 @@ struct View_SignUP: View {
             }
             
             
-            GradientStrokeTextField(gradient: LinearGradient(colors: [.green, .purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Name", bindingValue: $viewModel.nameForNewUser)
+            GradientStrokeTextField(gradient: LinearGradient(colors: [.green, .purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New Name", bindingValue: $viewModel.user.name)
                 .padding(.top)
-                .onChange(of: viewModel.nameForNewUser) { oldValue, newValue in
+                .onChange(of: viewModel.user.name) { oldValue, newValue in
                         viewModel.filteringStringForUserName(newValue: newValue)
                 }
             
             ZStack{
-                GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New PW", bindingValue: $viewModel.pwForNewUser, isVisibleCode: false)
+                GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "New PW", bindingValue: $viewModel.user.password, isVisibleCode: false)
                     .padding([.top, .bottom])
-                    .onChange(of: viewModel.pwForNewUser) { oldValue, newValue in
+                    .onChange(of: viewModel.user.password) { oldValue, newValue in
                         viewModel.filteringStringForUserPw(newValue: newValue)
                     }
 
                 Button(action: {
-                    print("\(viewModel.pwForNewUser)")
+                    print("\(viewModel.user.password)")
                 }, label: {
                     viewModel.pwCheckBoxImage()
     
@@ -174,7 +174,7 @@ struct View_SignUP: View {
             .padding(.bottom)
             .disabled(viewModel.emailUsable && viewModel.emailChecking && viewModel.passwordCheckingDone ? false : true)
             .alert(isPresented: $viewModel.alertForNewUser, content: {
-                Alert(title:  Text("Welcome! \(viewModel.emailForNewUser)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
+                Alert(title:  Text("Welcome! \(viewModel.user.email)!!!"), message: Text("Now you can Login"), dismissButton: .default(Text("Login Page"), action: {
                     isCurrentModal = false
                     print("로그인 페이지로 이동합니다.")
                     viewModel.alertForNewUser.toggle()

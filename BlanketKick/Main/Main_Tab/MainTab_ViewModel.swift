@@ -20,8 +20,10 @@ class MainTab_ViewModel: ObservableObject {
     //combine
     var cancellables = Set<AnyCancellable>()
     
-    
-    @Published var userPhoto : UIImage?
+    //model
+    @Published var user = User(email: "", name: "", password: "", profileImage: nil)
+
+//    @Published var userPhoto : UIImage?
     
     
     func loadUserPhoto (photoURLString : String) -> Future<UIImage,Error> {
@@ -67,12 +69,12 @@ class MainTab_ViewModel: ObservableObject {
                                 
                                 
                             }, receiveValue: { image in
-                                self.userPhoto = image
+                                self.user.profileImage = image
                                 
                             })
                             .store(in: &self.cancellables)
                     } else {
-                        self.userPhoto = nil
+                        self.user.profileImage = nil
                     }
                     
                     promise(.success(()))
@@ -126,7 +128,7 @@ class MainTab_ViewModel: ObservableObject {
     }
     
     @ViewBuilder func itemForUser () -> some View {
-        if let uiImage = userPhoto {
+        if let uiImage = user.profileImage {
             Button(action: {
                 self.selectedTab = 1
                 print("두번째 아이탬 클릭")

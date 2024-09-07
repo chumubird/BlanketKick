@@ -12,6 +12,13 @@ struct Model_SignIN_SignUP : Codable {
     
 }
 
+struct User {
+    var email: String
+    var name: String
+    var password: String
+    var profileImage: UIImage?
+}
+
 
 //enum PasswordCondition : String {
 //    case success = "비밀번호 확인 완료"
