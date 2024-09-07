@@ -8,17 +8,18 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class ViewModel_SignUP: ObservableObject {
-    
-    
+    //Model
+    @Published var user = User(email: "", name: "", password: "", profileImage: nil)
+
     //main background animation
     @Published var isAnimation : Bool = false
     
     
     // main property for user data
-    @Published var emailForNewUser: String = ""
-    @Published var nameForNewUser: String = ""
-    @Published var pwForNewUser: String = ""
-    
+//    @Published var emailForNewUser: String = ""
+//    @Published var nameForNewUser: String = ""
+//    @Published var pwForNewUser: String = ""
+//    
     // visible on off :  user pw
     @Published var checkingPW: Bool = false
     
@@ -91,8 +92,8 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func idCheckingImage () -> some View {
-        if emailForNewUser.isEmpty {
-            
+//        if emailForNewUser.isEmpty {
+        if user.email.isEmpty {
             Image(systemName: "circle" )
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(.gray)
@@ -133,7 +134,8 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func lengthConditionForCheckingPwText () -> some View {
-        if pwForNewUser.count >= 6 && pwForNewUser.count <= 14 {
+//        if pwForNewUser.count >= 6 && pwForNewUser.count <= 14 {
+        if user.password.count >= 6 && user.email.count <= 14 {
             Text("비밀번호: 길이 6자리에서 14자리")
                 .foregroundStyle(.green)
             
@@ -146,7 +148,8 @@ class ViewModel_SignUP: ObservableObject {
             Text(rangeMinMax.description)
                 .foregroundStyle(.green
                 )
-        } else if pwForNewUser.isEmpty {
+            //        } else if pwForNewUser.isEmpty {
+        } else if user.password.isEmpty {
             
             Text("비밀번호는 6자리에서 14자리 까지")
                 .foregroundStyle(.gray)
@@ -175,7 +178,7 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func numberConditionForPwText () -> some View {
-        if pwForNewUser.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789")) != nil {
+        if user.password.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789")) != nil {
             
             Text("비밀번호는 0~9숫자를 반드시 포함")
                 .foregroundStyle(.green)
@@ -191,7 +194,7 @@ class ViewModel_SignUP: ObservableObject {
                 )
             
         }
-        else if pwForNewUser.isEmpty{
+        else if user.password.isEmpty{
             
             Text("비밀번호는 0~9숫자를 반드시 포함")
                 .foregroundStyle(.gray)
@@ -224,7 +227,7 @@ class ViewModel_SignUP: ObservableObject {
     
     
     @ViewBuilder func lowcaseConditionForPwText () -> some View {
-        if pwForNewUser.rangeOfCharacter(from: .lowercaseLetters) != nil {
+        if user.password.rangeOfCharacter(from: .lowercaseLetters) != nil {
             
             Text("비밀번호는 영소문자를 반드시 포함")
                 .foregroundStyle(.green)
@@ -240,7 +243,7 @@ class ViewModel_SignUP: ObservableObject {
                 .foregroundStyle(.green)
             
             
-        } else if pwForNewUser.isEmpty {
+        } else if user.password.isEmpty {
             
             Text("비밀번호는 영소문자를 반드시 포함")
                 .foregroundStyle(.gray)
@@ -271,7 +274,7 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func specialCharacterText () -> some View {
-        if pwForNewUser.rangeOfCharacter(from: CharacterSet(charactersIn: "!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/`~")) != nil {
+        if user.password.rangeOfCharacter(from: CharacterSet(charactersIn: "!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/`~")) != nil {
             
             Text("비밀번호는 특수문자를 반드시 포함")
                 .foregroundStyle(.green)
@@ -286,7 +289,7 @@ class ViewModel_SignUP: ObservableObject {
                 .foregroundStyle(.green)
             
             
-        } else if  pwForNewUser.isEmpty {
+        } else if  user.password.isEmpty {
             
             Text("비밀번호는 특수문자를 반드시 포함")
                 .foregroundStyle(.gray)
@@ -323,18 +326,21 @@ class ViewModel_SignUP: ObservableObject {
             return Alert(title: Text("이미 존재하는 ID 입니다."),dismissButton: .cancel(Text("확인"), action: {
                 self.emailUsable = false
                 self.emailChecking = false
-                self.emailForNewUser = ""
+//                self.emailForNewUser = ""
+                self.user.email = ""
                 
             }))
-        } else if emailForNewUser.isEmpty == true {
+        } else if user.email.isEmpty == true {
             return Alert(title: Text("ID를 입력해주세요"), dismissButton: .cancel(Text("확인"), action: {
-                self.emailForNewUser = ""
+//                self.emailForNewUser = ""
+                self.user.email = ""
                 self.emailUsable = false
                 self.emailChecking = false
             }))
         }else {
             return Alert(title: Text("사용가능한 ID 입니다."),message: Text("사용하시겠습니까?"), primaryButton: .default(Text("취소"), action: {
-                self.emailForNewUser = ""
+//                self.emailForNewUser = ""
+                self.user.email = ""
                 self.emailUsable = false
                 self.emailChecking = false
             }), secondaryButton: .default(Text("사용하기"), action: {
@@ -355,20 +361,24 @@ class ViewModel_SignUP: ObservableObject {
             character.unicodeScalars.first.map { allowedCharacters.contains($0) } ?? false
         }
         if filteredValue != newValue {
-            emailForNewUser = filteredValue
+//            emailForNewUser = filteredValue
+            user.email = filteredValue
+            
         }
     }
     func filteringStringForUserName (newValue: String) {
         let filteredValue = newValue.lowercased().filter { $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <=  "9" }
         if filteredValue != newValue {
-            nameForNewUser = filteredValue
+//            nameForNewUser = filteredValue
+            user.name = filteredValue
         }
     }
     
     func filteringStringForUserPw (newValue: String) {
         let filteredValue = newValue.lowercased().filter {  $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "9" || $0 >= "!" && $0 <= "~" }
         if filteredValue != newValue {
-            pwForNewUser = filteredValue
+//            pwForNewUser = filteredValue
+            user.password = filteredValue
         }
     }
     
@@ -384,9 +394,9 @@ class ViewModel_SignUP: ObservableObject {
               
                         회원가입된 유저 데이터
               
-                ID :   \(emailForNewUser)
-              NAME :   \(nameForNewUser)
-                PW :   \(pwForNewUser)
+                ID :   \(user.email)
+              NAME :   \(user.name)
+                PW :   \(user.password)
               --------------------------------
               """)
     }
@@ -396,7 +406,7 @@ class ViewModel_SignUP: ObservableObject {
     // Combine + firebase for checking New email already exists or not
 
     func checkingEmailExistWithCombine () {
-        Firebase.shared.checkingEmailExist(documentName: emailForNewUser)
+        Firebase.shared.checkingEmailExist(documentName: user.email)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished :
@@ -425,9 +435,13 @@ class ViewModel_SignUP: ObservableObject {
                     print(error)
                     self.emailUsable = false
                     self.emailChecking = false
-                    self.emailForNewUser = ""
-                    self.pwForNewUser = ""
-                    self.nameForNewUser = ""
+//                    self.emailForNewUser = ""
+//                    self.pwForNewUser = ""
+//                    self.nameForNewUser = ""
+                    self.user.email = ""
+                    self.user.password = ""
+                    self.user.name = ""
+                    
                     
                 } else if let authResult = authResult {
                     promise(.success(authResult))
@@ -439,12 +453,12 @@ class ViewModel_SignUP: ObservableObject {
     
     func signUPwithCombine () {
         
-            createUserWithCombine(email: emailForNewUser, password: pwForNewUser)
+        createUserWithCombine(email: user.email, password: user.password)
                 .flatMap { [weak self] authResult -> Future<Void, Error> in
                     guard let self = self else {
                         return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
                     }
-                    return Firebase.shared.addEmailDocumentFireStore(email: emailForNewUser)
+                    return Firebase.shared.addEmailDocumentFireStore(email: user.email)
                 }
                 .flatMap { [weak self] authResult -> Future<String, Error> in
                     guard let self = self , let uid = Auth.auth().currentUser?.uid else {
@@ -456,7 +470,7 @@ class ViewModel_SignUP: ObservableObject {
                     guard let self = self , let uid = Auth.auth().currentUser?.uid else {
                         return Future { $0(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Self is nil"]))) }
                     }
-                    return Firebase.shared.getUserDataOnFireStoreDataBase(uid: uid, mail: emailForNewUser, name: nameForNewUser, pw: pwForNewUser, imgURL: imgURL)
+                    return Firebase.shared.getUserDataOnFireStoreDataBase(uid: uid, mail: user.email, name: user.name, pw: user.password, imgURL: imgURL)
                 }
             
                 .sink(receiveCompletion: {[weak self] completion in
@@ -470,9 +484,12 @@ class ViewModel_SignUP: ObservableObject {
                         print(error)
                         self?.emailUsable = false
                         self?.emailChecking = false
-                        self?.emailForNewUser = ""
-                        self?.pwForNewUser = ""
-                        self?.nameForNewUser = ""
+//                        self?.emailForNewUser = ""
+//                        self?.pwForNewUser = ""
+//                        self?.nameForNewUser = ""
+                        self?.user.email = ""
+                        self?.user.password = ""
+                        self?.user.name = ""
                         
                     }
                 },receiveValue: { authResult in

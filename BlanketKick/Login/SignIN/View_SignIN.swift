@@ -59,14 +59,14 @@ struct View_SignIN: View {
                 .font(.largeTitle)
                 .fontWeight(.black)
             
-            GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User Email", bindingValue: $viewModel.emailForLogin)
+            GradientStrokeTextField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User Email", bindingValue: $viewModel.user.email)
                 .padding()
-                .onChange(of: viewModel.emailForLogin) { oldValue, newValue in
+                .onChange(of: viewModel.user.email) { oldValue, newValue in
                     viewModel.filteringStringForUserID(newValue: newValue)
                 }
             
-            GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User PW", bindingValue: $viewModel.pwForLogin)
-                .onChange(of: viewModel.pwForLogin) { oldValue, newValue in
+            GradientStrokeSecureField(gradient: LinearGradient(colors: [.green,.purple], startPoint: .leading, endPoint: .trailing), placeholderValue: "User PW", bindingValue: $viewModel.user.password)
+                .onChange(of: viewModel.user.password) { oldValue, newValue in
                     viewModel.filterdStringForUserPw(newValue: newValue)
                 }
                 }

@@ -10,11 +10,15 @@ import FirebaseFirestore
 
 class ViewModel_SignIN: ObservableObject {
     
+    //model
+    @Published var user = User(email: "", name: "", password: "", profileImage: nil)
+
+    
     @Published var isWaving = false
 
     
-    @Published var emailForLogin : String = ""
-    @Published var pwForLogin : String = ""
+//    @Published var emailForLogin : String = ""
+//    @Published var pwForLogin : String = ""
     
     
     @Published var userLoginStatus : Bool = false
@@ -53,7 +57,7 @@ class ViewModel_SignIN: ObservableObject {
                 allowedCharacters.contains($0) } ?? false
         } 
         if filteredValue != newValue {
-            emailForLogin = filteredValue
+            user.email = filteredValue
         }
     }
     
@@ -62,7 +66,7 @@ class ViewModel_SignIN: ObservableObject {
             $0 >= "a" && $0 <= "z" || $0 >= "0" && $0 <= "z" || $0 >= "!" && $0 <= "~"
         }
         if filterdCharacter != newValue {
-            pwForLogin = filterdCharacter
+            user.password = filterdCharacter
         }
     }
     
@@ -74,7 +78,7 @@ class ViewModel_SignIN: ObservableObject {
     // user Login with Firebase + combine
 
     func loginCombine () {
-        Firebase.shared.userLogin(email: emailForLogin, password: pwForLogin)
+        Firebase.shared.userLogin(email: user.email, password: user.password)
             .flatMap { [weak self] authResult -> Future <Void, Error> in
 //                guard let self = self , let uid = Auth.auth().currentUser?.uid else {
                 guard let self = self else {
