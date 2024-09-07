@@ -4,7 +4,7 @@
 //
 //  Created by chul on 9/7/24.
 //
-
+//pull
 import SwiftUI
 
 struct Welcome_View: View {
