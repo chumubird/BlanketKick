@@ -102,6 +102,23 @@ class User_ViewModel: ObservableObject {
         }
     }
     
+    func getUserData () {
+        
+        self.loadUserData()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("loadUserData done completely")
+                case .failure(let error):
+                    print("error message : \(error)")
+                }
+            }, receiveValue: {
+                print("접속한 유저의 데이터를 성공적으로 불러왔습니다.")
+                print("refactoring code works well")
+            })
+            .store(in: &cancellables)
+        
+    }
     
     func loadUserPhoto(photoURLString: String) -> Future<UIImage, Error> {
         return Future { promise in

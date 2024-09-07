@@ -1,4 +1,5 @@
-// pull done about logout combine+ firebase api
+// pull done
+// code refactoring start  for logic from view -> viewmodel about logout
 
 import SwiftUI
 
@@ -30,13 +31,16 @@ struct User_View: View {
                             //firebase + combine logout logic
                                 viewModel.userLogOut()
                         }, label: {
-                            VStack{
-                                Image(systemName: "person.crop.circle.badge.minus")
-                                    .resizable()
-                                    .frame( width: 30 , height: 30)
-                                    .foregroundStyle(.blue)
-//                                    .padding()
-                            }
+//                            VStack{
+//                                Image(systemName: "person.crop.circle.badge.minus")
+//                                    .resizable()
+//                                    .frame( width: 30 , height: 30)
+//                                    .foregroundStyle(.blue)
+////                                    .padding()
+//                            }
+                            Text("LogOut")
+                                .fontWeight(.black)
+                                .foregroundStyle(.red)
                         })
                         Spacer()
                             .frame(width: 10)
@@ -72,15 +76,16 @@ struct User_View: View {
         
         .onAppear {
             // 데이터 로드
-            viewModel.loadUserData()
-                .sink(receiveCompletion: { completion in
-                    if case .failure(let error) = completion {
-                        print("Failed to load user data: \(error.localizedDescription)")
-                    }
-                }, receiveValue: {
-                    print("접속한 유저의 데이터를 성공적으로 불러왔습니다.")
-                })
-                .store(in: &viewModel.cancellables)
+//            viewModel.loadUserData()
+//                .sink(receiveCompletion: { completion in
+//                    if case .failure(let error) = completion {
+//                        print("Failed to load user data: \(error.localizedDescription)")
+//                    }
+//                }, receiveValue: {
+//                    print("접속한 유저의 데이터를 성공적으로 불러왔습니다.")
+//                })
+//                .store(in: &viewModel.cancellables)
+            viewModel.getUserData()
         }
         .onReceive(viewModel.$logOutSuccess) { logOutSuccess in
                    if logOutSuccess {
