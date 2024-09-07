@@ -31,13 +31,16 @@ struct User_View: View {
                             //firebase + combine logout logic
                                 viewModel.userLogOut()
                         }, label: {
-                            VStack{
-                                Image(systemName: "person.crop.circle.badge.minus")
-                                    .resizable()
-                                    .frame( width: 30 , height: 30)
-                                    .foregroundStyle(.blue)
-//                                    .padding()
-                            }
+//                            VStack{
+//                                Image(systemName: "person.crop.circle.badge.minus")
+//                                    .resizable()
+//                                    .frame( width: 30 , height: 30)
+//                                    .foregroundStyle(.blue)
+////                                    .padding()
+//                            }
+                            Text("LogOut")
+                                .fontWeight(.black)
+                                .foregroundStyle(.red)
                         })
                         Spacer()
                             .frame(width: 10)
