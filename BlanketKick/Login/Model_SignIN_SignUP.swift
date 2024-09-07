@@ -1,3 +1,4 @@
+// MVVM - model
 import Foundation
 import SwiftUI
 
