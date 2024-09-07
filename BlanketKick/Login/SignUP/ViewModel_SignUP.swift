@@ -92,7 +92,6 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func idCheckingImage () -> some View {
-//        if emailForNewUser.isEmpty {
         if user.email.isEmpty {
             Image(systemName: "circle" )
                 .aspectRatio(contentMode: .fit)
@@ -134,8 +133,7 @@ class ViewModel_SignUP: ObservableObject {
     }
     
     @ViewBuilder func lengthConditionForCheckingPwText () -> some View {
-//        if pwForNewUser.count >= 6 && pwForNewUser.count <= 14 {
-        if user.password.count >= 6 && user.email.count <= 14 {
+        if user.password.count >= 6 && user.password.count <= 14 {
             Text("비밀번호: 길이 6자리에서 14자리")
                 .foregroundStyle(.green)
             
@@ -148,7 +146,6 @@ class ViewModel_SignUP: ObservableObject {
             Text(rangeMinMax.description)
                 .foregroundStyle(.green
                 )
-            //        } else if pwForNewUser.isEmpty {
         } else if user.password.isEmpty {
             
             Text("비밀번호는 6자리에서 14자리 까지")

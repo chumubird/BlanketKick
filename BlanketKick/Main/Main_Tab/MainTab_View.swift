@@ -74,7 +74,8 @@ struct MainTab_View: View {
             
             Group {
                 if viewModel.selectedTab == 0 {
-                    Todo_View()
+//                    Todo_View()
+                    Welcome_View()
                 } else if viewModel.selectedTab == 1 {
                     User_View()
                 }

@@ -20,6 +20,7 @@
 		372F5E632C5A0D6400064283 /* Todo_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */; };
 		372F5E652C6385C200064283 /* AppStateForLoginLogOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372F5E642C6385C200064283 /* AppStateForLoginLogOut.swift */; };
 		3752B4D22C8C3771008F9BD5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3752B4D12C8C3771008F9BD5 /* User.swift */; };
+		3752B4D52C8C3D60008F9BD5 /* Welcome_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3752B4D42C8C3D60008F9BD5 /* Welcome_View.swift */; };
 		375858EB2C2E47FE002978EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 375858EA2C2E47FD002978EE /* GoogleService-Info.plist */; };
 		375858EC2C2E48CE002978EE /* Pods_BlanketKick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */; };
 		375858ED2C2E48CE002978EE /* Pods_BlanketKick.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6766C7015799D39A52E42489 /* Pods_BlanketKick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -95,6 +96,7 @@
 		372F5E622C5A0D6400064283 /* Todo_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo_ViewModel.swift; sourceTree = "<group>"; };
 		372F5E642C6385C200064283 /* AppStateForLoginLogOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateForLoginLogOut.swift; sourceTree = "<group>"; };
 		3752B4D12C8C3771008F9BD5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3752B4D42C8C3D60008F9BD5 /* Welcome_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome_View.swift; sourceTree = "<group>"; };
 		375858EA2C2E47FD002978EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		37A4522A2C21276F00A2AFDA /* View_SignIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View_SignIN.swift; sourceTree = "<group>"; };
 		37A4522C2C21278800A2AFDA /* ViewModel_SignIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel_SignIN.swift; sourceTree = "<group>"; };
@@ -227,6 +229,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		3752B4D32C8C3D53008F9BD5 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				3752B4D42C8C3D60008F9BD5 /* Welcome_View.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
 		37A452242C2126E100A2AFDA /* Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +290,7 @@
 		37DCA73A2C3E25C900E47E33 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				3752B4D32C8C3D53008F9BD5 /* Welcome */,
 				372F5E5F2C5A0D4500064283 /* Todo */,
 				37DCA7402C3E2AD700E47E33 /* Main_Tab */,
 				37DCA73B2C3E25D700E47E33 /* User */,
@@ -571,6 +582,7 @@
 				37A4522D2C21278800A2AFDA /* ViewModel_SignIN.swift in Sources */,
 				37A4523F2C21285300A2AFDA /* GradientStrokeSecureField.swift in Sources */,
 				37A4523B2C21283500A2AFDA /* GradientCircle.swift in Sources */,
+				3752B4D52C8C3D60008F9BD5 /* Welcome_View.swift in Sources */,
 				37DCA73D2C3E260A00E47E33 /* User_View.swift in Sources */,
 				372F5E632C5A0D6400064283 /* Todo_ViewModel.swift in Sources */,
 				37DCA73F2C3E261F00E47E33 /* User_ViewModel.swift in Sources */,
