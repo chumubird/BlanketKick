@@ -1,3 +1,4 @@
+//model
 import Foundation
 import SwiftUI
 
