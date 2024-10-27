@@ -10,6 +10,7 @@ target 'BlanketKick' do
    pod 'FirebaseAuth'
    pod 'FirebaseFirestore'
    pod 'FirebaseStorage'
+   pod 'GoogleSignIn'
 
 
   target 'BlanketKickTests' do
