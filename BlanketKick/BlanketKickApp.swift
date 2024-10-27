@@ -6,6 +6,9 @@ import SwiftUI
 // FireBase + SwiftUI
 import FirebaseCore
 
+import GoogleSignIn
+
+
 // 앱델리게이트 클래스 작성후
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,

@@ -15,16 +15,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>blanketkick-chul.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:306724651562:ios:49c62fc7ca0399dc2b3953</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.306724651562-gnrph1ns7d1cr2h15f21ojb9tbv9ji7j</string>
 </dict>
 </plist>
