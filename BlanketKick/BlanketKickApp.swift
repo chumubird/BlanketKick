@@ -17,6 +17,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       FirebaseApp.configure()
     return true
   }
+    
+    //google mail login Firebase
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+      return GIDSignIn.sharedInstance.handle(url)
+    }
+    
 }
 @main
 struct BlanketKickApp: App {
